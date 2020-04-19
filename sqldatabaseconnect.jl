@@ -1,6 +1,6 @@
-using DataFrames,Query, JuliaDB
+using DataFrames, Query, JuliaDB
 
-#driver/connection string found at
+# driver/connection string found at
 # https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
 
 #enter user information to be passed into the connection string
@@ -9,18 +9,24 @@ database= begin
     readline()
 end 
 
-dsn=ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
-df=ODBC.query(dsn,"select TOP 50 * from events") |>table
-
-x = @from i in df begin 
-    @select {date =i.ev_date, type= i.ev_type, time= i.ev_time}
-    @collect table
+user= begin 
+    print("Enter Username: ")
+    readline()
 end 
 
-y = @from i in x begin
-    @where i.time < 100
-    @select i.date, i.type 
-    @collect table
-end
+
+pass= begin 
+    print("Enter Password: ")
+    readline()
+end 
+
+# setting up database  
+dsn=ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$databse;UID=$user;PWD=$pass;")
+
+# select top 50 rows from sample table, select as a julia DB indexed table. 
+results=ODBC.query(dsn,"select TOP 50 * from events") |> table
+
+#writing data
+
 
 ODBC.disconnect!(dsn)
