@@ -1,4 +1,4 @@
-using Query, JuliaDB, SASLib, ODBC 
+using Query, JuliaDB, SASLib, ODBC, DelimitedFiles
 
 # driver/connection string found at
 # https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
@@ -35,8 +35,12 @@ gridprojects = download("https://web.calpoly.edu/~rottesen/Stat441/Sasdata/Sasda
 # setting up database  
 dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
 
-ODBC.execute!(dsn,"drop table if exists users; 
-drop table if exists projects")
+ODBC.execute!(dsn,
+"""
+drop table if exists users; 
+drop table if exists projects;
+drop table if exists iris;
+""")
 
 #writing projects data
 
@@ -46,7 +50,7 @@ ODBC.execute!(dsn,"create table projects
 
 ODBC.execute!(dsn,
 "create table users 
-(Class VARCHAR(10), Fname VARCHAR(16), Lname VARCHAR(16), Email VARCHAR(24), Phone VARCHAR(9), Dept VARCHAR(5), id INT) ")
+(Class VARCHAR(10), Fname VARCHAR(16), Lname VARCHAR(16), Email VARCHAR(36), Phone VARCHAR(9), Dept VARCHAR(10), id INT) ")
 
 ## make a sql statement with "blank" values that we'll put in actual values into 
 insertstmt=ODBC.prepare(dsn,"insert into projects values(?,?,?,?)")
@@ -59,7 +63,7 @@ for row in rows(gridprojects)
 end
 
 ## make a sql statement with "blank" values that we'll put in actual values into 
-insertstmt=ODBC.prepare(dsn,"insert into projects values(?,?,?,?,?,?,?)")
+insertstmt=ODBC.prepare(dsn,"insert into users values(?,?,?,?,?,?,?)")
 
 ## now for each row in the rows of gridusers, run the previous insert statemet, with the values for each row 
 ## inserted into the previous "blank rows" ie those question marks
@@ -72,5 +76,24 @@ end
 results=ODBC.query(dsn,"select TOP 50 * from projects") |> 
         table
 
-ODBC.disconnect!(dsn)
 
+
+################################### Loading Data Bigger than Memory #########################################################
+# ok so this isn't actually larger than memory, but it should work for a text file of arbitray size
+
+ODBC.execute!(dsn,"create table iris 
+(Sepal_length Float, Sepal_width Float, Petal_length FLOAT, Petal_width FLOAT, Species VARCHAR(20) )")
+insertstmt=ODBC.prepare(dsn,"insert into iris values(?,?,?,?,?)")
+
+## open the file
+open("iris.csv") do f
+  #put this readline in if you'd like to skip the first row
+    readline(f)
+    #for the remaining lines, read in as a single string, break apart at the commas, then insert the rest
+   for lines in readlines(f)
+    rawline=map(String,split(lines, ","))
+    ODBC.execute!(insertstmt,rawline)
+   end 
+end
+        
+ODBC.disconnect!(dsn)
