@@ -10,7 +10,7 @@ library(odbc)
 library(DBI)
 library(datasets)
 
-
+# open connection
 conn <- dbConnect(
   odbc(),
   Driver = "ODBC Driver 17 for SQL Server",
