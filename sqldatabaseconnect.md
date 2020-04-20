@@ -1,16 +1,12 @@
 ---
 title : Using Your Favorite Statistical Language to Connect to a SQL Sever
 author : Nick Padilla
-<<<<<<< HEAD
 options : 
     md2pdf:
         out_path :pdf
 ---
-# Prerequisite Steps
-=======
----
+
 ## Prerequisite Steps
->>>>>>> master
 The manual takes uses the OCDB driver/ connection string method to connnect to the Stats repository. 
 These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
 Connection strings refers to the passwords and information needed to connect to the database, as well as the format that that information 
@@ -74,28 +70,15 @@ string method from here further.
 # Connecting and Querying Data
 
 ## Julia
-```julia
-using DataFrames,ODBC
-dsn=ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
-df=ODBC.query(dsn,"select top 20 * from events ")
-=======
-connect to the data source. Therefore, to more easily share code and to not have to mess with 
-
-## Julia
 ```{julia,eval=FALSE}
 using DataFrames, DataFramesMeta, ODBC, Lazy
 dsn=ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
 df=ODBC.query(dsn,"select * from events ")
->>>>>>> master
 ODBC.disconnect!(dsn)
 ```
 
 ## SAS
-<<<<<<< HEAD
-```sas
-=======
 ```{sas,eval=FALSE}
->>>>>>> master
 /*from proc sql directly*/
 /*this is pretty convoluted*/
 proc sql;
@@ -119,53 +102,29 @@ quit;
 ```
 
 ## R
-<<<<<<< HEAD
-```r
-=======
-```{r, eval=FALSE}
->>>>>>> master
+```{r,eval=FALSE}
 library(RODBC)
 # tried the tidyverse ODBC package, but it kept giving me errors
 library(tidyverse)
 conn=odbcDriverConnect(connection="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
-<<<<<<< HEAD
 dat =conn%>% sqlQuery("select TOP 50 * from events")
 close(conn)
 ```
-### python 
+### Python 
 ```python
 import pyodbc
 conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
 cursor = conn.cursor()
 cursor.execute("select TOP 20 * from events" )
-=======
-dat =conn%>% sqlQuery("select * from events")
-close(conn)
-```
-### python 
-```{python,eval=FALSE,python.reticulate=FALSE}
-import pyodbc
-conn = pyodbc.connect("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
-cursor = conn.cursor()
-cursor.execute("select * from events" )
->>>>>>> master
 dat =cursor.fetchall()
 conn.close()
 ```
 
 
 ## JSL
-<<<<<<< HEAD
-```
-=======
 ```{r,eval=FALSE,highlight=FALSE}
->>>>>>> master
 open database(
         "Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182",
         "select top 20 from events"
 )
-<<<<<<< HEAD
 ```
-=======
-```
->>>>>>> master
