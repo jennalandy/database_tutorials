@@ -1,4 +1,4 @@
-using Query, JuliaDB, SASLib, ODBC, DelimitedFiles
+using Query, JuliaDB, SASLib, ODBC
 
 # driver/connection string found at
 # https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
@@ -20,10 +20,11 @@ pass= begin
 end 
 
 ######################## Data that fits in memory and using Tables.jl data sinks ##################################################
-#get the grid datasets from Cal Poly, convert from sas7bdat to IndexedTable 
-#we'll be using the Indexed table as the datasink as it works well with larger datasets
-#but the choice is arbitray in this case and can be a dataframe, dict or some Tables.jl implementation
-
+#=
+get the grid datasets from Cal Poly, convert from sas7bdat to IndexedTable 
+we'll be using the Indexed table as the datasink as it works well with larger datasets
+but the choice is arbitray in this case and can be a dataframe, dict or some Tables.jl implementation
+=#
 gridusers = download("https://web.calpoly.edu/~rottesen/Stat441/Sasdata/Sasdata/users.sas7bdat") |> 
             readsas |> 
             table
@@ -95,5 +96,30 @@ open("iris.csv") do f
     ODBC.execute!(insertstmt,rawline)
    end 
 end
-        
+
+#################################### Bulk Insert #########################################################################
+#=
+If you have bulk insert permissions you can do something like below to write data without reading it into memory
+Note, this is not tested, since I do not have bulk load permissions, so use at own risk
+more info can be found at 
+
+https://docs.microsoft.com/en-us/sql/relational-databases/import-export/import-bulk-data-by-using-bulk-insert-or-openrowset-bulk-sql-server?view=sql-server-ver15#bulk-insert-statement
+=#
+
+#=
+ODBC.execute!(dsn,"""
+BULK INSERT iris
+FROM 'iris.csv'
+""")
+
+ODBC.execute!(dsn, 
+"""
+INSERT INTO iris (Sepal_length, Sepal_width, Petal_length, Petal_width, Species)
+SELECT *  
+FROM OPENROWSET (  
+    BULK 'iris.csv') AS b ;
+""")
+=#
+
+    
 ODBC.disconnect!(dsn)
