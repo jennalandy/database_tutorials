@@ -112,7 +112,6 @@ for row in rows(gridusers)
     ODBC.execute!(insertstmt,row)
 end
 
-
 # select top 50 rows from sample table, select as a julia DB indexed table. 
 results=ODBC.query(dsn,"select TOP 50 * from projects") |> 
         table
@@ -120,7 +119,7 @@ results=ODBC.query(dsn,"select TOP 50 * from projects") |>
 
 
 #==============================  Loading Data Bigger than Memory =========================================================#
-# ok so this isn't actually larger than memory, but it should work for a text file of arbitray size
+# ok so this isn't actually larger than memory, but it should work for any delimited text file of arbitray size
 
 ODBC.execute!(dsn,""""
 create table iris 

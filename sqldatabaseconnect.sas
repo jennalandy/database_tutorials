@@ -1,3 +1,4 @@
+/*Window Prompt Courtesy of SAS Documentation */
 /** This code is for the SAS windowing environment only. **/
 
 /** %WINDOW defines the prompt **/
@@ -9,6 +10,11 @@
 
 /** %DISPLAY invokes the prompt **/
 %display info;
+
+
+/*by using a libname, much more straightforward*/
+libname conn2 odbc
+required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
 
 /*from proc sql directly*/
 /*this is pretty convoluted*/
@@ -22,10 +28,6 @@ select * from connection to conn
 
 disconnect from conn;
 quit;
-
-/*by using a libname, much more straightforward*/
-libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
 
 /*read data into work directory*/
 proc sql;
