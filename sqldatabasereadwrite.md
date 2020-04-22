@@ -398,3 +398,27 @@ print(iris_lines[1].split(',')[0])
 ```
 
 ## JSL
+
+* I still need to test this - Nick 
+
+Open Connection
+```
+conn = opendatabaseconnection(
+	    "Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182")
+
+```
+Read Data 
+```
+res = executesql(conn,
+    "select * from mtcars"
+)
+```
+Write data
+```
+#need to import csv
+res2 = executesql(conn,
+    "create table iris (var1 float, var2 float, var3 float, var4 float, var6 varchar") 
+)
+#fake data, will figure out how to write real data
+executesql("insert into iris values (1,2,3,4,"fakespecies")")
+```
