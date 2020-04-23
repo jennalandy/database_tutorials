@@ -1,3 +1,7 @@
 .idea
 .Rhistory
 __pycache__/
+.Rproj.user
+*.Rproj
+.DS_Store
+*.Rapp.history

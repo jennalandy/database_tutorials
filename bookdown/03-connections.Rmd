@@ -1,0 +1,91 @@
+# Connecting to a Database
+
+## Julia
+```{r, eval=FALSE, highlight=FALSE}
+using DataFrames, DataFramesMeta, ODBC, Lazy
+dsn=ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
+df=ODBC.query(dsn,"select * from events ")
+ODBC.disconnect!(dsn)
+```
+
+## SAS
+```{sas,eval=FALSE}
+/*from proc sql directly*/
+/*this is pretty convoluted*/
+proc sql;
+connect to odbc as conn
+required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182";
+
+create table event as
+select * from connection to conn
+(select * from events) ;
+
+disconnect from conn;
+quit;
+
+/*by using a libname*/
+libname conn2 odbc
+required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182";
+proc sql;
+create table event as
+select * from conn2.events ;
+quit;
+```
+
+## R
+```{r,eval=FALSE}
+library(odbc)
+library(DBI)
+
+# note: if files are private, can replace with strings
+database = rstudioapi::showPrompt("Database name","Database name")
+uid = rstudioapi::showPrompt("Database username", "Database username")
+pwd = rstudioapi::askForPassword("Database password")
+
+# open connection
+conn <- dbConnect(
+  odbc(),
+  Driver = "ODBC Driver 17 for SQL Server",
+  Server = "24.205.251.117",
+  Database = database,
+  UID = uid,
+  PWD = pwd
+)
+```
+
+## Python 
+
+The driver used for Python may depend on your setup.
+
+```python
+import pyodbc
+
+driver = "{ODBC Driver 17 for SQL Server}" # PC Users
+# driver = "/usr/local/lib/libmsodbcsql.17.dylib" # Mac Users
+
+# note: if files are private, can replace with strings
+database = input("Database name: ")
+username = input("Username: ")
+password = getpass.getpass(prompt = "Password: ")
+
+# open connection
+conn = pyodbc.connect(
+    ";".join([
+        "Driver="+driver,
+        "Address=24.205.251.117",
+        "Database="+database,
+        "UID="+username,
+        "PWD="+password
+    ])
+)
+```
+
+
+## JSL
+```{r,eval=FALSE,highlight=FALSE}
+open database(
+        "Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182",
+        "select top 20 from events"
+)
+```
+
