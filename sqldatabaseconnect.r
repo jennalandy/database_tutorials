@@ -45,7 +45,7 @@ receipts <- read.csv('BAKERY/receipts.csv', stringsAsFactors = FALSE)
 
 # In these tables: 
 # - customers is referenced by receipts
-# - receipts is referenced by goods
+# - receipts is referenced by items
 # - goods are referenced by items
 
 # can't drop a table if it is referenced by another table

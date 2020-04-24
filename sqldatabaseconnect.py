@@ -1,5 +1,8 @@
 import pyodbc
 import getpass
+import calendar
+month_abbr_dict = {v: k for k,v in enumerate(calendar.month_abbr)}
+
 
 # --- PART 1: SETUP CONNECTION  ---
 
@@ -33,6 +36,8 @@ cursor = conn.cursor()
 # --- PART 2: WRITING AND READING USING PYTHON (without Pandas) ---
 
 # -- 2.1 WRITING TO A DATABASE
+
+# -- 2.1.1 Simple Table: Iris
 
 # load in data
 with open('iris.csv') as file:
@@ -84,6 +89,156 @@ cursor.executemany(
             "values(?, ?, ?, ?, ?)"]),
     [line.split(',') for line in iris_lines[1:]]
 )
+
+# -- 2.1.2 Related Tables Connected by Keys: Bakery
+
+# drop tables if they already exists
+# can't drop a table if it is referenced by another table
+cursor.execute("drop table if exists items;")
+cursor.execute("drop table if exists goods;") # referenced by items
+cursor.execute("drop table if exists receipts;") # referenced by items
+cursor.execute("drop table if exists customers;") # referenced by receipts
+
+# create new tables
+cursor.execute(" ".join([
+    "create table customers(",
+        "Id int,",
+        "LastName varchar(50),",
+        "FirstName varchar(50),",
+        "constraint customers_pk primary key (Id)"
+    ");"
+]))
+
+cursor.execute(" ".join([
+    "create table receipts(",
+        "ReceiptNumber int,",
+        "Date date,",
+        "CustomerId int,",
+        "constraint receipts_pk primary key (ReceiptNumber),",
+        "constraint receipts_customers_fk foreign key (CustomerId) references customers (Id)"
+    ");"
+]))
+
+cursor.execute(" ".join([
+    "create table goods(",
+        "Id varchar(50),",
+        "Flavor varchar(50),",
+        "Food varchar(50),",
+        "Price decimal(5,2),",
+        "constraint goods_pk primary key (Id)"
+    ");"
+]))
+
+cursor.execute(" ".join([
+    "create table items(",
+        "Receipt int,",
+        "Ordinal int,",
+        "Item varchar(50),",
+        "constraint items_pk primary key (Receipt, Ordinal),",
+        "constraint items_goods_fk foreign key (Item) references goods (Id),",
+        "constraint items_receipts_fk foreign key (Receipt) references receipts (ReceiptNumber)"
+    ");"
+]))
+
+# load in data
+with open('BAKERY/customers.csv') as file:
+    header = True
+    # iterating through lines in this way doesn't read everything to memory at once
+    # useful strategy for large files!
+    for line in file:
+        line = line.split(', ')
+        if header:
+            header = False
+        else:
+            cursor.execute(
+                " ".join([
+                    "insert into customers(",
+                        "Id,",
+                        "FirstName,",
+                        "LastName",
+                    ")"
+                    "values(?, ?, ?)"]),
+                line[0],
+                line[1],
+                line[2].strip()
+            )
+
+# load in data
+with open('BAKERY/receipts.csv') as file:
+    header = True
+    for line in file:
+        line = line.split(', ')
+        if header:
+            header = False
+        else:
+            # YYYYMMDD from DD-Mon-YYYY
+            date = line[1].strip().replace("'",'')
+            year = date.split('-')[2]
+            day = date.split('-')[0]
+            if len(day) == 1:
+                day = '0'+day
+            month = str(month_abbr_dict[date.split('-')[1]])
+            date2 = year+month+day
+            cursor.execute(
+                " ".join([
+                    "insert into receipts(",
+                        "ReceiptNumber,",
+                        "Date,",
+                        "CustomerId",
+                    ")"
+                    "values(?, ?, ?)"]),
+                line[0],
+                date2,
+                line[2].strip()
+            )
+
+# load in data
+with open('BAKERY/goods.csv') as file:
+    header = True
+    # iterating through lines in this way doesn't read everything to memory at once
+    # useful strategy for large files!
+    for line in file:
+        line = line.strip().split(',')
+        if header:
+            header = False
+        else:
+            cursor.execute(
+                " ".join([
+                    "insert into goods(",
+                        "Id,",
+                        "Flavor,",
+                        "Food,",
+                        "Price"
+                    ")"
+                    "values(?, ?, ?, ?)"]),
+                line[0],
+                line[1],
+                line[2],
+                float(line[3])
+            )
+
+# load in data
+with open('BAKERY/items.csv') as file:
+    header = True
+    # iterating through lines in this way doesn't read everything to memory at once
+    # useful strategy for large files!
+    for line in file:
+        line = line.split(', ')
+        if header:
+            header = False
+        else:
+            cursor.execute(
+                " ".join([
+                    "insert into items(",
+                        "Receipt,",
+                        "Ordinal,",
+                        "Item",
+                    ")"
+                    "values(?, ?, ?)"]),
+                int(line[0]),
+                int(line[1]),
+                line[2].strip()
+            )
 
 # -- 2.2: READING FROM A DATABASE
 
