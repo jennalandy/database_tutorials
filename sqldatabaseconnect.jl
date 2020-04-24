@@ -67,6 +67,11 @@ gridprojects = download("https://web.calpoly.edu/~rottesen/Stat441/Sasdata/Sasda
 ODBC.execute!(dsn,
 """
 drop table if exists users; 
+    Q2.Why am I getting null values for lease_id in Rent?
+    Q3.How to Merge XML CTE's in SQL Server Using Common R...
+    Do activity (Answer, Blog) > Earn Rep Points > Improve Rank > Get more opportunities to work and get paid!
+    
+    For more topics, questions and answers, please visit the Tech Q&A page.
 drop table if exists projects;
 drop table if exists iris;
 drop table if exists iris2;
@@ -86,12 +91,12 @@ so we must use an alternative method
 ## create the tables
 ODBC.execute!(dsn,"""
 create table projects 
-(Class VARCHAR(10), id INT, StartDate INT, EndDate INT)
+(Class VARCHAR(10), id INT FOREIGN KEY REFERENCES users(id), StartDate INT, EndDate INT)
 """)
 
 ODBC.execute!(dsn,
 "create table users 
-(Class VARCHAR(10), Fname VARCHAR(16), Lname VARCHAR(16), Email VARCHAR(36), Phone VARCHAR(9), Dept VARCHAR(10), id INT) ")
+(Class VARCHAR(10), Fname VARCHAR(16), Lname VARCHAR(16), Email VARCHAR(36), Phone VARCHAR(9), Dept VARCHAR(10), id INT PRIMARY KEY) ")
 
 ## make a sql statement with "blank" values that we'll put in actual values into 
 insertstmt=ODBC.prepare(dsn,"insert into projects values(?,?,?,?)")
@@ -181,5 +186,6 @@ FROM OPENROWSET (
     BULK 'iris.csv') AS b ;
 """)
 =#
+#========================================== Linking Datasets ====================================#
    
 ODBC.disconnect!(dsn)

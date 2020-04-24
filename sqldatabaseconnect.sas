@@ -55,3 +55,13 @@ proc sql;
 create table conn3.iris as 
 (select * from work.iris);
 quit;
+
+*try creating table w/ primary key then insert data into it;
+
+proc sql create table new
+( constraint primary key);
+
+insert into new
+select * from table1;
+
+
