@@ -84,8 +84,8 @@ dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_
 dbWriteTable(conn, name = "receipts",  value = receipts)
 
 # the column we want as a primary key must not be null, then we can add the constraint
-dbExecute(conn, 'alter table receipts alter column RecieptNumber int not null;')
-dbExecute(conn, 'alter table receipts add primary key (RecieptNumber);')
+dbExecute(conn, 'alter table receipts alter column ReceiptNumber int not null;')
+dbExecute(conn, 'alter table receipts add primary key (ReceiptNumber);')
 
 dbExecute(conn, 'alter table receipts alter column CustomerID int not null;')
 dbExecute(conn, 'alter table receipts add foreign key (CustomerID) references customers (Id);')
@@ -99,11 +99,11 @@ dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_
 dbWriteTable(conn, name = "items",  value = items)
 
 # the column we want as a primary key must not be null, then we can add the constraint
-dbExecute(conn, 'alter table items alter column Reciept int not null;')
+dbExecute(conn, 'alter table items alter column Receipt int not null;')
 dbExecute(conn, 'alter table items alter column Ordinal int not null;')
-dbExecute(conn, 'alter table items add primary key (Reciept, Ordinal);')
+dbExecute(conn, 'alter table items add primary key (Receipt, Ordinal);')
 
-dbExecute(conn, 'alter table items add foreign key (Reciept) references receipts (RecieptNumber);')
+dbExecute(conn, 'alter table items add foreign key (Receipt) references receipts (ReceiptNumber);')
 
 dbExecute(conn, 'alter table items alter column Item varchar(20) not null;')
 dbExecute(conn, 'alter table items add foreign key (Item) references goods (Id);')

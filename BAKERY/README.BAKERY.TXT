@@ -108,3 +108,12 @@ file is updated accordingly with new information.
 
 **************************************************************************
 **************************************************************************
+
+Edited by Jenna Landy
+Statistics Department
+College of Science and Math
+jlandy@calpoly.edu
+
+Changes:
+- rename RecieptNumber to ReceiptNumber in receipts.csv
+- rename Reciept to Receipt in items.csv

@@ -1,4 +1,4 @@
-RecieptNumber, Date, CustomerId
+ReceiptNumber, Date, CustomerId
 18129, '28-Oct-2007', 15
 51991, '17-Oct-2007', 14
 83085, '12-Oct-2007', 7
