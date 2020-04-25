@@ -1,11 +1,29 @@
 # Connecting to a Database
 
 ## Julia
-```{r, eval=FALSE, highlight=FALSE}
-using DataFrames, DataFramesMeta, ODBC, Lazy
-dsn=ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;")
-df=ODBC.query(dsn,"select * from events ")
-ODBC.disconnect!(dsn)
+```{julia, eval=FALSE, highlight=FALSE}
+using ODBC
+
+# driver/connection string found at
+# https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
+
+#enter user information to be passed into the connection string
+database= begin 
+    print("Enter Database Name: ")
+    readline()
+end 
+
+user= begin 
+    print("Enter Username: ")
+    readline() 
+end 
+
+crypt=Base.getpass("Enter Password")
+pass=read(crypt,String)
+
+# setting up database  
+dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
+ODBC.disconnect()
 ```
 
 ## SAS
@@ -83,9 +101,8 @@ conn = pyodbc.connect(
 
 ## JSL
 ```{r,eval=FALSE,highlight=FALSE}
-open database(
-        "Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182",
-        "select top 20 from events"
+opendatabaseconnection(
+        "Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182"
 )
 ```
 

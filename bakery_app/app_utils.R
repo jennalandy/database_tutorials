@@ -5,9 +5,9 @@ conn <- dbConnect(
   odbc(),
   Driver = "ODBC Driver 17 for SQL Server",
   Server = "24.205.251.117",
-  Database = "JennaDb", #rstudioapi::showPrompt("Database name","Database name"),
-  UID = "Jenna", #rstudioapi::showPrompt("Database username", "Database username"),
-  PWD = "ShadeHome8$" #rstudioapi::askForPassword("Database password")
+  Database = "NickDb", #rstudioapi::showPrompt("Database name","Database name"),
+  UID = "Nick", #rstudioapi::showPrompt("Database username", "Database username"),
+  PWD = "WaveTrack3@" #rstudioapi::askForPassword("Database password")
 )
 
 get_tables <- function() {

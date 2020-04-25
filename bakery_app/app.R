@@ -16,6 +16,7 @@
 
 library(shiny)
 library(DT)
+library(tidyverse)
 
 source('app_utils.R')
 
@@ -55,7 +56,23 @@ ui <- fluidPage(
         
         # Panel 2: Writing to Database
         tabPanel(
-            title = "Writing to Database"
+            title = "Writing to Database",
+             sidebarLayout(
+                sidebarPanel(
+                    textInput("table_name","Enter File Name", value="Unnnamed File"),    
+                    fileInput("file1", "Choose CSV File",
+                         accept = c(
+                                "text/csv",
+                                "text/comma-separated-values,text/plain",
+                                ".csv")
+                            ),
+                            tags$hr(),
+                    checkboxInput("header", "Header", TRUE)
+                ),
+                mainPanel(
+                    tableOutput("contents")
+                )
+            )
         )
     )
 )
@@ -108,7 +125,18 @@ server <- function(input, output) {
         }
         
     })
+    #writing output
+     output$contents <- renderTable({
+    inFile <- input$file1
+
+    if (is.null(inFile)){
+        return(NULL)
+    else {
+    wrotetab=read.csv(inFile$datapath, header = input$header)
+    dbWriteTable(conn, name = input$table_name,  value= wrotetab)
+    return(wrotetab)
+    }
+  })
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
