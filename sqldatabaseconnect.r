@@ -111,5 +111,44 @@ dbExecute(conn, 'alter table items add foreign key (Item) references goods (Id);
 # check key usage in this table
 dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_NAME = 'items';")
 
+# --- Strategy for Large Tables ---
 
+# drop table from database, if it exists
+dbExecute(conn, 'drop table if exists iris;')
 
+dbExecute(conn, paste(
+  "create table iris(",
+    "SepalLength decimal(5,2),",
+    "SepalWidth decimal(5,2),",
+    "PetalLength decimal(5,2),",
+    "PetalWidth decimal(5,2),",
+    "Species varchar(50)",
+  ");",
+  sep = ' '
+))
+
+f <- file("iris.csv", open = "r")
+first = TRUE
+while (length(oneLine <- readLines(f, n = 1)) > 0) {
+  if (first) {
+    first = FALSE
+    next
+  }
+  myLine <- unlist((strsplit(oneLine, ",")))
+  insert_statement <- paste(
+    "insert into iris(",
+      "SepalLength,",
+      "SepalWidth,",
+      "PetalLength,",
+      "PetalWidth,",
+      "Species",
+    ") values (",
+      as.numeric(myLine[1]), ",",
+      as.numeric(myLine[2]), ",",
+      as.numeric(myLine[3]), ",",
+      as.numeric(myLine[4]),",'",
+      str_replace_all(myLine[5], '\"',''), "');"
+  )
+  dbExecute(conn, insert_statement)
+}
+close(f)

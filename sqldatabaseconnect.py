@@ -53,7 +53,7 @@ cursor.execute(" ".join([
         "SepalWidth decimal(5,2),",
         "PetalLength decimal(5,2),",
         "PetalWidth decimal(5,2),",
-        "Species varchar(50)"
+        "Species varchar(50)",
     ");"
 ]))
 
@@ -66,8 +66,8 @@ cursor.execute(
             "SepalWidth,",
             "PetalLength,",
             "PetalWidth,",
-            "Species"
-        ")"
+            "Species",
+        ")",
         "values(?, ?, ?, ?, ?)"]),
     line[0],
     line[1],
