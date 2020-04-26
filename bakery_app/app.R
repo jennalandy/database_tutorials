@@ -4,8 +4,11 @@
 # 1. Fix the lag between changing the selected table and updating selected column where
 #    an error is breifly displayed
 # 2. Check if any columns are datetime in SQL, make sure they're datetime in R
-# 3. Add "Where" options (where <column> <logical> <value>, 3 separate user inputs)
-# 4. Join options
+# 3. Add "Where" options
+#    DONE a. range sliders for numeric values
+#    b. "like" with text input for string values
+#    c. calendar picker for date values
+# 4. Join options??
 # 5. Alternate option to have user input a raw SQL query
 
 # Writing to Database
@@ -41,14 +44,12 @@ ui <- fluidPage(
                         label = h3("Table"),
                         choices = tables
                     ),
-                    verbatimTextOutput("choice_table"),
                     uiOutput("select_columns"),
-                    verbatimTextOutput("choice_column"),
-                    verbatimTextOutput("query"),
-                    verbatimTextOutput("selected")
+                    uiOutput("wheres")
                 ),
         
                 mainPanel(
+                    verbatimTextOutput("query"),
                     DTOutput("out")
                 )
             )
@@ -84,54 +85,35 @@ server <- function(input, output) {
     
     
     output$select_columns <- renderUI({
-        table_information <- dbGetQuery(
-            conn, paste("sp_columns", input$select_table)
-        )
-        columns <- table_information[['COLUMN_NAME']]
+        column_info <- get_columns(input$select_table)
+        print(column_info)
+        
         checkboxGroupInput(
             "select_columns",
             label = h3("Column"),
-            choices = columns,
-            selected = columns[1]
+            choices = column_info$names,
+            selected = column_info$names[1]
         )
     })
     
-    output$choice_column <- renderPrint({ input$select_column })
+    output$choice_column <- renderPrint({ input$select_columns })
     
-    output$query <- renderPrint({paste(
-        "select", paste(input$select_columns, collapse = ', '), 
-        "from", input$select_table, ";"
-    )})
+    output$wheres <- get_wheres(input)
     
     output$selected <- renderPrint({
         input$select_columns
     })
     
-    output$out <- renderDT({
-        if(length(input$select_columns) > 0) {
-            return(
-                dbGetQuery(
-                    conn,
-                    paste(
-                        "select", paste(input$select_columns,collapse = ','), 
-                        "from", input$select_table
-                    )
-                ) %>% data.frame()
-            )
-        } else {
-            return(
-                data.frame()
-            )
-        }
+    output$out <- getDT(input, output)
         
-    })
+        
     #writing output
-     output$contents <- renderTable({
+    output$contents <- renderTable({
     inFile <- input$file1
 
     if (is.null(inFile)){
         return(NULL)
-    else {
+    } else {
     wrotetab=read.csv(inFile$datapath, header = input$header)
     dbWriteTable(conn, name = input$table_name,  value= wrotetab)
     return(wrotetab)
