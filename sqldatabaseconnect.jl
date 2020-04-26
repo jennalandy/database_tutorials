@@ -55,9 +55,12 @@ get the grid datasets from Cal Poly, convert from sas7bdat to IndexedTable
 we'll be using the Indexed table as the datasink as it works well with larger datasets
 but the choice is arbitray in this case and can be a Julia DataFrame, dict or some Tables.jl implementation
 =#
-gridusers = download("https://web.calpoly.edu/~rottesen/Stat441/Sasdata/Sasdata/users.sas7bdat") |> 
-            readsas |> 
-            table
+customers = loadtable("BAKERY/customers.csv")
+reciepts = loadtable("BAKERY/receipts.csv")
+items = loadtable("BAKERY/items.csv")
+goods = loadtable("BAKERY/goods.csv")
+
+
 
 gridprojects = download("https://web.calpoly.edu/~rottesen/Stat441/Sasdata/Sasdata/projects.sas7bdat") |> 
                 readsas |> 
@@ -66,13 +69,10 @@ gridprojects = download("https://web.calpoly.edu/~rottesen/Stat441/Sasdata/Sasda
 
 ODBC.execute!(dsn,
 """
-drop table if exists users; 
-    Q2.Why am I getting null values for lease_id in Rent?
-    Q3.How to Merge XML CTE's in SQL Server Using Common R...
-    Do activity (Answer, Blog) > Earn Rep Points > Improve Rank > Get more opportunities to work and get paid!
-    
-    For more topics, questions and answers, please visit the Tech Q&A page.
-drop table if exists projects;
+drop table if exists goods; 
+drop table if exists items;
+drop table if exists reciepts;
+drop table if exists customers;
 drop table if exists iris;
 drop table if exists iris2;
 """)
@@ -88,37 +88,58 @@ some ODBC drivers/database systems don't support this however, including MS SQL 
 so we must use an alternative method
 =#
 
+
 ## create the tables
 ODBC.execute!(dsn,"""
-create table projects 
-(Class VARCHAR(10), id INT FOREIGN KEY REFERENCES users(id), StartDate INT, EndDate INT)
+create table customers
+(Id int Primary Key, LastName VARCHAR(30), FirstName VARCHAR(30))
 """)
 
 ODBC.execute!(dsn,
-"create table users 
-(Class VARCHAR(10), Fname VARCHAR(16), Lname VARCHAR(16), Email VARCHAR(36), Phone VARCHAR(9), Dept VARCHAR(10), id INT PRIMARY KEY) ")
+"create table goods
+(Id VARCHAR(30) Primary Key, Flavor VARCHAR(30), Food VARCHAR(30), Price FLOAT)")
+
+ODBC.execute!(dsn,"""
+create table reciepts
+(RecieptNumber int PRIMARY KEY, Date VARCHAR(30), CustomerId int, CONSTRAINT CustomerID FOREIGN KEY (CustomerId) references customers(Id) )
+""")
+
+ODBC.execute!(dsn,
+"create table items
+(Reciept INT, Ordinal INT, Item VARCHAR(30),  PRIMARY KEY (Reciept,Ordinal), CONSTRAINT RecieptNumber FOREIGN KEY (Reciept) REFERENCES reciepts (RecieptNumber) 
+, CONSTRAINT ItemId FOREIGN KEY(Item) References goods (Id) )
+")
+
 
 ## make a sql statement with "blank" values that we'll put in actual values into 
-insertstmt=ODBC.prepare(dsn,"insert into projects values(?,?,?,?)")
+insertstmt=ODBC.prepare(dsn,"insert into customers values(?,?,?)")
 
 ## now for each row in the rows of gridprojects, run the previous insert statemet, with the values for each row 
 ## inserted into the previous "blank rows" ie those question marks
 
-for row in rows(gridprojects)
+for row in rows(customers)
     ODBC.execute!(insertstmt,row)
 end
 
-## make a sql statement with "blank" values that we'll put in actual values into 
-insertstmt=ODBC.prepare(dsn,"insert into users values(?,?,?,?,?,?,?)")
+## Now do this for the remaining three tables
+insertstmt=ODBC.prepare(dsn,"insert into goods values(?,?,?,?)")
+for row in rows(goods)
+    ODBC.execute!(insertstmt,row)
+end
 
-## now for each row in the rows of gridusers, run the previous insert statemet, with the values for each row 
-## inserted into the previous "blank rows" ie those question marks
-for row in rows(gridusers)
+insertstmt=ODBC.prepare(dsn,"insert into reciepts values(?,?,?)")
+for row in rows(reciepts)
+    ODBC.execute!(insertstmt,row)
+end
+
+
+insertstmt=ODBC.prepare(dsn,"insert into items values(?,?,?)")
+for row in rows(items)
     ODBC.execute!(insertstmt,row)
 end
 
 # select top 50 rows from sample table, select as a julia DB indexed table. 
-results=ODBC.query(dsn,"select TOP 50 * from projects") |> 
+results=ODBC.Query(dsn,"select TOP 5 * from items") |> 
         table
 
 
@@ -139,8 +160,6 @@ for row in CSV.Rows("iris.csv",skipto=2 )
     ODBC.execute!(insertstmt,row)
 end 
 
-
-
 #================================== In base Julia (less optimized)=========================================================#
 
 ODBC.execute!(dsn,"""
@@ -160,9 +179,6 @@ open("iris.csv") do f
     ODBC.execute!(insertstmt,rawline)
    end 
 end
-
-
-
 #========================================Bulk Insert ======================================================================#
 #=
 If you have bulk insert permissions you can do something like below to write data without reading it into memory
