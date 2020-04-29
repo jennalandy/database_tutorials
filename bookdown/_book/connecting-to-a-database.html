@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-04-23" />
+<meta name="date" content="2020-04-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -142,8 +142,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#python"><i class="fa fa-check"></i><b>4.4</b> Python</a></li>
 <li class="chapter" data-level="4.5" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#jsl"><i class="fa fa-check"></i><b>4.5</b> JSL</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a></li>
-<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a></li>
+<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a><ul>
+<li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#julia-1"><i class="fa fa-check"></i><b>5.1</b> Julia</a></li>
+<li class="chapter" data-level="5.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#r-1"><i class="fa fa-check"></i><b>5.2</b> R</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris"><i class="fa fa-check"></i><b>5.2.1</b> Simple Table: Iris</a></li>
+<li class="chapter" data-level="5.2.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files"><i class="fa fa-check"></i><b>5.2.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
+<li class="chapter" data-level="5.2.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#strategy-for-large-tables"><i class="fa fa-check"></i><b>5.2.3</b> Strategy for Large Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#python-1"><i class="fa fa-check"></i><b>5.3</b> Python</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris-1"><i class="fa fa-check"></i><b>5.3.1</b> Simple Table: Iris</a></li>
+<li class="chapter" data-level="5.3.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files-1"><i class="fa fa-check"></i><b>5.3.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#sas-1"><i class="fa fa-check"></i><b>5.4</b> SAS</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
+<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#julia-2"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
+<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#r-2"><i class="fa fa-check"></i><b>6.2</b> R</a></li>
+<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#python-2"><i class="fa fa-check"></i><b>6.3</b> Python</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.3.1</b> Standard Python</a></li>
+<li class="chapter" data-level="6.3.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.3.2</b> Pandas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#sas-2"><i class="fa fa-check"></i><b>6.4</b> SAS</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -165,10 +185,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h1><span class="header-section-number">4</span> Connecting to a Database</h1>
 <div id="julia" class="section level2">
 <h2><span class="header-section-number">4.1</span> Julia</h2>
-<pre class="text"><code>using DataFrames, DataFramesMeta, ODBC, Lazy
-dsn=ODBC.DSN(&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182;&quot;)
-df=ODBC.query(dsn,&quot;select * from events &quot;)
-ODBC.disconnect!(dsn)</code></pre>
+<pre class="text"><code>using ODBC
+
+# driver/connection string found at
+# https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
+
+#enter user information to be passed into the connection string
+database= begin 
+    print(&quot;Enter Database Name: &quot;)
+    readline()
+end 
+
+user= begin 
+    print(&quot;Enter Username: &quot;)
+    readline() 
+end 
+
+crypt=Base.getpass(&quot;Enter Password&quot;)
+pass=read(crypt,String)
+
+# setting up database  
+dsn = ODBC.DSN(&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;&quot;)
+ODBC.disconnect()</code></pre>
 </div>
 <div id="sas" class="section level2">
 <h2><span class="header-section-number">4.2</span> SAS</h2>
@@ -198,7 +236,7 @@ quit;</code></pre>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(odbc)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">library</span>(DBI)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># note: if files are private, can replace with strings</span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># note: if files are private, can replace with raw strings of database, uid, and pwd</span></a>
 <a class="sourceLine" id="cb5-5" data-line-number="5">database =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database name&quot;</span>,<span class="st">&quot;Database name&quot;</span>)</a>
 <a class="sourceLine" id="cb5-6" data-line-number="6">uid =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database username&quot;</span>, <span class="st">&quot;Database username&quot;</span>)</a>
 <a class="sourceLine" id="cb5-7" data-line-number="7">pwd =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">askForPassword</span>(<span class="st">&quot;Database password&quot;</span>)</a>
@@ -211,7 +249,10 @@ quit;</code></pre>
 <a class="sourceLine" id="cb5-14" data-line-number="14">  <span class="dt">Database =</span> database,</a>
 <a class="sourceLine" id="cb5-15" data-line-number="15">  <span class="dt">UID =</span> uid,</a>
 <a class="sourceLine" id="cb5-16" data-line-number="16">  <span class="dt">PWD =</span> pwd</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">)</a></code></pre></div>
+<a class="sourceLine" id="cb5-17" data-line-number="17">)</a>
+<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co"># close connection when done</span></a>
+<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="kw">dbDisconnect</span>(conn)</a></code></pre></div>
 </div>
 <div id="python" class="section level2">
 <h2><span class="header-section-number">4.4</span> Python</h2>
@@ -235,13 +276,18 @@ quit;</code></pre>
 <a class="sourceLine" id="cb6-17" data-line-number="17">        <span class="st">&quot;UID=&quot;</span><span class="op">+</span>username,</a>
 <a class="sourceLine" id="cb6-18" data-line-number="18">        <span class="st">&quot;PWD=&quot;</span><span class="op">+</span>password</a>
 <a class="sourceLine" id="cb6-19" data-line-number="19">    ])</a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">)</a></code></pre></div>
+<a class="sourceLine" id="cb6-20" data-line-number="20">)</a>
+<a class="sourceLine" id="cb6-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co"># get cursor</span></a>
+<a class="sourceLine" id="cb6-23" data-line-number="23">cursor <span class="op">=</span> conn.cursor()</a>
+<a class="sourceLine" id="cb6-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co"># close connection when done</span></a>
+<a class="sourceLine" id="cb6-26" data-line-number="26">conn.close()</a></code></pre></div>
 </div>
 <div id="jsl" class="section level2">
 <h2><span class="header-section-number">4.5</span> JSL</h2>
-<pre class="text"><code>open database(
-        &quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182&quot;,
-        &quot;select top 20 from events&quot;
+<pre class="text"><code>opendatabaseconnection(
+        &quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182&quot;
 )</code></pre>
 
 </div>

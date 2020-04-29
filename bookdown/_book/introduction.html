@@ -24,7 +24,7 @@
 <meta name="author" content="" />
 
 
-<meta name="date" content="2020-04-23" />
+<meta name="date" content="2020-04-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -142,8 +142,28 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#python"><i class="fa fa-check"></i><b>4.4</b> Python</a></li>
 <li class="chapter" data-level="4.5" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#jsl"><i class="fa fa-check"></i><b>4.5</b> JSL</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a></li>
-<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a></li>
+<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a><ul>
+<li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#julia-1"><i class="fa fa-check"></i><b>5.1</b> Julia</a></li>
+<li class="chapter" data-level="5.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#r-1"><i class="fa fa-check"></i><b>5.2</b> R</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris"><i class="fa fa-check"></i><b>5.2.1</b> Simple Table: Iris</a></li>
+<li class="chapter" data-level="5.2.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files"><i class="fa fa-check"></i><b>5.2.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
+<li class="chapter" data-level="5.2.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#strategy-for-large-tables"><i class="fa fa-check"></i><b>5.2.3</b> Strategy for Large Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#python-1"><i class="fa fa-check"></i><b>5.3</b> Python</a><ul>
+<li class="chapter" data-level="5.3.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris-1"><i class="fa fa-check"></i><b>5.3.1</b> Simple Table: Iris</a></li>
+<li class="chapter" data-level="5.3.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files-1"><i class="fa fa-check"></i><b>5.3.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#sas-1"><i class="fa fa-check"></i><b>5.4</b> SAS</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
+<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#julia-2"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
+<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#r-2"><i class="fa fa-check"></i><b>6.2</b> R</a></li>
+<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#python-2"><i class="fa fa-check"></i><b>6.3</b> Python</a><ul>
+<li class="chapter" data-level="6.3.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.3.1</b> Standard Python</a></li>
+<li class="chapter" data-level="6.3.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.3.2</b> Pandas</a></li>
+</ul></li>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#sas-2"><i class="fa fa-check"></i><b>6.4</b> SAS</a></li>
+</ul></li>
 </ul>
 
       </nav>
@@ -163,6 +183,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">2</span> Introduction</h1>
+<p>With the advent of large and remote data sources comes a need properly understand the methods for interacting with such data. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in thier courses, and possibly leaves students to learn these essential skills outside of the classroom.</p>
+<p>The technical purpose of this book is to demostrate how to <em>connect to</em>, <em>upload data to</em>, and <em>read data from</em> the statistics department online dataset repository.</p>
+<p>All the datasets are stored in a <em>relational database</em>, meaning that they are stored in a standardized, tabular format. The tables are related according to specific columns, or <em>keys</em>. Additionally, they are stored in a remote server that can be accesses from any computer with an internet connection and the proper usernames and passwords.</p>
 
 </div>
             </section>

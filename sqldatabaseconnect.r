@@ -49,7 +49,6 @@ receipts <- read.csv('BAKERY/receipts.csv', stringsAsFactors = FALSE)
 # - goods are referenced by items
 
 # can't drop a table if it is referenced by another table
-
 dbExecute(conn, 'drop table if exists items;')
 dbExecute(conn, 'drop table if exists goods;')
 dbExecute(conn, 'drop table if exists receipts;')

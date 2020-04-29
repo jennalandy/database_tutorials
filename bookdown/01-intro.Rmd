@@ -1,9 +1,6 @@
 # Introduction
-With the advent of large and remote data sources comes a need properly understand the efforts and methods for interacting with such data. The Cal Poly statistics 
-department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in thier courses, and 
-possibly leaves students to learn these essential skills outside of the classroom. t
+With the advent of large and remote data sources comes a need properly understand the methods for interacting with such data. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in thier courses, and possibly leaves students to learn these essential skills outside of the classroom.
 
-The technical purpose of this book is to demostrate how to connect to, upload data to, and read data from the statistics department online dataset repository.
-All the datasets are stored in a *relational database*, meaning that they are stored in a standardized, tabular format with related tables and columns having 
-*keys* that define how these data are related. Additionally, they are stored in a remote server that can be accesses from any computer with an
-internet connection and the proper usernames and passwords.      
+The technical purpose of this book is to demostrate how to *connect to*, *upload data to*, and *read data from* the statistics department online dataset repository. 
+
+All the datasets are stored in a *relational database*, meaning that they are stored in a standardized, tabular format. The tables are related according to specific columns, or *keys*. Additionally, they are stored in a remote server that can be accesses from any computer with an internet connection and the proper usernames and passwords.      

@@ -1,1 +1,43 @@
 # Querying a Database
+
+## Julia
+
+## R
+```{r eval = FALSE}
+# get full dataframe of table
+data <- dbReadTable(conn, name = "iris")
+head(data)
+
+# get query results: returns dataframe
+species <- dbGetQuery(conn, 'select distinct Species from iris')
+species
+```
+
+## Python
+
+### Standard Python
+```python
+# execute a select statement
+cursor.execute("select * from iris")
+iris_out = cursor.fetchall()
+
+# output is a list of pyodbc.Row objects
+print(type(iris_out[1]))
+
+# can access by column names
+print(iris_out[1].SepalLength)
+
+# confirm it's the same as the input
+print(iris_lines[1].split(',')[0])
+```
+
+### Pandas
+```python
+import pandas as pd
+
+# returns a Pandas DataFrame
+iris_df_out = pd.read_sql("select * from iris", conn)
+print(type(iris_df_out))
+```
+
+## SAS

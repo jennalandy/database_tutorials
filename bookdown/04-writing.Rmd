@@ -1,7 +1,7 @@
 # Writing to a Database
 
 ## Julia   
-```{julia}
+```julia
 using ODBC, CSV, JuliaDB, Query
 
 dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
@@ -112,21 +112,11 @@ FROM OPENROWSET (
 =#
 ODBC.disconnect!(dsn)
 ```
-## R
-```{r}
-library(odbc)
-library(DBI)
-library(datasets)
 
-# open connection
-conn <- dbConnect(
-  odbc(),
-  Driver = "ODBC Driver 17 for SQL Server",
-  Server = "24.205.251.117",
-  Database = rstudioapi::showPrompt("Database name","Database name"),
-  UID = rstudioapi::showPrompt("Database username", "Database username"),
-  PWD = rstudioapi::askForPassword("Database password")
-)
+## R
+
+### Simple Table: Iris
+```{r eval = FALSE}
 # drop table from database, if it exists
 dbExecute(conn, 'drop table if exists iris;')
 
@@ -139,38 +129,128 @@ dbListTables(conn, table_name = "iris")
 # list fields the new table
 dbListFields(conn, name = "iris")
 ```
+
+### Related Tables Connected by Keys: Bakery Files
+```{r eval = FALSE}
+# load dataframes
+customers <- read.csv('BAKERY/customers.csv', stringsAsFactors = FALSE)
+goods <- read.csv('BAKERY/goods.csv', stringsAsFactors = FALSE)
+items <- read.csv('BAKERY/items.csv', stringsAsFactors = FALSE)
+receipts <- read.csv('BAKERY/receipts.csv', stringsAsFactors = FALSE)
+
+# clean Item column
+items$Item <- trimws(items$Item)
+
+# can't drop a table if it is referenced by another table
+dbExecute(conn, 'drop table if exists items;')
+dbExecute(conn, 'drop table if exists goods;')
+dbExecute(conn, 'drop table if exists receipts;')
+dbExecute(conn, 'drop table if exists customers;')
+
+## --- customers ---
+# create new table from customers dataset
+dbWriteTable(conn, name = "customers",  value = customers)
+
+# the column we want as a primary key must not be null, then we can add the constraint
+dbExecute(conn, 'alter table customers alter column Id int not null;')
+dbExecute(conn, 'alter table customers add primary key (Id);')
+
+# check key usage in this table
+dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_NAME = 'customers';")
+
+## --- goods ---
+
+# create new table from goods dataset
+dbWriteTable(conn, name = "goods",  value = goods)
+
+# the column we want as a primary key must not be null, then we can add the constraint
+dbExecute(conn, 'alter table goods alter column Id varchar(20) not null;')
+dbExecute(conn, 'alter table goods add primary key (Id);')
+
+# check key usage in this table
+dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_NAME = 'goods';")
+
+## --- receipts ---
+
+# create new table from receipts dataset
+dbWriteTable(conn, name = "receipts",  value = receipts)
+
+# the column we want as a primary key must not be null, then we can add the constraint
+dbExecute(conn, 'alter table receipts alter column ReceiptNumber int not null;')
+dbExecute(conn, 'alter table receipts add primary key (ReceiptNumber);')
+
+dbExecute(conn, 'alter table receipts alter column CustomerID int not null;')
+dbExecute(conn, 'alter table receipts add foreign key (CustomerID) references customers (Id);')
+
+# check key usage in this table
+dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_NAME = 'receipts';")
+
+## --- items ---
+
+# create new table from items dataset
+dbWriteTable(conn, name = "items",  value = items)
+
+# the column we want as a primary key must not be null, then we can add the constraint
+dbExecute(conn, 'alter table items alter column Receipt int not null;')
+dbExecute(conn, 'alter table items alter column Ordinal int not null;')
+dbExecute(conn, 'alter table items add primary key (Receipt, Ordinal);')
+
+dbExecute(conn, 'alter table items add foreign key (Receipt) references receipts (ReceiptNumber);')
+
+dbExecute(conn, 'alter table items alter column Item varchar(20) not null;')
+dbExecute(conn, 'alter table items add foreign key (Item) references goods (Id);')
+
+# check key usage in this table
+dbGetQuery(conn, "select * from information_schema.key_column_usage where TABLE_NAME = 'items';")
+```
+
+### Strategy for Large Tables
+```{r eval = FALSE}
+# drop table from database, if it exists
+dbExecute(conn, 'drop table if exists iris;')
+
+dbExecute(conn, paste(
+  "create table iris(",
+    "SepalLength decimal(5,2),",
+    "SepalWidth decimal(5,2),",
+    "PetalLength decimal(5,2),",
+    "PetalWidth decimal(5,2),",
+    "Species varchar(50)",
+  ");",
+  sep = ' '
+))
+
+f <- file("iris.csv", open = "r")
+first = TRUE
+while (length(oneLine <- readLines(f, n = 1)) > 0) {
+  if (first) {
+    first = FALSE
+    next
+  }
+  myLine <- unlist((strsplit(oneLine, ",")))
+  insert_statement <- paste(
+    "insert into iris(",
+      "SepalLength,",
+      "SepalWidth,",
+      "PetalLength,",
+      "PetalWidth,",
+      "Species",
+    ") values (",
+      as.numeric(myLine[1]), ",",
+      as.numeric(myLine[2]), ",",
+      as.numeric(myLine[3]), ",",
+      as.numeric(myLine[4]),",'",
+      str_replace_all(myLine[5], '\"',''), "');"
+  )
+  dbExecute(conn, insert_statement)
+}
+close(f)
+```
+
 ## Python
 
+### Simple Table: Iris
 ```python
-import pyodbc
-import getpass
-
-# NOTE: may need to adjust based on on your setup
-
-# driver = "{ODBC Driver 17 for SQL Server}"
-
-driver = "/usr/local/lib/libmsodbcsql.17.dylib"
-# default location where file is stored on mac
-
-# get user input -- can be replaced with raw strings if desired
-database = input("Database name: ")
-username = input("Username: ")
-password = getpass.getpass(prompt = "Password: ")
-
-# open connection
-conn = pyodbc.connect(
-    ";".join([
-        "Driver="+driver,
-        "Address=24.205.251.117",
-        "Database="+database,
-        "UID="+username,
-        "PWD="+password
-    ])
-)
-
-# get cursor
-cursor = conn.cursor()
-
 # load in data
 with open('iris.csv') as file:
     iris_lines = file.readlines()[1:]
@@ -224,8 +304,160 @@ cursor.executemany(
     [line.split(',') for line in iris_lines[1:]]
 )
 ```
+
+### Related Tables Connected by Keys: Bakery Files
+```python
+# drop tables if they already exists
+# can't drop a table if it is referenced by another table
+cursor.execute("drop table if exists items;")
+cursor.execute("drop table if exists goods;") # referenced by items
+cursor.execute("drop table if exists receipts;") # referenced by items
+cursor.execute("drop table if exists customers;") # referenced by receipts
+
+# create new tables
+cursor.execute(" ".join([
+    "create table customers(",
+        "Id int,",
+        "LastName varchar(50),",
+        "FirstName varchar(50),",
+        "constraint customers_pk primary key (Id)"
+    ");"
+]))
+
+cursor.execute(" ".join([
+    "create table receipts(",
+        "ReceiptNumber int,",
+        "Date date,",
+        "CustomerId int,",
+        "constraint receipts_pk primary key (ReceiptNumber),",
+        "constraint receipts_customers_fk foreign key (CustomerId) references customers (Id)"
+    ");"
+]))
+
+cursor.execute(" ".join([
+    "create table goods(",
+        "Id varchar(50),",
+        "Flavor varchar(50),",
+        "Food varchar(50),",
+        "Price decimal(5,2),",
+        "constraint goods_pk primary key (Id)"
+    ");"
+]))
+
+cursor.execute(" ".join([
+    "create table items(",
+        "Receipt int,",
+        "Ordinal int,",
+        "Item varchar(50),",
+        "constraint items_pk primary key (Receipt, Ordinal),",
+        "constraint items_goods_fk foreign key (Item) references goods (Id),",
+        "constraint items_receipts_fk foreign key (Receipt) references receipts (ReceiptNumber)"
+    ");"
+]))
+
+# load in data
+with open('BAKERY/customers.csv') as file:
+    header = True
+    # iterating through lines in this way doesn't read everything to memory at once
+    # useful strategy for large files!
+    for line in file:
+        line = line.split(', ')
+        if header:
+            header = False
+        else:
+            cursor.execute(
+                " ".join([
+                    "insert into customers(",
+                        "Id,",
+                        "FirstName,",
+                        "LastName",
+                    ")"
+                    "values(?, ?, ?)"]),
+                line[0],
+                line[1],
+                line[2].strip()
+            )
+
+# load in data
+with open('BAKERY/receipts.csv') as file:
+    header = True
+    for line in file:
+        line = line.split(', ')
+        if header:
+            header = False
+        else:
+            # YYYYMMDD from DD-Mon-YYYY
+            date = line[1].strip().replace("'",'')
+            year = date.split('-')[2]
+            day = date.split('-')[0]
+            if len(day) == 1:
+                day = '0'+day
+            month = str(month_abbr_dict[date.split('-')[1]])
+            date2 = year+month+day
+            cursor.execute(
+                " ".join([
+                    "insert into receipts(",
+                        "ReceiptNumber,",
+                        "Date,",
+                        "CustomerId",
+                    ")"
+                    "values(?, ?, ?)"]),
+                line[0],
+                date2,
+                line[2].strip()
+            )
+
+# load in data
+with open('BAKERY/goods.csv') as file:
+    header = True
+    # iterating through lines in this way doesn't read everything to memory at once
+    # useful strategy for large files!
+    for line in file:
+        line = line.strip().split(',')
+        if header:
+            header = False
+        else:
+            cursor.execute(
+                " ".join([
+                    "insert into goods(",
+                        "Id,",
+                        "Flavor,",
+                        "Food,",
+                        "Price"
+                    ")"
+                    "values(?, ?, ?, ?)"]),
+                line[0],
+                line[1],
+                line[2],
+                float(line[3])
+            )
+
+# load in data
+with open('BAKERY/items.csv') as file:
+    header = True
+    # iterating through lines in this way doesn't read everything to memory at once
+    # useful strategy for large files!
+    for line in file:
+        line = line.split(', ')
+        if header:
+            header = False
+        else:
+            cursor.execute(
+                " ".join([
+                    "insert into items(",
+                        "Receipt,",
+                        "Ordinal,",
+                        "Item",
+                    ")"
+                    "values(?, ?, ?)"]),
+                int(line[0]),
+                int(line[1]),
+                line[2].strip()
+            )
+```
+
 ## SAS 
-```{sas}
+```sas
 /*Window Prompt Courtesy of SAS Documentation */
 /** This code is for the SAS windowing environment only. **/
 

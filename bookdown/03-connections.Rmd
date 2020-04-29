@@ -1,7 +1,7 @@
 # Connecting to a Database
 
 ## Julia
-```{julia, eval=FALSE, highlight=FALSE}
+```{f, eval=FALSE, highlight=FALSE}
 using ODBC
 
 # driver/connection string found at
@@ -27,7 +27,7 @@ ODBC.disconnect()
 ```
 
 ## SAS
-```{sas,eval=FALSE}
+```sas
 /*from proc sql directly*/
 /*this is pretty convoluted*/
 proc sql;
@@ -55,7 +55,7 @@ quit;
 library(odbc)
 library(DBI)
 
-# note: if files are private, can replace with strings
+# note: if files are private, can replace with raw strings of database, uid, and pwd
 database = rstudioapi::showPrompt("Database name","Database name")
 uid = rstudioapi::showPrompt("Database username", "Database username")
 pwd = rstudioapi::askForPassword("Database password")
@@ -69,6 +69,9 @@ conn <- dbConnect(
   UID = uid,
   PWD = pwd
 )
+
+# close connection when done
+dbDisconnect(conn)
 ```
 
 ## Python 
@@ -96,6 +99,12 @@ conn = pyodbc.connect(
         "PWD="+password
     ])
 )
+
+# get cursor
+cursor = conn.cursor()
+
+# close connection when done
+conn.close()
 ```
 
 
