@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>2 Introduction | Using Databases</title>
-  <meta name="description" content="2 Introduction | Using Databases" />
+  <title>6 Querying a Database | Using Databases</title>
+  <meta name="description" content="6 Querying a Database | Using Databases" />
   <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="2 Introduction | Using Databases" />
+  <meta property="og:title" content="6 Querying a Database | Using Databases" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="jennalandy/stat400_database_tutorials" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="2 Introduction | Using Databases" />
+  <meta name="twitter:title" content="6 Querying a Database | Using Databases" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="index.html"/>
-<link rel="next" href="machine-setup.html"/>
+<link rel="prev" href="writing-to-a-database.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -181,20 +181,59 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="introduction" class="section level1">
-<h1><span class="header-section-number">2</span> Introduction</h1>
-<p>With the advent of large and remote data sources comes a need properly understand the methods for interacting with such data. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in thier courses, and possibly leaves students to learn these essential skills outside of the classroom.</p>
-<p>The technical purpose of this book is to demostrate how to <em>connect to</em>, <em>upload data to</em>, and <em>read data from</em> the statistics department online dataset repository.</p>
-<p>All the datasets are stored in a <em>relational database</em>, meaning that they are stored in a standardized, tabular format. The tables are related according to specific columns, or <em>keys</em>. Additionally, they are stored in a remote server that can be accesses from any computer with an internet connection and the proper usernames and passwords.</p>
+<div id="querying-a-database" class="section level1">
+<h1><span class="header-section-number">6</span> Querying a Database</h1>
+<div id="julia-2" class="section level2">
+<h2><span class="header-section-number">6.1</span> Julia</h2>
+</div>
+<div id="r-2" class="section level2">
+<h2><span class="header-section-number">6.2</span> R</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># get full dataframe of table</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">data &lt;-<span class="st"> </span><span class="kw">dbReadTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="kw">head</span>(data)</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co"># get query results: returns dataframe</span></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6">species &lt;-<span class="st"> </span><span class="kw">dbGetQuery</span>(conn, <span class="st">&#39;select distinct Species from iris&#39;</span>)</a>
+<a class="sourceLine" id="cb15-7" data-line-number="7">species</a></code></pre></div>
+</div>
+<div id="python-2" class="section level2">
+<h2><span class="header-section-number">6.3</span> Python</h2>
+<div id="standard-python" class="section level3">
+<h3><span class="header-section-number">6.3.1</span> Standard Python</h3>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="co"># execute a select statement</span></a>
+<a class="sourceLine" id="cb16-2" data-line-number="2">cursor.execute(<span class="st">&quot;select * from iris&quot;</span>)</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3">iris_out <span class="op">=</span> cursor.fetchall()</a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co"># output is a list of pyodbc.Row objects</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"><span class="bu">print</span>(<span class="bu">type</span>(iris_out[<span class="dv">1</span>]))</a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="co"># can access by column names</span></a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"><span class="bu">print</span>(iris_out[<span class="dv">1</span>].SepalLength)</a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="co"># confirm it&#39;s the same as the input</span></a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"><span class="bu">print</span>(iris_lines[<span class="dv">1</span>].split(<span class="st">&#39;,&#39;</span>)[<span class="dv">0</span>])</a></code></pre></div>
+</div>
+<div id="pandas" class="section level3">
+<h3><span class="header-section-number">6.3.2</span> Pandas</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="im">import</span> pandas <span class="im">as</span> pd</a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="co"># returns a Pandas DataFrame</span></a>
+<a class="sourceLine" id="cb17-4" data-line-number="4">iris_df_out <span class="op">=</span> pd.read_sql(<span class="st">&quot;select * from iris&quot;</span>, conn)</a>
+<a class="sourceLine" id="cb17-5" data-line-number="5"><span class="bu">print</span>(<span class="bu">type</span>(iris_df_out))</a></code></pre></div>
+</div>
+</div>
+<div id="sas-2" class="section level2">
+<h2><span class="header-section-number">6.4</span> SAS</h2>
 
+</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="machine-setup.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="writing-to-a-database.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -236,7 +275,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf"],
+"download": null,
 "toc": {
 "collapse": "subsection"
 }

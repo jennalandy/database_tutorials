@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Connecting to a Database | Using Databases</title>
-  <meta name="description" content="4 Connecting to a Database | Using Databases" />
+  <title>Using Databases</title>
+  <meta name="description" content="Using Databases" />
   <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Connecting to a Database | Using Databases" />
+  <meta property="og:title" content="Using Databases" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="jennalandy/stat400_database_tutorials" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Connecting to a Database | Using Databases" />
+  <meta name="twitter:title" content="Using Databases" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="machine-setup.html"/>
-<link rel="next" href="writing-to-a-database.html"/>
+
+<link rel="next" href="introduction.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -181,124 +181,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="connecting-to-a-database" class="section level1">
-<h1><span class="header-section-number">4</span> Connecting to a Database</h1>
-<div id="julia" class="section level2">
-<h2><span class="header-section-number">4.1</span> Julia</h2>
-<pre class="text"><code>using ODBC
-
-# driver/connection string found at
-# https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
-
-#enter user information to be passed into the connection string
-database= begin 
-    print(&quot;Enter Database Name: &quot;)
-    readline()
-end 
-
-user= begin 
-    print(&quot;Enter Username: &quot;)
-    readline() 
-end 
-
-crypt=Base.getpass(&quot;Enter Password&quot;)
-pass=read(crypt,String)
-
-# setting up database  
-dsn = ODBC.DSN(&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;&quot;)
-ODBC.disconnect()</code></pre>
+<div id="header">
+<h1 class="title">Using Databases</h1>
+<p class="date"><em>2020-04-28</em></p>
 </div>
-<div id="sas" class="section level2">
-<h2><span class="header-section-number">4.2</span> SAS</h2>
-<pre class="sas"><code>/*from proc sql directly*/
-/*this is pretty convoluted*/
-proc sql;
-connect to odbc as conn
-required=&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182&quot;;
+<div id="preface" class="section level1">
+<h1><span class="header-section-number">1</span> Preface</h1>
 
-create table event as
-select * from connection to conn
-(select * from events) ;
-
-disconnect from conn;
-quit;
-
-/*by using a libname*/
-libname conn2 odbc
-required =&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182&quot;;
-proc sql;
-create table event as
-select * from conn2.events ;
-quit;</code></pre>
-</div>
-<div id="r" class="section level2">
-<h2><span class="header-section-number">4.3</span> R</h2>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw">library</span>(odbc)</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw">library</span>(DBI)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co"># note: if files are private, can replace with raw strings of database, uid, and pwd</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">database =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database name&quot;</span>,<span class="st">&quot;Database name&quot;</span>)</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">uid =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database username&quot;</span>, <span class="st">&quot;Database username&quot;</span>)</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">pwd =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">askForPassword</span>(<span class="st">&quot;Database password&quot;</span>)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># open connection</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">conn &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">  <span class="kw">odbc</span>(),</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12">  <span class="dt">Driver =</span> <span class="st">&quot;ODBC Driver 17 for SQL Server&quot;</span>,</a>
-<a class="sourceLine" id="cb5-13" data-line-number="13">  <span class="dt">Server =</span> <span class="st">&quot;24.205.251.117&quot;</span>,</a>
-<a class="sourceLine" id="cb5-14" data-line-number="14">  <span class="dt">Database =</span> database,</a>
-<a class="sourceLine" id="cb5-15" data-line-number="15">  <span class="dt">UID =</span> uid,</a>
-<a class="sourceLine" id="cb5-16" data-line-number="16">  <span class="dt">PWD =</span> pwd</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17">)</a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="co"># close connection when done</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="kw">dbDisconnect</span>(conn)</a></code></pre></div>
-</div>
-<div id="python" class="section level2">
-<h2><span class="header-section-number">4.4</span> Python</h2>
-<p>The driver used for Python may depend on your setup.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="im">import</span> pyodbc</a>
-<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">driver <span class="op">=</span> <span class="st">&quot;{ODBC Driver 17 for SQL Server}&quot;</span> <span class="co"># PC Users</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot; # Mac Users</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co"># note: if files are private, can replace with strings</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7">database <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Database name: &quot;</span>)</a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">username <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Username: &quot;</span>)</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9">password <span class="op">=</span> getpass.getpass(prompt <span class="op">=</span> <span class="st">&quot;Password: &quot;</span>)</a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="co"># open connection</span></a>
-<a class="sourceLine" id="cb6-12" data-line-number="12">conn <span class="op">=</span> pyodbc.<span class="ex">connect</span>(</a>
-<a class="sourceLine" id="cb6-13" data-line-number="13">    <span class="st">&quot;;&quot;</span>.join([</a>
-<a class="sourceLine" id="cb6-14" data-line-number="14">        <span class="st">&quot;Driver=&quot;</span><span class="op">+</span>driver,</a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">        <span class="st">&quot;Address=24.205.251.117&quot;</span>,</a>
-<a class="sourceLine" id="cb6-16" data-line-number="16">        <span class="st">&quot;Database=&quot;</span><span class="op">+</span>database,</a>
-<a class="sourceLine" id="cb6-17" data-line-number="17">        <span class="st">&quot;UID=&quot;</span><span class="op">+</span>username,</a>
-<a class="sourceLine" id="cb6-18" data-line-number="18">        <span class="st">&quot;PWD=&quot;</span><span class="op">+</span>password</a>
-<a class="sourceLine" id="cb6-19" data-line-number="19">    ])</a>
-<a class="sourceLine" id="cb6-20" data-line-number="20">)</a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co"># get cursor</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23">cursor <span class="op">=</span> conn.cursor()</a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co"># close connection when done</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">conn.close()</a></code></pre></div>
-</div>
-<div id="jsl" class="section level2">
-<h2><span class="header-section-number">4.5</span> JSL</h2>
-<pre class="text"><code>opendatabaseconnection(
-        &quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=ntsb;UID=ntsb;PWD=Cessna182&quot;
-)</code></pre>
-
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="machine-setup.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="writing-to-a-database.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+
+<a href="introduction.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -340,7 +237,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["_main.pdf"],
+"download": null,
 "toc": {
 "collapse": "subsection"
 }
