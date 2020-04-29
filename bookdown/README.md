@@ -4,5 +4,5 @@
 - Subsections defined by lower markdown headers.
 
 # Knitting Book
-- In the `bookdown` directory, run `render_book("index.Rmd")`.
-- Knitted book saved as `bookdown/_book/index.html`.
+- In the `bookdown` directory, run `render_book("index.Rmd", output_dir = "../docs")`.
+- Knitted book saved as `/docs/index.html`.

@@ -89,7 +89,7 @@ get_wheres <- function(input) {
           value = c(low, high)
         )
       } else {
-        print(col_type)
+        
       }
     }
     
