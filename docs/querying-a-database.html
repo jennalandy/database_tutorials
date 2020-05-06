@@ -187,22 +187,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="querying-a-database" class="section level1">
 <h1><span class="header-section-number">6</span> Querying a Database</h1>
 <p>Once you are connected to a database, you can query the tables that are there or the ones you have written. To review writing tables, see the previous chapter on <a href="04-writing.Rmd">writing to a database</a>.</p>
-<p>In the code blocks below, we assume you’ve already connected to your database and have named it as shown in the third chapter on <a href="03-connections.Rmd">connecting to a database</a>.</p>
-<p>In this chapter, we discuss the <em>logistics</em> of passing a query onto the database and reading the output using each language, rather than the basics of how to use sql. If you’re new to sql, please review the query syntax for MS SQL Server. Here are some references we recommend:
-- <a href="https://www.w3schools.com/sql/sql_ref_keywords.asp">SQL Keywords Reference by w3schools</a>: if there are multiple options (i.e. <strong>MySQL</strong> or <strong>SQL Server / Oracle / MS Access</strong>) make sure you follow instructions for <strong>SQL Server</strong>
-- <a href="https://www.w3schools.com/sql/">SQL Tutorial by w3schools</a>
-- <a href="https://www.sqlservertutorial.net/sql-server-basics/">SQL Server Basics by sqlservertutorial</a></p>
+<p>In the code blocks below, we assume you’ve already connected to your database and have named the connection as shown in the third chapter on <a href="03-connections.Rmd">connecting to a database</a>.</p>
+<p>In this chapter, we discuss the <em>logistics</em> of passing a query onto the database and reading the output using each language, rather than the basics of how to use sql. If you’re new to sql, please review the query syntax for MS SQL Server. Here are some references we recommend:</p>
+<ul>
+<li><a href="https://www.w3schools.com/sql/sql_ref_keywords.asp">SQL Keywords Reference by w3schools</a>: where there are multiple options (i.e. MySQL or SQL Server / Oracle / MS Access) make sure you follow instructions for SQL Server</li>
+<li><a href="https://www.w3schools.com/sql/">SQL Tutorial by w3schools</a></li>
+<li><a href="https://www.sqlservertutorial.net/sql-server-basics/">SQL Server Basics by sqlservertutorial</a></li>
+</ul>
 <div id="julia-2" class="section level2">
 <h2><span class="header-section-number">6.1</span> Julia</h2>
 <p>TODO: add Julia query info</p>
 </div>
 <div id="r-2" class="section level2">
 <h2><span class="header-section-number">6.2</span> R</h2>
-<p>In R, you can choose to read a full table into a <code>data.frame</code> or query a subsection with a sql query.</p>
-<p><strong>read full table</strong></p>
+<p>In R, you can choose to read a full table or query a subset with a sql query. Both options will return a <code>data.frame</code>.</p>
+<p><strong>Read full table</strong></p>
 <div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb30-1" data-line-number="1">data &lt;-<span class="st"> </span><span class="kw">dbReadTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>)</a>
 <a class="sourceLine" id="cb30-2" data-line-number="2"><span class="kw">head</span>(data)</a></code></pre></div>
-<p><strong>query a table</strong></p>
+<p><strong>Query a table</strong></p>
 <div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb31-1" data-line-number="1">species &lt;-<span class="st"> </span><span class="kw">dbGetQuery</span>(</a>
 <a class="sourceLine" id="cb31-2" data-line-number="2">  conn, </a>
 <a class="sourceLine" id="cb31-3" data-line-number="3">  <span class="st">&#39;select distinct Species from iris&#39;</span></a>

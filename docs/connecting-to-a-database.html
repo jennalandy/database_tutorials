@@ -272,7 +272,11 @@ quit;</code></pre>
 </div>
 <div id="python" class="section level2">
 <h2><span class="header-section-number">4.4</span> Python</h2>
-<p>The driver used in Python may depend on your setup. If you’re working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name: <code>driver = &quot;{ODBC Driver 17 for SQL Server}&quot;</code>. If you’re working on a Mac or Linux device, you cannot do this without further setup. It’s easiest to pass in the path to the <code>dylib</code> file, which should be installed to <code>/usr/local/lib</code> by default. With this setup, you will need to reference the driver like this: <code>driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot;</code>. If copying and pasting the code below, switch which <code>driver =</code> line is commented depending on your operating system.</p>
+<p>The driver used in Python may depend on your setup. If you’re working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name:</p>
+<p><code>driver = &quot;{ODBC Driver 17 for SQL Server}&quot;</code></p>
+<p>If you’re working on a Mac or Linux device, you cannot do this without further setup. It’s easiest to pass in the path to the <code>dylib</code> file, which should be installed to <code>/usr/local/lib</code> by default. With this setup, you will need to reference the driver like this:</p>
+<p><code>driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot;</code></p>
+<p>If copying and pasting the code below, switch which <code>driver =</code> line is commented depending on your operating system.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="im">import</span> pyodbc</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb7-3" data-line-number="3">driver <span class="op">=</span> <span class="st">&quot;{ODBC Driver 17 for SQL Server}&quot;</span> <span class="co"># PC Users</span></a>

@@ -2,7 +2,7 @@
 
 Once you are connected to a database, you can write tables to it (assuming you have write access). If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database](05-querying.Rmd).
 
-In the code blocks below, we assume you've already connected to your database and have named it as shown in the previous chapter on [connecting to a database](03-connections.Rmd).
+In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database](03-connections.Rmd).
 
 ## Julia  
 
@@ -12,12 +12,12 @@ Depending on your ODBC driver, you could write a table with a simple line of cod
 
 MS SQL Server along with other ODBC drivers/database systems don't support this, so we must use an alternative method.
 
-**imports**
+**Imports**
 ```julia
 using ODBC, CSV, JuliaDB, Query
 ```
 
-**create tables**
+**Create tables**
 ```julia
 ODBC.execute!(
   dsn,
@@ -37,7 +37,7 @@ ODBC.execute!(
 )
 ```
 
-**insert values into tables**
+**Insert values into tables**
 First prepare an insert statement with blank values using `?`s. Then, iterate through the rows of your data table. The line `ODBC.execute!(insert_statement, row)` will put the values from this row of data into the blank values of the insert statement, and then execute this complete SQL statement.
 
 ```julia
@@ -137,7 +137,7 @@ dbListFields(conn, name = "iris")
 ### Related Tables Connected by Keys: Bakery Files
 This example uses related tables. The table sused here represent data that may be stored by a bakery. There is a list of customers who have customer Ids, a list of goods sold with good Ids, a list of receipts with a receipt Id as well as the Id of the customer who purchased the goods, and finally a list of items on eaach receipt.
 
-**load the data**
+**Load the data**
 ```{r eval = FALSE}
 # load dataframes
 customers <- read.csv('BAKERY/customers.csv', stringsAsFactors = FALSE)
@@ -149,7 +149,7 @@ receipts <- read.csv('BAKERY/receipts.csv', stringsAsFactors = FALSE)
 items$Item <- trimws(items$Item)
 ```
 
-**drop tables if they already exist**
+**Drop tables if they already exist**
 When tables are related, you can't drop a table that's referenced by another one. For example, the `receipts` table contains the customer Id of who made the purchase, referencing the `customers` table. This means that `receipts` must be dropped first. The relationships between tables will become more clear as we move into constructing tables.
 ```{r eval=FALSE}
 dbExecute(conn, 'drop table if exists items;')
@@ -158,7 +158,7 @@ dbExecute(conn, 'drop table if exists receipts;')
 dbExecute(conn, 'drop table if exists customers;')
 ```
 
-**create new tables**
+**Create new tables**
 We can now create new tables using the `dbWriteTable` function. When we create tables, each one should have a *primary key*, and some will also have a *foreign key*. 
 
 The primary key is a column or multiple columns that serve as a unique identifier of each row of data. In the `customers` table, for instance, the primary key is the customer Id. This value cannot be empty. You'll see that as we create each table, we first have to specify that the column is `not null`, and then add it as the `primary key`.
@@ -199,7 +199,7 @@ dbExecute(conn, 'alter table items alter column Item varchar(20) not null;')
 dbExecute(conn, 'alter table items add foreign key (Item) references goods (Id);')
 ```
 
-**check key usage**
+**Check key usage**
 The following query will display information on the key usage within a table. We can use this to check that the keys were applied the way we were expecting. For the `items` table, receipt and ordianl together should serve as the primary key, receipt should be a foreign key referencing the `receipts` table, and item should be a foreign key referencing the `goods` table.
 ```{r eval=FALSE}
 # check key usage in this table
@@ -278,14 +278,14 @@ Note that if you are using pandas, you can write data in the same way as shown h
 ### Simple Table: Iris
 The first example is a basic one to illustrate how to create and fill a table.
 
-**load data**
+**Load data**
 ```python
 # load in data
 with open('iris.csv') as file:
     iris_lines = file.readlines()[1:]
 ```
 
-**drop table if it exists, and create a new table**
+**Drop table if it exists, and create a new table**
 ```python
 # drop table if it already exists
 cursor.execute("drop table if exists iris;")
@@ -302,7 +302,7 @@ cursor.execute(" ".join([
 ]))
 ```
 
-**insert values**
+**Insert values**
 To insert values into a sql table, we have two options. 
 
 This first strategy is beneficial because it doesn't require you to load the full file into memory. This means that even if a dataset is very large, python can handle it. Here we only show using it to enter the first line of data, but this could be put inside of a for loop to iterate over all rows.
@@ -347,7 +347,7 @@ cursor.executemany(
 ### Related Tables Connected by Keys: Bakery Files
 This example uses related tables. The tables used here represent data that may be stored by a bakery. There is a list of customers who have customer Ids, a list of goods sold with good Ids, a list of receipts with a receipt Id as well as the Id of the customer who purchased the goods, and finally a list of items on eaach receipt.
 
-**drop tables if they already exist**
+**Drop tables if they already exist**
 When tables are related, you can't drop a table that's referenced by another one. For example, the `receipts` table contains the customer Id of who made the purchase, referencing the `customers` table. This means that `receipts` must be dropped first. The relationships between tables will become more clear as we move into constructing tables.
 ```python
 cursor.execute("drop table if exists items;")
@@ -355,7 +355,7 @@ cursor.execute("drop table if exists goods;") # referenced by items
 cursor.execute("drop table if exists receipts;") # referenced by items
 cursor.execute("drop table if exists customers;") # referenced by receipts
 ```
-**create new tables**
+**Create new tables**
 We can now create new tables using `create table` statements and `cursor.execute`. When we create tables, each one should have a *primary key*, and some will also have a *foreign key*. 
 
 The primary key is a column or multiple columns that serve as a unique identifier of each row of data. In the `customers` table, for instance, the primary key is the customer Id. This value cannot be empty. This constraint is added automatically when we set the column(s) as the primary key.
@@ -404,7 +404,7 @@ cursor.execute(" ".join([
 ]))
 ```
 
-**load in data**
+**Load in data**
 For each table, open file and insert values one line at a time. See the simple table example above for more details.
 ```python
 with open('BAKERY/customers.csv') as file:

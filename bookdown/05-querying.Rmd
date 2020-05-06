@@ -2,10 +2,11 @@
 
 Once you are connected to a database, you can query the tables that are there or the ones you have written. To review writing tables, see the previous chapter on [writing to a database](04-writing.Rmd).
 
-In the code blocks below, we assume you've already connected to your database and have named it as shown in the third chapter on [connecting to a database](03-connections.Rmd).
+In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the third chapter on [connecting to a database](03-connections.Rmd).
 
 In this chapter, we discuss the *logistics* of passing a query onto the database and reading the output using each language, rather than the basics of how to use sql. If you're new to sql, please review the query syntax for MS SQL Server. Here are some references we recommend:
-- [SQL Keywords Reference by w3schools](https://www.w3schools.com/sql/sql_ref_keywords.asp): if there are multiple options (i.e. **MySQL** or **SQL Server / Oracle / MS Access**) make sure you follow instructions for **SQL Server**
+
+- [SQL Keywords Reference by w3schools](https://www.w3schools.com/sql/sql_ref_keywords.asp): where there are multiple options (i.e. MySQL or SQL Server / Oracle / MS Access) make sure you follow instructions for SQL Server
 - [SQL Tutorial by w3schools](https://www.w3schools.com/sql/)
 - [SQL Server Basics by sqlservertutorial](https://www.sqlservertutorial.net/sql-server-basics/)
 
@@ -13,15 +14,15 @@ In this chapter, we discuss the *logistics* of passing a query onto the database
 TODO: add Julia query info
 
 ## R
-In R, you can choose to read a full table into a `data.frame` or query a subsection with a sql query.
+In R, you can choose to read a full table or query a subset with a sql query. Both options will return a `data.frame`.
 
-**read full table**
+**Read full table**
 ```{r eval = FALSE}
 data <- dbReadTable(conn, name = "iris")
 head(data)
 ```
 
-**query a table**
+**Query a table**
 ```{r eval = FALSE}
 species <- dbGetQuery(
   conn, 

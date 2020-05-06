@@ -99,7 +99,15 @@ dbDisconnect(conn)
 
 ## Python 
 
-The driver used in Python may depend on your setup. If you're working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name: `driver = "{ODBC Driver 17 for SQL Server}"`. If you're working on a Mac or Linux device, you cannot do this without further setup. It's easiest to pass in the path to the `dylib` file, which should be installed to `/usr/local/lib` by default. With this setup, you will need to reference the driver like this: `driver = "/usr/local/lib/libmsodbcsql.17.dylib"`. If copying and pasting the code below, switch which `driver =` line is commented depending on your operating system.
+The driver used in Python may depend on your setup. If you're working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name: 
+
+`driver = "{ODBC Driver 17 for SQL Server}"` 
+
+If you're working on a Mac or Linux device, you cannot do this without further setup. It's easiest to pass in the path to the `dylib` file, which should be installed to `/usr/local/lib` by default. With this setup, you will need to reference the driver like this: 
+
+`driver = "/usr/local/lib/libmsodbcsql.17.dylib"`
+
+If copying and pasting the code below, switch which `driver =` line is commented depending on your operating system.
 
 ```python
 import pyodbc
