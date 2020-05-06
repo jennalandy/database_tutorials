@@ -1,15 +1,14 @@
 ## TODO Ideas
 
 # Reading from Database
-# 1. Fix the lag between changing the selected table and updating selected column where
+# X 1. Fix the lag between changing the selected table and updating selected column where
 #    an error is breifly displayed
 # 2. Check if any columns are datetime in SQL, make sure they're datetime in R
 # 3. Add "Where" options
-#    DONE a. range sliders for numeric values
+#    X a. range sliders for numeric values
 #    b. "like" with text input for string values
 #    c. calendar picker for date values
 # 4. Join options??
-# 5. Alternate option to have user input a raw SQL query
 
 # Writing to Database
 # 1. Menu selections: user chooses amount
@@ -45,7 +44,11 @@ ui <- fluidPage(
                         choices = tables
                     ),
                     uiOutput("select_columns"),
-                    uiOutput("wheres")
+                    uiOutput("wheres"),
+                    actionButton(
+                      "go",
+                      label = "Show Table"
+                    )
                 ),
         
                 mainPanel(
@@ -104,7 +107,12 @@ server <- function(input, output) {
         input$select_columns
     })
     
-    output$out <- getDT(input, output)
+    observeEvent(
+      input$go,
+      {
+        output$out <- getDT(input, output)
+      }
+    )
         
         
     #writing output

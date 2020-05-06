@@ -1,0 +1,12 @@
+name: bakery_app
+title: bakery_app
+username: GO_Databases
+account: GO_Databases
+server: rstudio.csm.calpoly.edu
+hostUrl: https://rstudio.csm.calpoly.edu/__api__
+appId: 119
+bundleId: 247
+url: https://rstudio.csm.calpoly.edu/content/119/
+when: 1588282164.70264
+asMultiple: FALSE
+asStatic: FALSE
