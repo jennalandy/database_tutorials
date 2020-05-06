@@ -1,13 +1,8 @@
 # Machine Setup
 
-The manual takes uses the OCDB driver/ connection string method to connnect to the Stats repository.These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
+The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
 
-Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to. For this example the driver and connection string can be found at the link below.
-
-Microsoft SQL Server Drivers can be found at:
-https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
-
-After downloading, the drivers can be installed by running the following commands in a terminal.
+Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to.
 
 ## Linux - Ubuntu
 ```bash
@@ -47,8 +42,10 @@ HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=Y brew install msodbcsql17 mssql-tools
 ```
 
 ## Windows
-download and open msodbcsql.msi file from:
-https://docs.microsoft.com/en-us/sql/connect/odbc/download-odbc-driver-for-sql-server?view=sql-server-ver15#download-for-windows
+For Windows the driver and connection string can be found at:
+https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15#download-for-windows
+
+download and open the msodbcsql.msi file.
 
 ## Other Connection Options
 
