@@ -100,19 +100,27 @@ get_wheres <- function(input) {
 }
 
 getDT <- function(input, output) {
+  column_info <- get_columns(input$select_table) %>% data.frame()
+  selected_cols <- input$select_columns
+  selected_table <- input$select_table
+  
+  col_wheres <- list()
+  for(col_name in selected_cols) {
+    col_wheres[[col_name]] <- input[[paste('where_', col_name, sep = '')]]
+  }
+  
   renderDT({
-    column_info <- get_columns(input$select_table) %>% data.frame()
     
     # build "where" clause
     where <- ""
     for (i in 1:nrow(column_info)) {
       col_name = column_info$names[i] %>% as.character()
-      if (!(col_name %in% input$select_columns)) {
+      col_where = col_wheres[[col_name]]
+      if (!(col_name %in% selected_cols)) {
         next
       }
       
       col_type = column_info$types[i]
-      col_where <- input[[paste('where_', col_name, sep = '')]]
       
       if (!is.null(col_where)) {
         
@@ -136,10 +144,10 @@ getDT <- function(input, output) {
       }
     }
     
-    if(length(input$select_columns) > 0) {
+    if(length(selected_cols) > 0) {
       query <- paste(
-        "select", paste(input$select_columns,collapse = ', '), 
-        "from", input$select_table,
+        "select", paste(selected_cols,collapse = ', '), 
+        "from", selected_table,
         ifelse(where != "", paste("where", where), "")
       )
       output$query = renderText({query})

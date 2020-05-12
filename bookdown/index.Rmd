@@ -1,6 +1,6 @@
 --- 
 title: "Using Databases"
-author: ""
+author: "Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen"
 date: "`r Sys.Date()`"
 output: bookdown::gitbook
 output_dir: "/docs"

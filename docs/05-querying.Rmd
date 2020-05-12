@@ -11,44 +11,7 @@ In this chapter, we discuss the *logistics* of passing a query onto the database
 - [SQL Server Basics by sqlservertutorial](https://www.sqlservertutorial.net/sql-server-basics/)
 
 ## Julia
-<<<<<<< HEAD
-```{julia}
-#================================================= Reading Data ==============================================================#
-
-# setting up database  
-dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
-
-#Query and filter using database sql commands, when using lower case "query" returns a dataframe, as opposed to uppercase "Query"
-
-res=ODBC.query(dsn,"""
-
-select cyl, drat 
-from mtcars 
-where disp > 200
-      
-""") 
-
-#Query database to select all rows in mtcars, then filter/select rows in julia
-
-##LINQ style
-
-res=@from i in ODBC.Query(dsn,"select * from mtcars") begin 
-    @where i.disp > 200
-    @select {Cylinder=i.cyl, Drat=i.drat}
-    @collect table 
-end 
-
-## dyplr/tidyverse style 
-
-res = ODBC.query(dsn,"select * from mtcars") |> 
-@filter( _.disp > 200) |>
-@select( :cyl, :drat) |>
-DataFrame
-```
-
-=======
 TODO: add Julia query info
->>>>>>> cc0fea7cee2933f42d08ecc83f1842359706d26f
 
 ## R
 In R, you can choose to read a full table or query a subset with a sql query. Both options will return a `data.frame`.
@@ -92,33 +55,4 @@ iris_df_out = pd.read_sql("select * from iris", conn)
 ```
 
 ## SAS
-<<<<<<< HEAD
-```{SAS}
-/*by using a libname, much more straightforward*/
-libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
-
-/*from proc sql directly*/
-/*this is pretty convoluted*/
-proc sql;
-connect to odbc as conn
-required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
-
-create table event as
-select * from connection to conn
-(select * from events) ;
-
-disconnect from conn;
-quit;
-
-/*read data into work directory*/
-proc sql;
-create table event as
-select * from conn2.events ;
-quit;
-libname conn2 clear;
-
-```
-=======
 TODO: add SAS query info
->>>>>>> cc0fea7cee2933f42d08ecc83f1842359706d26f
