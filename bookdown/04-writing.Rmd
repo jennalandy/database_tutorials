@@ -6,8 +6,6 @@ In the code blocks below, we assume you've already connected to your database an
 
 ## Julia  
 
-TODO: add drop table if exists.
-
 Depending on your ODBC driver, you could write a table with a simple line of code: `ODBC.load(database, "name of sql table", julia_table)`
 
 MS SQL Server along with other ODBC drivers/database systems don't support this, so we must use an alternative method.
@@ -15,6 +13,20 @@ MS SQL Server along with other ODBC drivers/database systems don't support this,
 **Imports**
 ```julia
 using ODBC, CSV, JuliaDB, Query
+```
+**Clear Up Workplace**
+```{julia}
+ODBC.execute!(
+    dsn,
+    """
+    drop table if exists goods; 
+    drop table if exists items;
+    drop table if exists reciepts;
+    drop table if exists customers;
+    drop table if exists iris;
+    drop table if exists iris2;
+    """,
+)
 ```
 
 **Create tables**
@@ -500,8 +512,8 @@ with open('BAKERY/items.csv') as file:
 ```
 
 ## SAS 
-TODO: update this so it assumes conn has already been defined using a libname
-TODO: split into code chunks and add notes in between instead of relying on comments
+**Security using SAS**
+Here we are going to assign a new libname in order to show off some of the password protective features of SAA
 ```sas
 /*Window Prompt Courtesy of SAS Documentation */
 /** This code is for the SAS windowing environment only. **/
@@ -515,42 +527,31 @@ TODO: split into code chunks and add notes in between instead of relying on comm
 
 /** %DISPLAY invokes the prompt **/
 %display info;
-
-
-/*by using a libname, much more straightforward*/
+```
+**Connection using Saved inputs**
+Make a connection using inputted user information. If you have bulkload permissions, you might want to enable that option in order to speed up file upload. 
+```{sas}
 libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
-
-/*from proc sql directly*/
-/*this is pretty convoluted*/
-proc sql;
-connect to odbc as conn
-required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
-
-create table event as
-select * from connection to conn
-(select * from events) ;
-
-disconnect from conn;
-quit;
-
-/*writing data from work directory to database*/
+required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass"
+/*bulkload = YES*/
+;
+```
+**URL Libname and Data Input**
+Here we show off the url libname to download the iris csv file from the internet, and preprocess it using a data step.
+```{SAS}
 filename download url "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv";
 
 data iris;
 infile download delimiter = "," firstobs=2;
 input var1-var4 species $;
 run;
+```
+**Writing Data**
+Finally, we write this data to the database. Since sas processess data observation by observation, we don't need to worry about memory constraints.
 
-
-/*using the libname option again, turn on the bulkload for improved performance when loading large datasets */
-/*since sas doesn't load everything into memory we can directly put sas datasets into the database! */
-libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass"
-bulkload = YES;
-
+```SAS
 proc sql;
-create table conn3.iris as 
+create table conn2.iris as 
 (select * from work.iris);
 quit;
 ```
