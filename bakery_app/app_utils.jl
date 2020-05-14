@@ -12,9 +12,9 @@ function addrow(con, tablename, values)
     insertstring = "insert into $tablename values( $val2 )"
     try 
         ODBC.execute!(con,insertstring)
-        return "upload worked"
+        return "UPLOAD SUCCESSFUL :)"
     catch 
-        return "upload didnt work"
+        return "UPLOAD FAILED :("
     end 
 end 
 

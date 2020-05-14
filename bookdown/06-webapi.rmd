@@ -1,0 +1,66 @@
+# Web API
+Application programming interfaces, or API’s, loosely refer to inputs a user can submit to a computer program. 
+If that sounds vague, don’t worry. The term API can cover a broad range of situations and in this section of the 
+tutorial we are going to cover some of the basics of a more specific Web API. 
+
+For statistical purposes, a web API is a method of integrating downloading data from a website into your code. 
+Unlike SQL queries, web API requests are specific to the website you are attempting to download from to allow more flexibility. 
+Web API’s are used by a variety of developers to request and retrieve data, and the tabular structure of returned by 
+a SQL query may not be ideal. Web API’s utilize specific URL strings to locate the data that you wish to request, 
+and typically give it to you in a format known as JSON. To address the first requirement, it’s ideal to do a quick
+ web search and find the documentation of the API so that you understand the URL syntax. Assuming you have that
+  correct and the website grants your request for data, the last step is to convert the JSON data to something a bit 
+  more usable for statistics. 
+
+## Julia
+
+**imports**
+```julia
+using HTTP, JSON, DataFrames, Query
+```
+
+**Enter the Correct URL and make the request**
+```julia
+urlcacurrent = "https://covidtracking.com/api/v1/states/CA/current.json"
+rawdata=HTTP.get(urlcurrent)
+```
+**Parse the JSON data**
+```julia
+#select the body of the API call, convert it into a string
+JSONdata = rawdata.body |> String
+
+#parse JSON data, convert it into a DataFrame
+
+CACOVID = JSONdata |> JSON.parse |> DataFrame
+
+```
+
+## SAS 
+
+**define a temporary file to read the JSON data into**
+filename raw_json temp;
+
+use proc http to make the API call
+
+```sas
+proc http
+url = "https://covidtracking.com/api/v1/us/current.json"
+method = "GET"
+out = raw_json
+
+QUERY=("parm1" = "val1" "parm2" = "val2");
+
+quit;
+```
+
+This api uses the path segement of the url to specify parameters, but ifyou are using an an api that utilizes a query string use
+the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in `"parm" = "val"` form.
+
+use the libname statement to convert the json file to a sas table
+
+```sas
+libname Calif JSON fileref = raw_json;
+
+proc print data = Calif.alldata;
+run;
+```
