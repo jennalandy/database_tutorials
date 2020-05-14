@@ -17,8 +17,6 @@
 # 4. Add a new item to the menu writes to goods database
 
 library(shiny)
-library(DT)
-library(tidyverse)
 
 source('app_utils.R')
 
@@ -26,6 +24,12 @@ tables <- get_tables()
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  
+    tags$script("
+      Shiny.addCustomMessageHandler('resetValue', function(variableName) {
+        Shiny.onInputChange(variableName, '');
+      });
+    "),
 
     # Application title
     titlePanel("BAKERY"),
@@ -45,6 +49,7 @@ ui <- fluidPage(
                     ),
                     uiOutput("select_columns"),
                     uiOutput("wheres"),
+                    uiOutput("foreign_wheres"),
                     actionButton(
                       "go",
                       label = "Show Table"
@@ -82,15 +87,15 @@ ui <- fluidPage(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
     
     output$choice_table <- renderPrint({ input$select_table })
     
     
     output$select_columns <- renderUI({
-        column_info <- get_columns(input$select_table)
-        print(column_info)
-        
+        table_info <- get_table_info(input$select_table)
+        column_info <- table_info$column_information
+
         checkboxGroupInput(
             "select_columns",
             label = h3("Column"),
@@ -102,6 +107,7 @@ server <- function(input, output) {
     output$choice_column <- renderPrint({ input$select_columns })
     
     output$wheres <- get_wheres(input)
+    output$foreign_wheres <- get_foreign_wheres(input)
     
     output$selected <- renderPrint({
         input$select_columns
@@ -113,7 +119,18 @@ server <- function(input, output) {
         output$out <- getDT(input, output)
       }
     )
-        
+    
+    observeEvent(
+      input$select_table,
+      {
+        for (n in names(input)[startsWith(names(input), 'where_')]) {
+          type <- str_split(n, "_")[[1]][2]
+          if (type == "varchar") {
+            session$sendCustomMessage(type = "resetValue", message = n)
+          }
+        }
+      }
+    )
         
     #writing output
     output$contents <- renderTable({
