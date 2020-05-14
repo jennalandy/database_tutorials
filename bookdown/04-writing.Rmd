@@ -15,7 +15,7 @@ MS SQL Server along with other ODBC drivers/database systems don't support this,
 using ODBC, CSV, JuliaDB, Query
 ```
 **Clear Up Workplace**
-```{julia}
+```julia
 ODBC.execute!(
     dsn,
     """
@@ -135,6 +135,13 @@ The first example is a basic one to illustrate how to create and fill a table.
 ```{r eval = FALSE}
 # drop table from database, if it exists
 dbExecute(conn, 'drop table if exists iris;')
+
+# make column names sql-compatable, can't have "." in a name
+names(iris) <- c(
+  'SepalLength','SepalWidth',
+  'PetalLength','PetalWidth',
+  'Species'
+)
 
 # create new table from iris dataset
 dbWriteTable(conn, name = "iris",  value = iris)
@@ -530,7 +537,7 @@ Here we are going to assign a new libname in order to show off some of the passw
 ```
 **Connection using Saved inputs**
 Make a connection using inputted user information. If you have bulkload permissions, you might want to enable that option in order to speed up file upload. 
-```{sas}
+```sas
 libname conn2 odbc
 required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass"
 /*bulkload = YES*/
@@ -538,7 +545,7 @@ required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Databas
 ```
 **URL Libname and Data Input**
 Here we show off the url libname to download the iris csv file from the internet, and preprocess it using a data step.
-```{SAS}
+```sas
 filename download url "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv";
 
 data iris;

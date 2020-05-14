@@ -15,17 +15,17 @@ and typically give it to you in a format known as JSON. To address the first req
 ## Julia
 
 **imports**
-```{julia}
+```julia
 using HTTP, JSON, DataFrames, Query
 ```
 
 **Enter the Correct URL and make the request**
-```{julia}
+```julia
 urlcacurrent = "https://covidtracking.com/api/v1/states/CA/current.json"
 rawdata=HTTP.get(urlcurrent)
 ```
 **Parse the JSON data**
-```{julia}
+```julia
 #select the body of the API call, convert it into a string
 JSONdata = rawdata.body |> String
 
@@ -41,24 +41,26 @@ CACOVID = JSONdata |> JSON.parse |> DataFrame
 filename raw_json temp;
 
 use proc http to make the API call
+
+```sas
 proc http
 url = "https://covidtracking.com/api/v1/us/current.json"
 method = "GET"
 out = raw_json
 
-This api uses the path segement of the url to specify parameters*/
-but if  you are using an an api that utilizes a query string use
-the query option as listed below, or append it directly to the url
-if doing the latter, check the api documentation to see what delimiter is
-used between parameters. Parameters are typically specified in parm=val form */
+QUERY=("parm1" = "val1" "parm2" = "val2");
 
-
-/*QUERY=("parm1" = "val1" "parm2" = "val2")*/
-
-;
 quit;
+```
+
+This api uses the path segement of the url to specify parameters, but ifyou are using an an api that utilizes a query string use
+the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in `"parm" = "val"` form.
 
 use the libname statement to convert the json file to a sas table
+
+```sas
 libname Calif JSON fileref = raw_json;
 
-proc print data = Calif.alldata ; run;
+proc print data = Calif.alldata;
+run;
+```

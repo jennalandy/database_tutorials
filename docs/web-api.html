@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>3 Machine Setup | Using Databases</title>
-  <meta name="description" content="3 Machine Setup | Using Databases" />
+  <title>7 Web API | Using Databases</title>
+  <meta name="description" content="7 Web API | Using Databases" />
   <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="3 Machine Setup | Using Databases" />
+  <meta property="og:title" content="7 Web API | Using Databases" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="jennalandy/stat400_database_tutorials" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="3 Machine Setup | Using Databases" />
+  <meta name="twitter:title" content="7 Web API | Using Databases" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction.html"/>
-<link rel="next" href="connecting-to-a-database.html"/>
+<link rel="prev" href="querying-a-database.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -190,55 +190,54 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="machine-setup" class="section level1">
-<h1><span class="header-section-number">3</span> Machine Setup</h1>
-<p>The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.</p>
-<p>Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to.</p>
-<div id="linux---ubuntu" class="section level2">
-<h2><span class="header-section-number">3.1</span> Linux - Ubuntu</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">sudo</span> su</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ex">curl</span> https://packages.microsoft.com/keys/microsoft.asc <span class="kw">|</span> <span class="ex">apt-key</span> add -</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#Download appropriate package for the OS version</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#Choose only ONE of the following, corresponding to your OS version</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#Ubuntu 16.04</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/16.04/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#Ubuntu 18.04</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/18.04/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#Ubuntu 19.10</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/19.10/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="bu">exit</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="fu">sudo</span> apt-get update</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="fu">sudo</span> ACCEPT_EULA=Y apt-get install msodbcsql17</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># optional: for bcp and sqlcmd</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="fu">sudo</span> ACCEPT_EULA=Y apt-get install mssql-tools</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bash_profile</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bashrc</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="bu">source</span> ~/.bashrc</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co"># optional: for unixODBC development headers</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="fu">sudo</span> apt-get install unixodbc-dev</a></code></pre></div>
+<div id="web-api" class="section level1">
+<h1><span class="header-section-number">7</span> Web API</h1>
+<p>Application programming interfaces, or API’s, loosely refer to inputs a user can submit to a computer program.
+If that sounds vague, don’t worry. The term API can cover a broad range of situations and in this section of the
+tutorial we are going to cover some of the basics of a more specific Web API.</p>
+<p>For statistical purposes, a web API is a method of integrating downloading data from a website into your code.
+Unlike SQL queries, web API requests are specific to the website you are attempting to download from to allow more flexibility.
+Web API’s are used by a variety of developers to request and retrieve data, and the tabular structure of returned by
+a SQL query may not be ideal. Web API’s utilize specific URL strings to locate the data that you wish to request,
+and typically give it to you in a format known as JSON. To address the first requirement, it’s ideal to do a quick
+web search and find the documentation of the API so that you understand the URL syntax. Assuming you have that
+correct and the website grants your request for data, the last step is to convert the JSON data to something a bit
+more usable for statistics.</p>
+<div id="julia-3" class="section level2">
+<h2><span class="header-section-number">7.1</span> Julia</h2>
+<p><strong>imports</strong></p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb45-1" data-line-number="1">using HTTP, JSON, DataFrames, Query</a></code></pre></div>
+<p><strong>Enter the Correct URL and make the request</strong></p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb46-1" data-line-number="1">urlcacurrent = <span class="st">&quot;https://covidtracking.com/api/v1/states/CA/current.json&quot;</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">rawdata=HTTP.get(urlcurrent)</a></code></pre></div>
+<p><strong>Parse the JSON data</strong></p>
+<div class="sourceCode" id="cb47"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="co">#select the body of the API call, convert it into a string</span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">JSONdata = rawdata.body |&gt; <span class="dt">String</span></a>
+<a class="sourceLine" id="cb47-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb47-4" data-line-number="4"><span class="co">#parse JSON data, convert it into a DataFrame</span></a>
+<a class="sourceLine" id="cb47-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb47-6" data-line-number="6">CACOVID = JSONdata |&gt; JSON.parse |&gt; DataFrame</a></code></pre></div>
 </div>
-<div id="mac-os" class="section level2">
-<h2><span class="header-section-number">3.2</span> Mac OS</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">brew</span> tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ex">brew</span> update</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="va">HOMEBREW_NO_ENV_FILTERING=</span>1 <span class="va">ACCEPT_EULA=</span>Y <span class="ex">brew</span> install msodbcsql17 mssql-tools</a></code></pre></div>
-</div>
-<div id="windows" class="section level2">
-<h2><span class="header-section-number">3.3</span> Windows</h2>
-<p>For Windows the driver and connection string can be found at:
-<a href="https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15#download-for-windows" class="uri">https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15#download-for-windows</a></p>
-<p>download and open the msodbcsql.msi file.</p>
-</div>
-<div id="other-connection-options" class="section level2">
-<h2><span class="header-section-number">3.4</span> Other Connection Options</h2>
-<p>Once drivers are installed, you can set a dsn (data source name) for the connection to the database using the ODBC/DSN manager for your system.</p>
-<p>This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source. Therefore, to more easily share code and to not have to mess with their behind-the-scenes settings, I use the connection string method from here further.</p>
+<div id="sas-3" class="section level2">
+<h2><span class="header-section-number">7.2</span> SAS</h2>
+<p><strong>define a temporary file to read the JSON data into</strong>
+filename raw_json temp;</p>
+<p>use proc http to make the API call</p>
+<pre class="sas"><code>proc http
+url = &quot;https://covidtracking.com/api/v1/us/current.json&quot;
+method = &quot;GET&quot;
+out = raw_json
+
+QUERY=(&quot;parm1&quot; = &quot;val1&quot; &quot;parm2&quot; = &quot;val2&quot;);
+
+quit;</code></pre>
+<p>This api uses the path segement of the url to specify parameters, but ifyou are using an an api that utilizes a query string use
+the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in <code>&quot;parm&quot; = &quot;val&quot;</code> form.</p>
+<p>use the libname statement to convert the json file to a sas table</p>
+<pre class="sas"><code>libname Calif JSON fileref = raw_json;
+
+proc print data = Calif.alldata;
+run;</code></pre>
 
 </div>
 </div>
@@ -247,8 +246,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="connecting-to-a-database.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="querying-a-database.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

@@ -14,14 +14,14 @@ In this chapter, we discuss the *logistics* of passing a query onto the database
 
 **Connect to Database**
 
-```{julia}
+```julia
 dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
 ```
 **Query and filter using server-side sql commands**
 
 Note, lower case "query" returns a dataframe, as opposed to uppercase "Query"
 
-```{julia}
+```julia
 res=ODBC.query(dsn,"""
 
 select cyl, drat 
@@ -34,7 +34,7 @@ where disp > 200
 ### Query database to select all rows, then filter/select rows in julia
 
 **LINQ style**
-```{julia}
+```julia
 res=@from i in ODBC.Query(dsn,"select * from mtcars") begin 
     @where i.disp > 200
     @select {Cylinder=i.cyl, Drat=i.drat}
@@ -42,7 +42,7 @@ res=@from i in ODBC.Query(dsn,"select * from mtcars") begin
 end 
 ```
 **dyplr/tidyverse style** 
-```{julia}
+```julia
 res = ODBC.query(dsn,"select * from mtcars") |> 
 @filter( _.disp > 200) |>
 @select( :cyl, :drat) |>
@@ -96,12 +96,12 @@ iris_df_out = pd.read_sql("select * from iris", conn)
 **Query Using Libname**
 
 Make the database connection.
-```{sas}
+```sas
 libname conn2 odbc
 required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
 ```
 Pull the rows that you need and disconnect from the database.
-```{sas}
+```sas
 proc sql;
 create table event as
 select * from conn2.events ;
@@ -111,7 +111,7 @@ libname conn2 clear;
 **Query without libname**
 
 While this means a libname is unecessary, the syntax is much more convoluted
-```{sas}
+```sas
 proc sql;
 connect to odbc as conn
 required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";

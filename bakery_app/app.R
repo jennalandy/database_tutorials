@@ -6,9 +6,9 @@
 # 2. Check if any columns are datetime in SQL, make sure they're datetime in R
 # 3. Add "Where" options
 #    X a. range sliders for numeric values
-#    b. "like" with text input for string values
+#    X b. "like" with text input for string values
 #    c. calendar picker for date values
-# 4. Join options??
+# 4. X Join options ("where" options for values in related tables, only 1 degree of separation)
 
 # Writing to Database
 # 1. Menu selections: user chooses amount
@@ -36,10 +36,14 @@ dsn =julia_eval('
 
 source('app_utils.R')
 
-tables <- get_tables()
-
 # Define UI for application that draws a histogram
 ui <- fluidPage(
+  
+    tags$script("
+      Shiny.addCustomMessageHandler('resetValue', function(variableName) {
+        Shiny.onInputChange(variableName, '');
+      });
+    "),
 
     # Application title
     titlePanel("BAKERY"),
@@ -52,13 +56,29 @@ ui <- fluidPage(
             title = "Reading from Database",
             sidebarLayout(
                 sidebarPanel(
-                    selectInput(
-                        "select_table",
-                        label = h3("Table"),
-                        choices = tables
+                    checkboxInput(
+                        "advanced_options", 
+                        label = "Show Advanced Options"
                     ),
+                    conditionalPanel(
+                      "input.advanced_options",
+                      radioButtons(
+                        "just_bakery",
+                        label = "Tables to include", 
+                        choices = c("Just BAKERY","All Tables"), 
+                        selected = "Just BAKERY",
+                        inline = TRUE
+                      ),
+                      textInput(
+                        "custom_query", 
+                        label = "Enter your own query", 
+                        placeholder = "select..."
+                      )
+                    ),
+                    uiOutput("select_table"),
                     uiOutput("select_columns"),
                     uiOutput("wheres"),
+                    uiOutput("foreign_wheres"),
                     actionButton(
                       "go",
                       label = "Show Table"
@@ -93,24 +113,36 @@ ui <- fluidPage(
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
     
     output$choice_table <- renderPrint({ input$select_table })
+
+    output$select_table <- renderUI({
+      print(input$just_bakery)
+      tables <- get_tables(input$just_bakery)
+      selectInput(
+        "select_table",
+        label = h3("Table"),
+        choices = tables
+      )
+    })
+    
     output$select_columns <- renderUI({
-        column_info <- get_columns(input$select_table)
-        print(column_info)
-        
+        table_info <- get_table_info(input$select_table)
+        column_info <- table_info$column_information
+
         checkboxGroupInput(
             "select_columns",
             label = h3("Column"),
             choices = column_info$names,
-            selected = column_info$names[1]
+            selected = column_info$names
         )
     })
     
     output$choice_column <- renderPrint({ input$select_columns })
     
     output$wheres <- get_wheres(input)
+    output$foreign_wheres <- get_foreign_wheres(input)
     
     output$selected <- renderPrint({
         input$select_columns
@@ -122,6 +154,19 @@ server <- function(input, output) {
         output$out <- getDT(input, output)
       }
     )
+        
+    #writing output
+    output$contents <- renderTable({
+    inFile <- input$file1
+
+    if (is.null(inFile)){
+        return(NULL)
+    } else {
+    wrotetab=read.csv(inFile$datapath, header = input$header)
+    dbWriteTable(conn, name = input$table_name,  value= wrotetab)
+    return(wrotetab)
+    }
+  })
     output$ui <- renderUI({
     # Depending on input$input_type, we'll generate a different
     # UI component and send it to the client.
