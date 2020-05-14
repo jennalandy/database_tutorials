@@ -6,9 +6,9 @@
 # 2. Check if any columns are datetime in SQL, make sure they're datetime in R
 # 3. Add "Where" options
 #    X a. range sliders for numeric values
-#    b. "like" with text input for string values
+#    X b. "like" with text input for string values
 #    c. calendar picker for date values
-# 4. Join options??
+# 4. X Join options ("where" options for values in related tables, only 1 degree of separation)
 
 # Writing to Database
 # 1. Menu selections: user chooses amount
@@ -74,28 +74,9 @@ ui <- fluidPage(
                     DTOutput("out")
                 )
             )
-        ),
+        )
         
         # Panel 2: Writing to Database
-        tabPanel(
-            title = "Writing to Database",
-             sidebarLayout(
-                sidebarPanel(
-                    textInput("table_name","Enter File Name", value="Unnnamed File"),    
-                    fileInput("file1", "Choose CSV File",
-                         accept = c(
-                                "text/csv",
-                                "text/comma-separated-values,text/plain",
-                                ".csv")
-                            ),
-                            tags$hr(),
-                    checkboxInput("header", "Header", TRUE)
-                ),
-                mainPanel(
-                    tableOutput("contents")
-                )
-            )
-        )
     )
 )
 
@@ -166,6 +147,7 @@ server <- function(input, output, session) {
     return(wrotetab)
     }
   })
+
 }
 
 shinyApp(ui = ui, server = server)

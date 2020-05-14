@@ -17,6 +17,13 @@ conn <- dbConnect(
 # drop table from database, if it exists
 dbExecute(conn, 'drop table if exists iris;')
 
+# make column names sql-compatable, can't have "." in a name
+names(iris) <- c(
+  'SepalLength','SepalWidth',
+  'PetalLength','PetalWidth',
+  'Species'
+)
+
 # create new table from iris dataset
 dbWriteTable(conn, name = "iris",  value = iris)
 
