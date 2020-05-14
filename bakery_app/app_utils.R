@@ -12,11 +12,18 @@ conn <- dbConnect(
   PWD = "ShadeHome8$" #rstudioapi::askForPassword("Database password")
 )
 
-get_tables <- function() {
-  values = dbListTables(conn)[
-    grepl('BAKERY', dbListTables(conn))
-  ]
-  names = str_replace(values, 'BAKERY_', '')
+get_tables <- function(just_bakery) {
+  print(just_bakery)
+  all_tables <- dbGetQuery(
+    conn, 'select TABLE_NAME from INFORMATION_SCHEMA.TABLES'
+  ) %>% unlist() %>% unname()
+  if (is.null(just_bakery) | just_bakery == "Just BAKERY") {
+    values = all_tables[grepl('BAKERY', all_tables)]
+    names = str_replace(values, 'BAKERY_', '')
+  } else {
+    values = all_tables
+    names = values
+  }
   tables = as.list(setNames(values, names))
   tables
 }
@@ -90,8 +97,8 @@ get_table_info <- function(table) {
     )
   names(foreign_keys)[names(foreign_keys) == 'name'] <- 'referenced_table'
   foreign_keys <- foreign_keys %>% merge(
-      column_info %>%
-        mutate(parent_column_id = 1:nrow(column_info)) %>%
+    table_info %>%
+        mutate(parent_column_id = 1:nrow(table_info)) %>%
         select(parent_column_id, names),
       by = 'parent_column_id'
     )
@@ -129,7 +136,7 @@ get_wheres <- function(input) {
       col_name <- column_info$names[i]
       full_col_name <- paste(input$select_table, col_name, sep = ".")
       col_type <- column_info$types[i]
-      output_name <- paste('where_', col_type,'_', full_col_name, sep = '')
+      output_name <- paste('where_', input$select_table,'_', full_col_name, sep = '')
 
       if (col_type %in% c('int', 'float')) {
         minimum <- column_info[column_info$names == col_name,]$minimum
@@ -163,7 +170,7 @@ get_foreign_wheres <- function(input) {
     col_name <- foreign_column_info$names[j]
     full_col_name <- paste(foreign_table_name, col_name, sep = ".")
     col_type <- foreign_column_info$types[j] %>% as.character()
-    output_name <- paste('where_', col_type, '_', full_col_name, sep = '')
+    output_name <- paste('where_', input$select_table, '_', full_col_name, sep = '')
 
     if ((col_type %in% c('int', 'float')) & !(col_name %in% skip)) {
       minimum <- foreign_column_info[foreign_column_info$names == col_name,]$minimum
@@ -209,49 +216,75 @@ get_foreign_wheres <- function(input) {
             skip = c(col_to_skip)
           )
         )
-        
-        foreign_foreign_keys <- foreign_table_info$foreign_keys
-        if (length(foreign_foreign_keys) > 0) {
-          for (i in 1:nrow(foreign_foreign_keys)) {
-            foreign_table_name <- foreign_foreign_keys$referenced_table[i]
-            col_to_skip <- foreign_foreign_keys$foreign_column_names[i]
-            foreign_table_info <- get_table_info(foreign_table_name)
-            foreign_column_info <- foreign_table_info$column_information
-
-            ui_items <- c(
-              ui_items,
-              lapply(
-                1:nrow(foreign_column_info), 
-                get_foreign_where,
-                foreign_column_info = foreign_column_info,
-                foreign_table_name = foreign_table_name,
-                skip = c(col_to_skip)
-              )
-            )
-          }
-        }
       }
       return(verticalLayout(ui_items))
     }
   })
 }
 
-getDT <- function(input, output) {
+get_query_where <- function(input, foreign_keys, col_wheres) {
   table_info <- get_table_info(input$select_table) 
   column_info <- table_info$column_information %>% data.frame()
   foreign_keys <- table_info$foreign_keys
-  selected_cols <- input$select_columns
-  selected_table <- input$select_table
-  
-  print(foreign_keys)
-  
+
   col_wheres <- list()
   for(col_name in column_info$names) {
     full_col_name <- paste(input$select_table, col_name, sep = ".")
     col_type <- column_info$types[column_info$names == col_name] %>% as.character()
-    col_wheres[[full_col_name]] <- input[[paste('where_', col_type, '_', full_col_name, sep = '')]]
+    col_wheres[[full_col_name]] <- input[[paste('where_', input$select_table, '_', full_col_name, sep = '')]]
   }
   
+  where <- ""
+  
+  for (col_name in names(col_wheres)) {
+    i <- which(names(col_wheres) == col_name)
+    col_where = col_wheres[[col_name]]
+
+    regular_col_name = str_split(col_name, '\\.')[[1]][2]
+    table_name = str_split(col_name, '\\.')[[1]][1]
+    
+    where_column_info <- get_table_info(table_name)$column_information
+    col_type = where_column_info$types[
+      where_column_info$names==regular_col_name
+      ] %>% as.character()
+    
+    if (!is.null(col_where)) {
+      
+      if (col_type %in% c('int','float')) {
+        minimum <- where_column_info$minimum[
+          where_column_info$names==regular_col_name
+          ] %>% as.numeric()
+        maximum <- where_column_info$maximum[
+          where_column_info$names==regular_col_name
+          ] %>% as.numeric()
+        
+        if (col_where[1]!= minimum | col_where[2]!=maximum) {
+          if (where != '') {
+            where <- paste(where, 'and')
+          }
+          where <- paste(
+            where,
+            col_name, ">=", 
+            col_where[1], "and", col_name, "<=",
+            col_where[2]
+          )
+        }
+      } else if (col_type == 'varchar') {
+        if (col_where != '') {
+          if (where != '') {
+            where <- paste(where, 'and')
+          }
+          where <- paste(
+            where, ' ',
+            col_name, ' like ',
+            "'%", toupper(col_where), "%'",
+            sep = ''
+          )
+        }
+      }
+    }
+  }
+    
   if (!is.null(foreign_keys)) {
     for(i in 1:nrow(foreign_keys)) {
       foreign_table <- foreign_keys$referenced_table[i] %>% as.character()
@@ -259,124 +292,103 @@ getDT <- function(input, output) {
       foreign_table_info <- get_table_info(foreign_table)
       foreign_table_cols <- foreign_table_info$column_info
       
+      parent_column_name <- foreign_keys$parent_column_name[i] %>% as.character()
+      foreign_column_name <- foreign_keys$foreign_column_names[i] %>% as.character()
+      
       for (col_name in foreign_table_cols$names) {
         full_col_name <- paste(foreign_table, col_name, sep = ".")
         col_type <- foreign_table_cols$types[foreign_table_cols$names == col_name] %>% as.character()
-        parent_column_name <- foreign_table_cols$parent_column_name[foreign_table_cols$names == col_name] %>% as.character()
-        col_wheres[[full_col_name]] <- input[[paste('where_', col_type, '_', full_col_name, sep = '')]]
+        col_where <- input[[paste('where_', input$select_table, '_', full_col_name, sep = '')]]
         
+        if (is.null(col_where)) {
+          next
+        }
         
-      }
-    }
-  }
-  
-  renderDT({
-    # build "where" clause
-    where <- ""
-    foreign_tables <- c()
-    for (col_name in names(col_wheres)) {
-      i <- which(names(col_wheres) == col_name)
-      col_where = col_wheres[[col_name]]
-            
-      regular_col_name = str_split(col_name, '\\.')[[1]][2]
-      table_name = str_split(col_name, '\\.')[[1]][1]
-      
-      where_column_info <- get_table_info(table_name)$column_information
-      col_type = where_column_info$types[
-        where_column_info$names==regular_col_name
-      ] %>% as.character()
-      
-      if (!is.null(col_where)) {
+        where_column_info <- get_table_info(foreign_table)$column_information
+        col_type = where_column_info$types[
+          where_column_info$names==col_name
+          ] %>% as.character()
+        
+        subquery <- paste(
+          parent_column_name, 'in (select', foreign_column_name, 'from', foreign_table
+        )
         
         if (col_type %in% c('int','float')) {
           # slider
           minimum <- where_column_info$minimum[
-            where_column_info$names==regular_col_name
-          ] %>% as.numeric()
+            where_column_info$names==col_name
+            ] %>% as.numeric()
           maximum <- where_column_info$maximum[
-            where_column_info$names==regular_col_name
-          ] %>% as.numeric()
+            where_column_info$names==col_name
+            ] %>% as.numeric()
           
           if (col_where[1]!= minimum | col_where[2]!=maximum) {
-            if (where != '') {
-              where <- paste(where, 'and')
-            }
-            where <- paste(
-              where,
-              col_name, ">=", 
-              col_where[1], "and", col_name, "<=",
-              col_where[2]
+            subquery <- paste(
+              subquery, 'where',
+              full_col_name, ">=", 
+              col_where[1], "and", full_col_name, "<=",
+              col_where[2], ')'
             )
-            if (table_name != input$select_table) {
-              foreign_tables <- c(foreign_tables, table_name)
-            }
           }
         } else if (col_type == 'varchar') {
           if (col_where != '') {
-            if (where != '') {
-              where <- paste(where, 'and')
-            }
-            where <- paste(
-              where, ' ',
-              col_name, ' like ',
-              "'%", toupper(col_where), "%'",
+            subquery <- paste(
+              subquery, ' where ',
+              full_col_name, ' like ',
+              "'%", toupper(col_where), "%')",
               sep = ''
             )
-            if (table_name != input$select_table) {
-              foreign_tables <- c(foreign_tables, table_name)
-            }
           }
+        }
+        
+        if (endsWith(subquery,')')) {
+          if (where != '') {
+            where <- paste(where, 'and')
+          }
+          where <- paste(where, subquery)
         }
       }
     }
+  }
+  
+  return(where)
+}
+
+getDT <- function(input, output) {
+  if (input$custom_query != '') {
+    query <- input$custom_query
+    output$query = renderText({query})
+    data <- dbGetQuery(
+      conn,
+      query
+    ) %>% data.frame()
     
-    if(length(selected_cols) > 0) {
-      from_table <- selected_table
-      for (foreign_table in unique(foreign_tables)) {
-        from_key <- paste(
-          from_table,
-          column_info$names[
-            foreign_keys$parent_column_id[
-              foreign_keys$referenced_table == foreign_table
-            ] %>% as.numeric()
-          ],
-          sep = "."
-        )
-        to_key <- paste(
-          foreign_table,
-          foreign_keys$foreign_column_names[
-            foreign_keys$referenced_table == foreign_table
-          ] %>% as.character(),
-          sep = '.'
-        )  
-        from_table <- paste(
-          from_table, "left join",
-          foreign_table, "on", from_key,
-          "=", to_key
-        )
-      }
+  } else {
+    where <- get_query_where(input)
+    
+    if(length(input$select_columns) > 0) {
+      from_table <- input$select_table
       query <- paste(
         "select", 
         paste(
-          paste(selected_table, ".", selected_cols, sep = ''),
+          paste(input$select_table, ".", input$select_columns, sep = ''),
           collapse = ', '
         ), 
         "from", from_table,
         ifelse(where != "", paste("where", where), "")
       )
       output$query = renderText({query})
-      return(
-        dbGetQuery(
-          conn,
-          query
-        ) %>% data.frame()
-      )
+      data <- dbGetQuery(
+        conn,
+        query
+      ) %>% data.frame()
     } else {
-      return(
-        data.frame()
-      )
+      data <- data.frame()
     }
-    
+  }
+  
+  renderDT({
+    data
   })
 }
 

@@ -20,8 +20,6 @@ library(shiny)
 
 source('app_utils.R')
 
-tables <- get_tables()
-
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   
@@ -42,11 +40,26 @@ ui <- fluidPage(
             title = "Reading from Database",
             sidebarLayout(
                 sidebarPanel(
-                    selectInput(
-                        "select_table",
-                        label = h3("Table"),
-                        choices = tables
+                    checkboxInput(
+                        "advanced_options", 
+                        label = "Show Advanced Options"
                     ),
+                    conditionalPanel(
+                      "input.advanced_options",
+                      radioButtons(
+                        "just_bakery",
+                        label = "Tables to include", 
+                        choices = c("Just BAKERY","All Tables"), 
+                        selected = "Just BAKERY",
+                        inline = TRUE
+                      ),
+                      textInput(
+                        "custom_query", 
+                        label = "Enter your own query", 
+                        placeholder = "select..."
+                      )
+                    ),
+                    uiOutput("select_table"),
                     uiOutput("select_columns"),
                     uiOutput("wheres"),
                     uiOutput("foreign_wheres"),
@@ -91,6 +104,15 @@ server <- function(input, output, session) {
     
     output$choice_table <- renderPrint({ input$select_table })
     
+    output$select_table <- renderUI({
+      print(input$just_bakery)
+      tables <- get_tables(input$just_bakery)
+      selectInput(
+        "select_table",
+        label = h3("Table"),
+        choices = tables
+      )
+    })
     
     output$select_columns <- renderUI({
         table_info <- get_table_info(input$select_table)
@@ -100,7 +122,7 @@ server <- function(input, output, session) {
             "select_columns",
             label = h3("Column"),
             choices = column_info$names,
-            selected = column_info$names[1]
+            selected = column_info$names
         )
     })
     
