@@ -1,4 +1,4 @@
-using ODBC, DataFrames
+using ODBC, DataFrames, Printf
 
 function getcols(con, tablename)
     id= ODBC.query(con,"select object_id from sys.tables where name = '$tablename' ")[1,1] 

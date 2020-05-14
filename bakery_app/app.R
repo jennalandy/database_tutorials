@@ -23,8 +23,10 @@ library(JuliaCall)
 library(tidyverse)
 julia_install_package_if_needed("ODBC")
 julia_install_package_if_needed("DataFrames")
+julia_install_package_if_needed("Printf")
 julia_library("ODBC")
 julia_library("DataFrames")
+julia_library("Printf")
 #source helpers
 setwd("/home/datguy/Documents/stat440/bakery_app")
 julia_source("app_utils.jl")
@@ -132,16 +134,15 @@ server <- function(input, output) {
     })
 
     observeEvent(input$upload, {
-    cols=julia_call("getcols",dsn,input$table_name)
-    y=NULL
-
-    for (i in 1:length(cols)){
-        y[i]= eval(parse(text=paste0('input$a',i)))
-    }
-    y=paste(y,collapse=",")
-      print(y)
-      sta=julia_call("addrow", dsn, input$table_name, y)
-    output$status <- renderText({sta})
+        cols=julia_call("getcols",dsn,input$table_name)
+        y=NULL
+        for (i in 1:length(cols)){
+            y[i]= eval(parse(text=paste0('input$a',i)))
+        }
+        y=paste(y,collapse=",")
+        print(y)
+        sta=julia_call("addrow", dsn, input$table_name, y)
+        output$status <- renderText({sta})
     })
 
 }
