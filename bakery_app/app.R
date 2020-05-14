@@ -72,7 +72,7 @@ ui <- fluidPage(
         
         # Panel 2: Writing to Database
         tabPanel(
-             titlePanel("Upload to nick database"),
+             title ="Upload to nick database",
              sidebarLayout(
                  sidebarPanel(
                     selectInput("table_name", "Select Table to Append To", julia_call("ODBC.query",dsn,"select name from sys.tables"))
