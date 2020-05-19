@@ -19,31 +19,30 @@
 library(shiny)
 library(DT)
 library(tidyverse)
-library(JuliaCall)
-library(tidyverse)
-julia_install_package_if_needed("ODBC")
-julia_install_package_if_needed("DataFrames")
-julia_install_package_if_needed("Printf")
-julia_library("ODBC")
-julia_library("DataFrames")
-julia_library("Printf")
-#source helpers
-setwd("/home/datguy/Documents/stat440/bakery_app")
-julia_source("app_utils.jl")
-dsn =julia_eval('
- ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=Nick;PWD=WaveTrack3@;")
-')
+# library(JuliaCall)
+# library(tidyverse)
+# julia <- julia_setup(JULIA_HOME = "/usr/local/bin/julia")
+# options(JULIA_HOME = "/usr/local/bin/julia")
+# 
+# julia_install_package_if_needed("Printf")
+# julia_install_package_if_needed("Dates")
+# julia_install_package_if_needed("ODBC")
+# julia_install_package_if_needed("DataFrames")
+# julia_command("@eval Base using Printf")
+# julia_library("Dates")
+# julia_library("Printf")
+# julia_library("ODBC")
+# julia_library("DataFrames")
+# 
+# julia_source("app_utils.jl")
+# dsn =julia_eval('
+#  ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=Nick;PWD=WaveTrack3@;")
+# ')
 
 source('app_utils.R')
 
 # Define UI for application that draws a histogram
 ui <- fluidPage(
-  
-    tags$script("
-      Shiny.addCustomMessageHandler('resetValue', function(variableName) {
-        Shiny.onInputChange(variableName, '');
-      });
-    "),
 
     # Application title
     titlePanel("BAKERY"),
@@ -94,20 +93,20 @@ ui <- fluidPage(
         
         # Panel 2: Writing to Database
         tabPanel(
-             title ="Upload to nick database",
-             sidebarLayout(
-                 sidebarPanel(
-                    selectInput("table_name", "Select Table to Append To", julia_call("ODBC.query",dsn,"select name from sys.tables"))
-                    ),
-
-                mainPanel(
-                # This outputs the dynamic UI component
-                verbatimTextOutput("status"),
-                uiOutput("ui"),
-                actionButton("upload","Upload Data Row"))
-             )
-           
-             
+             title ="Upload to nick database"
+        #      sidebarLayout(
+        #          sidebarPanel(
+        #             selectInput("table_name", "Select Table to Append To", julia_call("ODBC.query",dsn,"select name from sys.tables"))
+        #             ),
+        # 
+        #         mainPanel(
+        #         # This outputs the dynamic UI component
+        #         verbatimTextOutput("status"),
+        #         uiOutput("ui"),
+        #         actionButton("upload","Upload Data Row"))
+        #      )
+        #    
+        #      
         )
     )    
 )

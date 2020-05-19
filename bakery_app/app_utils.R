@@ -17,6 +17,10 @@ get_tables <- function(just_bakery) {
   all_tables <- dbGetQuery(
     conn, 'select TABLE_NAME from INFORMATION_SCHEMA.TABLES'
   ) %>% unlist() %>% unname()
+  
+  all_tables <- all_tables[!grepl("\\s", all_tables)]
+  print(all_tables)
+  
   if (is.null(just_bakery) | just_bakery == "Just BAKERY") {
     values = all_tables[grepl('BAKERY', all_tables)]
     names = str_replace(values, 'BAKERY_', '')
@@ -75,7 +79,7 @@ get_table_info <- function(table) {
   }
       
   # get table relationships
-  table_ids <- dbGetQuery(conn, "select *  from sys.tables where name like 'BAKERY%';") %>%
+  table_ids <- dbGetQuery(conn, "select *  from sys.tables;") %>%
     select(name, object_id)
   table_id <- table_ids %>%
     filter(name == table) %>%
@@ -208,6 +212,12 @@ get_foreign_wheres <- function(input) {
         
         ui_items <- c(
           ui_items,
+          titlePanel(h3(
+            paste(
+              "Columns in",
+              str_remove(foreign_table_name,'BAKERY_')
+            )
+          )),
           lapply(
             1:nrow(foreign_column_info), 
             get_foreign_where,
