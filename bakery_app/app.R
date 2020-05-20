@@ -14,31 +14,12 @@
 # 1. Menu selections: user chooses amount
 # 2. Input customer Id (existing in database) or create new customer (writes to database)
 # 3. Check-out writes to receipts and items database
+
 # 4. Add a new item to the menu writes to goods database
 
 library(shiny)
 library(DT)
 library(tidyverse)
-# library(JuliaCall)
-# library(tidyverse)
-# julia <- julia_setup(JULIA_HOME = "/usr/local/bin/julia")
-# options(JULIA_HOME = "/usr/local/bin/julia")
-# 
-# julia_install_package_if_needed("Printf")
-# julia_install_package_if_needed("Dates")
-# julia_install_package_if_needed("ODBC")
-# julia_install_package_if_needed("DataFrames")
-# julia_command("@eval Base using Printf")
-# julia_library("Dates")
-# julia_library("Printf")
-# julia_library("ODBC")
-# julia_library("DataFrames")
-# 
-# julia_source("app_utils.jl")
-# dsn =julia_eval('
-#  ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=Nick;PWD=WaveTrack3@;")
-# ')
-
 source('app_utils.R')
 
 # Define UI for application that draws a histogram
@@ -93,26 +74,24 @@ ui <- fluidPage(
         
         # Panel 2: Writing to Database
         tabPanel(
-             title ="Upload to nick database"
-        #      sidebarLayout(
-        #          sidebarPanel(
-        #             selectInput("table_name", "Select Table to Append To", julia_call("ODBC.query",dsn,"select name from sys.tables"))
-        #             ),
-        # 
-        #         mainPanel(
-        #         # This outputs the dynamic UI component
-        #         verbatimTextOutput("status"),
-        #         uiOutput("ui"),
-        #         actionButton("upload","Upload Data Row"))
-        #      )
-        #    
-        #      
+             title ="Upload to nick database",
+             sidebarLayout(
+                 sidebarPanel(
+                    selectInput("table_name", "Select Table to Append To", ntables(conn))
+                    ),
+
+                mainPanel(
+                # This outputs the dynamic UI component
+                verbatimTextOutput("status"),
+                uiOutput("ui"),
+                actionButton("upload","Upload Data Row"))
+             )
         )
     )    
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output, session) {
+server <- function(input, output) {
     
     output$choice_table <- renderPrint({ input$select_table })
 
@@ -162,14 +141,14 @@ server <- function(input, output, session) {
         return(NULL)
     } else {
     wrotetab=read.csv(inFile$datapath, header = input$header)
-    dbWriteTable(conn, name = input$table_name,  value= wrotetab)
+    dbWriteTable(conn=conn, name = input$table_name,  value= wrotetab)
     return(wrotetab)
     }
   })
     output$ui <- renderUI({
     # Depending on input$input_type, we'll generate a different
     # UI component and send it to the client.
-        cols=julia_call("getcols",dsn,input$table_name)
+        cols=getcols(conn,input$table_name)
     
         lapply(1:length(cols), function(i) {
             textInput(paste0('a', i),paste("Input Value for Column ",cols[i]))
@@ -178,14 +157,13 @@ server <- function(input, output, session) {
     })
 
     observeEvent(input$upload, {
-        cols=julia_call("getcols",dsn,input$table_name)
+        cols=getcols(con,input$table_name)
         y=NULL
         for (i in 1:length(cols)){
             y[i]= eval(parse(text=paste0('input$a',i)))
         }
-        y=paste(y,collapse=",")
-        print(y)
-        sta=julia_call("addrow", dsn, input$table_name, y)
+        y=y%>% as.dataframe()
+        sta=sqlAppendTable(con,input$table_name,y)
         output$status <- renderText({sta})
     })
 

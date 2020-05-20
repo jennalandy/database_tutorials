@@ -94,7 +94,7 @@ get_table_info <- function(table) {
       parent_object_id == table_id
     ) %>%
     merge(
-      table_ids, 
+      table_ids,
       by.x = 'referenced_object_id',
       by.y = 'object_id', 
       all.x = TRUE
@@ -402,8 +402,16 @@ getDT <- function(input, output) {
   })
 }
 
+getcols = function(conn,tablename){
+    id = dbGetQuery(conn, paste("select object_id from sys.tables where name =", tablename))[1,1] %>% as.character()
+    res = dbGetQuery(conn,paste("select name from sys.columns where object_id =",id))[,1]
+    return(res)
+}
 
-
+ntables = function(conn){
+  res = dbGetQuery(conn,"select name from sys.tables")
+  return(res)
+}
 
 
 
