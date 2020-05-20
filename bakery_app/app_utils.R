@@ -403,7 +403,7 @@ getDT <- function(input, output) {
 }
 
 getcols = function(conn,tablename){
-    id = dbGetQuery(conn, paste("select object_id from sys.tables where name =", tablename))[1,1] %>% as.character()
+    id = dbGetQuery(conn, paste("select object_id from sys.tables where name = '", tablename, "'", sep =''))[1,1] %>% as.character()
     res = dbGetQuery(conn,paste("select name from sys.columns where object_id =",id))[,1]
     return(res)
 }
