@@ -13,13 +13,13 @@ description: ""
 
 This book was written over the course of a STAT 400 class at California Polytechnic State University, San Luis Obispo. For each section, we walk through the processes using SAS, Julia, R, and Python. These programming languages are common in statistics and among Cal Poly statistics students. 
 
-This book demostrates how to [connect to](03-connections.html), [upload data to](04-writing.html), and [read data from](05-querying.html) a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessens can likely be extended to any database, with a few google-able differences.
+This book demostrates how to [connect to][Connecting to a Database], [upload data to][Writing to a Database], and [read data from][Querying a Database] a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessens can likely be extended to any database, with a few google-able differences.
 
 **Table of Contents**
 
-1. [Background](01-background.html)
-2. [Setup](02-setup.html)
-3. [Connecting to a Database](03-connections.html)
-4. [Creating and Writing to Tables](04-writing.html)
-5. [Querying a Database](05-querying.html)
-6. [Using APIs](06-webapi.html)
+1. [Background][Background]
+2. [Machine Setup][Machine Setup]
+3. [Connecting to a Database][Connecting to a Database]
+4. [Creating and Writing to Tables][Writing to a Database]
+5. [Querying a Database][Querying a Database]
+6. [Using APIs][Web API]
