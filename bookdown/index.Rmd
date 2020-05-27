@@ -17,7 +17,7 @@ This book demostrates how to [connect to](03-connections.Rmd), [upload data to](
 
 **Table of Contents**
 
-1. [Introduction](01-intro.Rmd)
+1. [Background](01-background.Rmd)
 2. [Setup](02-setup.Rmd)
 3. [Connecting to a Database](03-connections.Rmd)
 4. [Creating and Writing to Tables](04-writing.Rmd)
