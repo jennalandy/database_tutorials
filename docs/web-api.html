@@ -205,6 +205,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>In this section, we’ll be using the COVID tracking API. More information on this API can be found <a href="https://covidtracking.com/api">here</a>.</p>
 <div id="julia-3" class="section level2">
 <h2><span class="header-section-number">7.1</span> Julia</h2>
+<p>For Statisticians, one of the most useful parts of a web API is the <strong>Query String</strong>.
+The query string is not found on all apis, but it is commonly used when pulling data
+where a user might need to specify additional material, like what column names you’d like
+to query or what year of data that you’d like to pull. Concretely, the query string comes after
+the main url, or <strong>endpoint</strong>, and is separated by a ?. Each new parameter is designated by
+an &amp;. An example could look like:</p>
+<p>https.//fake.data.com/fakeapi?&amp;parm1=value1&amp;parm2=value2</p>
+<p>If you know the query string, you could type it into your web browser, and get the raw JSON
+data printed. There’s generally two ways to specify query string parameters. You can specify them
+directly into the url string, which should always work. If the package or programming language allows it,
+there might be a more user friendly way to enter these parameters in, where the software appends
+the query string to the url itself. Like API’s in general, query strings are specific to the website,
+but many of them are desinged to be familiar. The example below uses a SODA API, who’s query string follows
+SQL-like syntax.</p>
 <p><strong>imports</strong></p>
 <div class="sourceCode" id="cb60"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb60-1" data-line-number="1">using HTTP, JSON, DataFrames, Query</a></code></pre></div>
 <p><strong>Enter the Correct URL and make the request</strong></p>
@@ -217,47 +231,53 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <a class="sourceLine" id="cb62-4" data-line-number="4"><span class="co">#parse JSON data, convert it into a DataFrame</span></a>
 <a class="sourceLine" id="cb62-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb62-6" data-line-number="6">CACOVID = JSONdata |&gt; JSON.parse |&gt; DataFrame</a></code></pre></div>
+<p><strong>With A Query String using the LA City Data API</strong></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb63-1" data-line-number="1">using DataKnots, JSON, HTPP </a>
+<a class="sourceLine" id="cb63-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb63-3" data-line-number="3">url = <span class="st">&quot;https://data.seattle.gov/resource/65db-xm6k.json&quot;</span></a>
+<a class="sourceLine" id="cb63-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb63-5" data-line-number="5">parameters = <span class="dt">Dict</span>(<span class="st">&quot;$select&quot;</span> =&gt; <span class="st">&quot;Time, Age&quot;</span>)</a></code></pre></div>
 </div>
 <div id="r-3" class="section level2">
 <h2><span class="header-section-number">7.2</span> R</h2>
 <p>To connect to APIs in R, we utilize the <code>httr</code> and <code>jsonlite</code> packages.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">library</span>(httr)</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">library</span>(jsonlite)</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">library</span>(httr)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="kw">library</span>(jsonlite)</a></code></pre></div>
 <p>To get data from an API, we’ll use the <code>GET</code> command from the <code>httr</code> library. This function takes in a URL and can also take in extra parameters, depending on the API.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">res</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">res</a></code></pre></div>
 <pre><code>Response [https://covidtracking.com/api/v1/states/current.json]
   Date: 2020-05-20 03:17
   Status: 200
   Content-Type: application/json
   Size: 45 kB</code></pre>
 <p>Looking into the res variable, we see a description of our request and what was returned. To look at the data received, we convert the unicode content of the response into characters. APIs typically return data in JSON format, so we can use the <code>fromJSON</code> function from the <code>jsonlite</code> package to translate this into a dataframe.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">json_data &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="st">  </span><span class="kw">rawToChar</span>() </a>
-<a class="sourceLine" id="cb66-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb66-4" data-line-number="4">data &lt;-<span class="st"> </span>json_data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
-<a class="sourceLine" id="cb66-6" data-line-number="6">  </a>
-<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="kw">head</span>(data)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">json_data &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="st">  </span><span class="kw">rawToChar</span>() </a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">data &lt;-<span class="st"> </span>json_data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
+<a class="sourceLine" id="cb67-6" data-line-number="6">  </a>
+<a class="sourceLine" id="cb67-7" data-line-number="7"><span class="kw">head</span>(data)</a></code></pre></div>
 <pre><code>state positive positiveScore
 1     AK       399            ...
 2     AL       12376          ...
 ...</code></pre>
 <p>As an example of using an API with other query parameters that you can pass in, lets look at the API for jeopardy trivia questions! Information on this API can be found <a href="https://jservice.io/">here</a>.</p>
 <p>The “random question” section of the API allows you to to pass in a “count” parameter for how many questions you would like. The <code>GET</code> function in R can take these query specifications through the <code>query</code> parameter as a named list.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">  <span class="st">&quot;http://jservice.io/api/random&quot;</span>,</a>
-<a class="sourceLine" id="cb68-3" data-line-number="3">  <span class="dt">query =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb68-4" data-line-number="4">    <span class="dt">count =</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb68-5" data-line-number="5">    <span class="co"># could insert other query specifications here!</span></a>
-<a class="sourceLine" id="cb68-6" data-line-number="6">  )</a>
-<a class="sourceLine" id="cb68-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb68-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb68-9" data-line-number="9">questions &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb68-10" data-line-number="10"><span class="st">  </span><span class="kw">rawToChar</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb68-11" data-line-number="11"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
-<a class="sourceLine" id="cb68-12" data-line-number="12">  </a>
-<a class="sourceLine" id="cb68-13" data-line-number="13">questions</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">  <span class="st">&quot;http://jservice.io/api/random&quot;</span>,</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">  <span class="dt">query =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">    <span class="dt">count =</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">    <span class="co"># could insert other query specifications here!</span></a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">  )</a>
+<a class="sourceLine" id="cb69-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb69-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb69-9" data-line-number="9">questions &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-10" data-line-number="10"><span class="st">  </span><span class="kw">rawToChar</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-11" data-line-number="11"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
+<a class="sourceLine" id="cb69-12" data-line-number="12">  </a>
+<a class="sourceLine" id="cb69-13" data-line-number="13">questions</a></code></pre></div>
 <pre><code>     id       answer                                         question value
 1 71610 a centennial   A celebration to mark at 10-decade anniversary  1000  ...
 2 71611    Patagonia   ...
@@ -269,22 +289,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>import requests
 import pandas as pd</code></pre>
 <p>To get data from an API, we’ll use the <code>get</code> command from the <code>requests</code> library. This function takes in a URL and can also take in extra parameters, depending on the API.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
-<a class="sourceLine" id="cb71-2" data-line-number="2">req</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">req</a></code></pre></div>
 <pre><code>&lt;Response [200]&gt;</code></pre>
 <p>Looking into the res variable, we see that our request was successful (status 200). To look at the data received, can use the <code>json</code> method of the request. We can convert this into a dataframe with the <code>DataFrame</code> function from <code>pandas</code>.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
-<a class="sourceLine" id="cb73-2" data-line-number="2">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
-<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="kw">data.head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
+<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="kw">data.head</span>()</a></code></pre></div>
 <pre><code>  state  ...                                      hash
 0    AK  ...  22375f1c5b622e4c0aee670cc25b05584c1e3341
 1    AL  ...  dc3754f5631d38c30317c938b33a1cbcb5a19bee</code></pre>
 <p>Same as in the <code>R</code> section, we’ll use the API for jeopardy trivia questions to give an example of how to pass a query parameter to the API.</p>
 <p>The “random question” section of the API allows you to to pass in a “count” parameter for how many questions you would like. The <code>requests.get</code> function in Python can take these query specifications through the <code>params</code> parameter as a dictionary of strings.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;http://jservice.io/api/random&quot;</span>, <span class="dt">params =</span> {<span class="st">&quot;count&quot;</span><span class="op">:</span><span class="st"> &quot;2&quot;</span>})</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
-<a class="sourceLine" id="cb75-3" data-line-number="3">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
-<a class="sourceLine" id="cb75-4" data-line-number="4">data</a></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;http://jservice.io/api/random&quot;</span>, <span class="dt">params =</span> {<span class="st">&quot;count&quot;</span><span class="op">:</span><span class="st"> &quot;2&quot;</span>})</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
+<a class="sourceLine" id="cb76-3" data-line-number="3">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
+<a class="sourceLine" id="cb76-4" data-line-number="4">data</a></code></pre></div>
 <pre><code>   id  ...                                   category
 0  59388  ...  {&#39;id&#39;: 2741, &#39;title&#39;: &#39;think pink&#39;...
 1  59389  ...  {&#39;id&#39;: 7597, &#39;title&#39;: &#39;veggie-pourri&#39;...</code></pre>
