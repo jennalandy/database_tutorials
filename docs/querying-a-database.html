@@ -24,7 +24,7 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-19" />
+<meta name="date" content="2020-05-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -127,8 +127,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
-<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>2</b> Background</a><ul>
+<li class="chapter" data-level="2.1" data-path="background.html"><a href="background.html#motivation"><i class="fa fa-check"></i><b>2.1</b> Motivation</a></li>
+<li class="chapter" data-level="2.2" data-path="background.html"><a href="background.html#about-databases"><i class="fa fa-check"></i><b>2.2</b> About Databases</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="background.html"><a href="background.html#relational-model"><i class="fa fa-check"></i><b>2.2.1</b> Relational Model</a></li>
+<li class="chapter" data-level="2.2.2" data-path="background.html"><a href="background.html#basic-introduction-to-sql"><i class="fa fa-check"></i><b>2.2.2</b> Basic Introduction to SQL</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a><ul>
 <li class="chapter" data-level="3.1" data-path="machine-setup.html"><a href="machine-setup.html#linux---ubuntu"><i class="fa fa-check"></i><b>3.1</b> Linux - Ubuntu</a></li>
 <li class="chapter" data-level="3.2" data-path="machine-setup.html"><a href="machine-setup.html#mac-os"><i class="fa fa-check"></i><b>3.2</b> Mac OS</a></li>
@@ -205,62 +211,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="julia-2" class="section level2">
 <h2><span class="header-section-number">6.1</span> Julia</h2>
 <p><strong>Connect to Database</strong></p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb34-1" data-line-number="1">dsn = ODBC.DSN(<span class="st">&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb49-1" data-line-number="1">dsn = ODBC.DSN(<span class="st">&quot;Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;&quot;</span>)</a></code></pre></div>
 <p><strong>Query and filter using server-side sql commands</strong></p>
 <p>Note, lower case “query” returns a dataframe, as opposed to uppercase “Query”</p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb35-1" data-line-number="1">res=ODBC.query(dsn,<span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb35-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb35-3" data-line-number="3">select cyl, drat </a>
-<a class="sourceLine" id="cb35-4" data-line-number="4">from mtcars </a>
-<a class="sourceLine" id="cb35-5" data-line-number="5">where disp &gt; <span class="fl">200</span></a>
-<a class="sourceLine" id="cb35-6" data-line-number="6">      </a>
-<a class="sourceLine" id="cb35-7" data-line-number="7"><span class="st">&quot;&quot;&quot;) </span></a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb50-1" data-line-number="1">res=ODBC.query(dsn,<span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">select cyl, drat </a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">from mtcars </a>
+<a class="sourceLine" id="cb50-5" data-line-number="5">where disp &gt; <span class="fl">200</span></a>
+<a class="sourceLine" id="cb50-6" data-line-number="6">      </a>
+<a class="sourceLine" id="cb50-7" data-line-number="7"><span class="st">&quot;&quot;&quot;) </span></a></code></pre></div>
 <div id="query-database-to-select-all-rows-then-filterselect-rows-in-julia" class="section level3">
 <h3><span class="header-section-number">6.1.1</span> Query database to select all rows, then filter/select rows in julia</h3>
 <p><strong>LINQ style</strong></p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb36-1" data-line-number="1">res=@from i <span class="kw">in</span> ODBC.Query(dsn,<span class="st">&quot;select * from mtcars&quot;</span>) <span class="kw">begin</span> </a>
-<a class="sourceLine" id="cb36-2" data-line-number="2">    @where i.disp &gt; <span class="fl">200</span></a>
-<a class="sourceLine" id="cb36-3" data-line-number="3">    @select {Cylinder=i.cyl, Drat=i.drat}</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4">    @collect table </a>
-<a class="sourceLine" id="cb36-5" data-line-number="5"><span class="kw">end</span> </a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb51-1" data-line-number="1">res=@from i <span class="kw">in</span> ODBC.Query(dsn,<span class="st">&quot;select * from mtcars&quot;</span>) <span class="kw">begin</span> </a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">    @where i.disp &gt; <span class="fl">200</span></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3">    @select {Cylinder=i.cyl, Drat=i.drat}</a>
+<a class="sourceLine" id="cb51-4" data-line-number="4">    @collect table </a>
+<a class="sourceLine" id="cb51-5" data-line-number="5"><span class="kw">end</span> </a></code></pre></div>
 <p><strong>dyplr/tidyverse style</strong></p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb37-1" data-line-number="1">res = ODBC.query(dsn,<span class="st">&quot;select * from mtcars&quot;</span>) |&gt; </a>
-<a class="sourceLine" id="cb37-2" data-line-number="2">@filter( _.disp &gt; <span class="fl">200</span>) |&gt;</a>
-<a class="sourceLine" id="cb37-3" data-line-number="3">@select( :cyl, :drat) |&gt;</a>
-<a class="sourceLine" id="cb37-4" data-line-number="4">DataFrame</a></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb52-1" data-line-number="1">res = ODBC.query(dsn,<span class="st">&quot;select * from mtcars&quot;</span>) |&gt; </a>
+<a class="sourceLine" id="cb52-2" data-line-number="2">@filter( _.disp &gt; <span class="fl">200</span>) |&gt;</a>
+<a class="sourceLine" id="cb52-3" data-line-number="3">@select( :cyl, :drat) |&gt;</a>
+<a class="sourceLine" id="cb52-4" data-line-number="4">DataFrame</a></code></pre></div>
 </div>
 </div>
 <div id="r-2" class="section level2">
 <h2><span class="header-section-number">6.2</span> R</h2>
 <p>In R, you can choose to read a full table or query a subset with a sql query. Both options will return a <code>data.frame</code>.</p>
 <p><strong>Read full table</strong></p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1">data &lt;-<span class="st"> </span><span class="kw">dbReadTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>)</a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">head</span>(data)</a></code></pre></div>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb53-1" data-line-number="1">data &lt;-<span class="st"> </span><span class="kw">dbReadTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>)</a>
+<a class="sourceLine" id="cb53-2" data-line-number="2"><span class="kw">head</span>(data)</a></code></pre></div>
 <p><strong>Query a table</strong></p>
-<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1">species &lt;-<span class="st"> </span><span class="kw">dbGetQuery</span>(</a>
-<a class="sourceLine" id="cb39-2" data-line-number="2">  conn, </a>
-<a class="sourceLine" id="cb39-3" data-line-number="3">  <span class="st">&#39;select distinct Species from iris&#39;</span></a>
-<a class="sourceLine" id="cb39-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb39-5" data-line-number="5">species</a></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb54-1" data-line-number="1">species &lt;-<span class="st"> </span><span class="kw">dbGetQuery</span>(</a>
+<a class="sourceLine" id="cb54-2" data-line-number="2">  conn, </a>
+<a class="sourceLine" id="cb54-3" data-line-number="3">  <span class="st">&#39;select distinct Species from iris&#39;</span></a>
+<a class="sourceLine" id="cb54-4" data-line-number="4">)</a>
+<a class="sourceLine" id="cb54-5" data-line-number="5">species</a></code></pre></div>
 </div>
 <div id="python-2" class="section level2">
 <h2><span class="header-section-number">6.3</span> Python</h2>
 <div id="standard-python" class="section level3">
 <h3><span class="header-section-number">6.3.1</span> Standard Python</h3>
 <p>In standard python, we pass a <code>select</code> statement to <code>cursor.execute</code>. To fetch the results as a list of rows, we use <code>cursor.fetchall</code>. Each row in this output is of the type <code>pyodbc.Row</code>, and with this data type we can access values by the column names of the table using dot notation.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb40-1" data-line-number="1">cursor.execute(<span class="st">&quot;select * from iris&quot;</span>)</a>
-<a class="sourceLine" id="cb40-2" data-line-number="2">iris_out <span class="op">=</span> cursor.fetchall()</a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="bu">print</span>(<span class="bu">type</span>(iris_out[<span class="dv">1</span>]))</a>
-<a class="sourceLine" id="cb40-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb40-6" data-line-number="6">first_sepal_length <span class="op">=</span> iris_out[<span class="dv">1</span>].SepalLength</a></code></pre></div>
+<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb55-1" data-line-number="1">cursor.execute(<span class="st">&quot;select * from iris&quot;</span>)</a>
+<a class="sourceLine" id="cb55-2" data-line-number="2">iris_out <span class="op">=</span> cursor.fetchall()</a>
+<a class="sourceLine" id="cb55-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb55-4" data-line-number="4"><span class="bu">print</span>(<span class="bu">type</span>(iris_out[<span class="dv">1</span>]))</a>
+<a class="sourceLine" id="cb55-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb55-6" data-line-number="6">first_sepal_length <span class="op">=</span> iris_out[<span class="dv">1</span>].SepalLength</a></code></pre></div>
 </div>
 <div id="pandas" class="section level3">
 <h3><span class="header-section-number">6.3.2</span> Pandas</h3>
 <p>With pandas, we can use the <code>read_sql</code> function to query tables. This function returns the query results as a pandas DataFrame, which is frequently a lot easier to work with than the <code>pyodbc.Row</code> data type mentioned above. We recommend using pandas for this, and will continue to use pandas for the following chapters.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="im">import</span> pandas <span class="im">as</span> pd</a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">iris_df_out <span class="op">=</span> pd.read_sql(<span class="st">&quot;select * from iris&quot;</span>, conn)</a></code></pre></div>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb56-1" data-line-number="1"><span class="im">import</span> pandas <span class="im">as</span> pd</a>
+<a class="sourceLine" id="cb56-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb56-3" data-line-number="3">iris_df_out <span class="op">=</span> pd.read_sql(<span class="st">&quot;select * from iris&quot;</span>, conn)</a></code></pre></div>
 </div>
 </div>
 <div id="sas-2" class="section level2">

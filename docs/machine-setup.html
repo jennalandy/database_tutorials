@@ -24,14 +24,14 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-19" />
+<meta name="date" content="2020-05-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="introduction.html"/>
+<link rel="prev" href="background.html"/>
 <link rel="next" href="connecting-to-a-database.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -127,8 +127,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <nav role="navigation">
 
 <ul class="summary">
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Preface</a></li>
-<li class="chapter" data-level="2" data-path="introduction.html"><a href="introduction.html"><i class="fa fa-check"></i><b>2</b> Introduction</a></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
+<li class="chapter" data-level="2" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>2</b> Background</a><ul>
+<li class="chapter" data-level="2.1" data-path="background.html"><a href="background.html#motivation"><i class="fa fa-check"></i><b>2.1</b> Motivation</a></li>
+<li class="chapter" data-level="2.2" data-path="background.html"><a href="background.html#about-databases"><i class="fa fa-check"></i><b>2.2</b> About Databases</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="background.html"><a href="background.html#relational-model"><i class="fa fa-check"></i><b>2.2.1</b> Relational Model</a></li>
+<li class="chapter" data-level="2.2.2" data-path="background.html"><a href="background.html#basic-introduction-to-sql"><i class="fa fa-check"></i><b>2.2.2</b> Basic Introduction to SQL</a></li>
+</ul></li>
+</ul></li>
 <li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a><ul>
 <li class="chapter" data-level="3.1" data-path="machine-setup.html"><a href="machine-setup.html#linux---ubuntu"><i class="fa fa-check"></i><b>3.1</b> Linux - Ubuntu</a></li>
 <li class="chapter" data-level="3.2" data-path="machine-setup.html"><a href="machine-setup.html#mac-os"><i class="fa fa-check"></i><b>3.2</b> Mac OS</a></li>
@@ -198,38 +204,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to.</p>
 <div id="linux---ubuntu" class="section level2">
 <h2><span class="header-section-number">3.1</span> Linux - Ubuntu</h2>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="fu">sudo</span> su</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="ex">curl</span> https://packages.microsoft.com/keys/microsoft.asc <span class="kw">|</span> <span class="ex">apt-key</span> add -</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="co">#Download appropriate package for the OS version</span></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="co">#Choose only ONE of the following, corresponding to your OS version</span></a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="co">#Ubuntu 16.04</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/16.04/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
-<a class="sourceLine" id="cb1-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10"><span class="co">#Ubuntu 18.04</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/18.04/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="co">#Ubuntu 19.10</span></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/19.10/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="bu">exit</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="fu">sudo</span> apt-get update</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="fu">sudo</span> ACCEPT_EULA=Y apt-get install msodbcsql17</a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="co"># optional: for bcp and sqlcmd</span></a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="fu">sudo</span> ACCEPT_EULA=Y apt-get install mssql-tools</a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bash_profile</a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bashrc</a>
-<a class="sourceLine" id="cb1-23" data-line-number="23"><span class="bu">source</span> ~/.bashrc</a>
-<a class="sourceLine" id="cb1-24" data-line-number="24"><span class="co"># optional: for unixODBC development headers</span></a>
-<a class="sourceLine" id="cb1-25" data-line-number="25"><span class="fu">sudo</span> apt-get install unixodbc-dev</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="fu">sudo</span> su</a>
+<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="ex">curl</span> https://packages.microsoft.com/keys/microsoft.asc <span class="kw">|</span> <span class="ex">apt-key</span> add -</a>
+<a class="sourceLine" id="cb16-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#Download appropriate package for the OS version</span></a>
+<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="co">#Choose only ONE of the following, corresponding to your OS version</span></a>
+<a class="sourceLine" id="cb16-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb16-7" data-line-number="7"><span class="co">#Ubuntu 16.04</span></a>
+<a class="sourceLine" id="cb16-8" data-line-number="8"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/16.04/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
+<a class="sourceLine" id="cb16-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb16-10" data-line-number="10"><span class="co">#Ubuntu 18.04</span></a>
+<a class="sourceLine" id="cb16-11" data-line-number="11"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/18.04/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
+<a class="sourceLine" id="cb16-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb16-13" data-line-number="13"><span class="co">#Ubuntu 19.10</span></a>
+<a class="sourceLine" id="cb16-14" data-line-number="14"><span class="ex">curl</span> https://packages.microsoft.com/config/ubuntu/19.10/prod.list <span class="op">&gt;</span> /etc/apt/sources.list.d/mssql-release.list</a>
+<a class="sourceLine" id="cb16-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb16-16" data-line-number="16"><span class="bu">exit</span></a>
+<a class="sourceLine" id="cb16-17" data-line-number="17"><span class="fu">sudo</span> apt-get update</a>
+<a class="sourceLine" id="cb16-18" data-line-number="18"><span class="fu">sudo</span> ACCEPT_EULA=Y apt-get install msodbcsql17</a>
+<a class="sourceLine" id="cb16-19" data-line-number="19"><span class="co"># optional: for bcp and sqlcmd</span></a>
+<a class="sourceLine" id="cb16-20" data-line-number="20"><span class="fu">sudo</span> ACCEPT_EULA=Y apt-get install mssql-tools</a>
+<a class="sourceLine" id="cb16-21" data-line-number="21"><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bash_profile</a>
+<a class="sourceLine" id="cb16-22" data-line-number="22"><span class="bu">echo</span> <span class="st">&#39;export PATH=&quot;$PATH:/opt/mssql-tools/bin&quot;&#39;</span> <span class="op">&gt;&gt;</span> ~/.bashrc</a>
+<a class="sourceLine" id="cb16-23" data-line-number="23"><span class="bu">source</span> ~/.bashrc</a>
+<a class="sourceLine" id="cb16-24" data-line-number="24"><span class="co"># optional: for unixODBC development headers</span></a>
+<a class="sourceLine" id="cb16-25" data-line-number="25"><span class="fu">sudo</span> apt-get install unixodbc-dev</a></code></pre></div>
 </div>
 <div id="mac-os" class="section level2">
 <h2><span class="header-section-number">3.2</span> Mac OS</h2>
-<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="ex">brew</span> tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="ex">brew</span> update</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="va">HOMEBREW_NO_ENV_FILTERING=</span>1 <span class="va">ACCEPT_EULA=</span>Y <span class="ex">brew</span> install msodbcsql17 mssql-tools</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="ex">/usr/bin/ruby</span> -e <span class="st">&quot;</span><span class="va">$(</span><span class="ex">curl</span> -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install<span class="va">)</span><span class="st">&quot;</span></a>
+<a class="sourceLine" id="cb17-2" data-line-number="2"><span class="ex">brew</span> tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release</a>
+<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="ex">brew</span> update</a>
+<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="va">HOMEBREW_NO_ENV_FILTERING=</span>1 <span class="va">ACCEPT_EULA=</span>Y <span class="ex">brew</span> install msodbcsql17 mssql-tools</a></code></pre></div>
 </div>
 <div id="windows" class="section level2">
 <h2><span class="header-section-number">3.3</span> Windows</h2>
@@ -249,7 +255,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="introduction.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="background.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 <a href="connecting-to-a-database.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>

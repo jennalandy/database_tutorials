@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Connecting to a Database | Using Databases</title>
-  <meta name="description" content="4 Connecting to a Database | Using Databases" />
+  <title>2 Background | Using Databases</title>
+  <meta name="description" content="2 Background | Using Databases" />
   <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Connecting to a Database | Using Databases" />
+  <meta property="og:title" content="2 Background | Using Databases" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="jennalandy/stat400_database_tutorials" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Connecting to a Database | Using Databases" />
+  <meta name="twitter:title" content="2 Background | Using Databases" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="machine-setup.html"/>
-<link rel="next" href="writing-to-a-database.html"/>
+<link rel="prev" href="index.html"/>
+<link rel="next" href="machine-setup.html"/>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -198,132 +198,117 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="connecting-to-a-database" class="section level1">
-<h1><span class="header-section-number">4</span> Connecting to a Database</h1>
-<p>The first step to reading or writing to a database is the connection.</p>
-<p>Note that with Julia, R, and Python, we can ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you’re sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you’re working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.x. <code>database = &quot;database name&quot;</code>).</p>
-<div id="julia" class="section level2">
-<h2><span class="header-section-number">4.1</span> Julia</h2>
-<pre class="text"><code>using ODBC
-
-# Get user credentials
-address = begin 
-    print(&quot;Enter Address: &quot;)
-    readline()
-end 
-
-database = begin 
-    print(&quot;Enter Database Name: &quot;)
-    readline()
-end 
-
-user = begin 
-    print(&quot;Enter Username: &quot;)
-    readline() 
-end 
-
-crypt = Base.getpass(&quot;Enter Password&quot;)
-pass = read(crypt,String)
-
-# setting up database  
-dsn = ODBC.DSN(&quot;Driver={ODBC Driver 17 for SQL Server};Address=$address;Database=$database;UID=$user;PWD=$pass;&quot;)
-
-# disconnect when you&#39;re done using this connection
-ODBC.disconnect()</code></pre>
+<div id="background" class="section level1">
+<h1><span class="header-section-number">2</span> Background</h1>
+<div id="motivation" class="section level2">
+<h2><span class="header-section-number">2.1</span> Motivation</h2>
+<p>With the advent of large and remote data sources comes a need to for proper training in accessing and utilizing databases. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in their courses, and possibly leaves students to learn these essential skills outside of the classroom.</p>
+<p>The technical purpose of this book is to demostrate how to <a href="03-connections.Rmd">connect to</a>, <a href="04-writing.Rmd">upload data to</a>, and <a href="05-querying.Rmd">read data from</a> a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessens can likely be extended to any database, with a few google-able differences.</p>
 </div>
-<div id="sas" class="section level2">
-<h2><span class="header-section-number">4.2</span> SAS</h2>
-<p>When using SAS, we can connect through proc sql or using a libname. We would recommend the latter, as the connection can be referenced throughout your sql file, as opposed to within one proc sql statement.</p>
-<p><strong>Proc Sql</strong></p>
-<pre class="sas"><code>/*from proc sql directly*/
-proc sql;
-connect to odbc as conn
-required=&quot;Driver={ODBC Driver 17 for SQL Server};Address=&lt;address&gt;;Database=&lt;database name&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;&quot;;
-
-create table event as
-select * from connection to conn
-(select * from events) ;
-
-/*disconnect when you&#39;re done using this connection*/
-disconnect from conn;
-quit;</code></pre>
-<p><strong>Libname</strong></p>
-<pre class="sas"><code>/*by using a libname*/
-libname conn2 odbc
-required =&quot;Driver={ODBC Driver 17 for SQL Server};Address=&lt;address&gt;;Database=&lt;database name&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;&quot;;
-
-proc sql;
-create table event as
-select * from conn2.events ;
-
-/*disconnect when you&#39;re done using this connection*/
-disconnect from conn2;
-quit;</code></pre>
+<div id="about-databases" class="section level2">
+<h2><span class="header-section-number">2.2</span> About Databases</h2>
+<p>A database stores data, and is usually controlled by a database management system. Data in most databases is typically modeled in a way similar to what we usually see as statisticians–rows and columns in a series of tables. Most databases utilize structured query language (SQL) to build tables, write data, and query data. Most databases are also stored on a remote server.</p>
+<div id="relational-model" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Relational Model</h3>
+<div id="relation-and-relationships" class="section level4">
+<h4><span class="header-section-number">2.2.1.1</span> Relation and Relationships</h4>
+<p>Many databases follow the relational model. In a relational model, each table is a <em>relation</em>. These relations consist of <em>attriutes</em>, or columns, and <em>tuples</em>, or rows. A relationship is a connection between relations (tables).</p>
+<p>An example database we’ll use in this book is about a bakery. The <em>relations</em> are customers, items, receipts, and goods. In the receipts relation, the <em>attributes</em> are receipt ID, customer ID, and date of purchase. Each <em>tuple</em> represents one receipt. One <em>relation</em> is that customer ID references the ID attribute of the customers relation.</p>
 </div>
-<div id="r" class="section level2">
-<h2><span class="header-section-number">4.3</span> R</h2>
-<p>Using R, we connect to the database using the <code>odbc</code> and <code>DBI</code> packages.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1"><span class="kw">library</span>(odbc)</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">library</span>(DBI)</a>
-<a class="sourceLine" id="cb21-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb21-4" data-line-number="4">address =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Address&quot;</span>,<span class="st">&quot;Address&quot;</span>)</a>
-<a class="sourceLine" id="cb21-5" data-line-number="5">database =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database name&quot;</span>,<span class="st">&quot;Database name&quot;</span>)</a>
-<a class="sourceLine" id="cb21-6" data-line-number="6">uid =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database username&quot;</span>, <span class="st">&quot;Database username&quot;</span>)</a>
-<a class="sourceLine" id="cb21-7" data-line-number="7">pwd =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">askForPassword</span>(<span class="st">&quot;Database password&quot;</span>)</a>
-<a class="sourceLine" id="cb21-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb21-9" data-line-number="9"><span class="co"># open connection</span></a>
-<a class="sourceLine" id="cb21-10" data-line-number="10">conn &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(</a>
-<a class="sourceLine" id="cb21-11" data-line-number="11">  <span class="kw">odbc</span>(),</a>
-<a class="sourceLine" id="cb21-12" data-line-number="12">  <span class="dt">Driver =</span> <span class="st">&quot;ODBC Driver 17 for SQL Server&quot;</span>,</a>
-<a class="sourceLine" id="cb21-13" data-line-number="13">  <span class="dt">Server =</span> address,</a>
-<a class="sourceLine" id="cb21-14" data-line-number="14">  <span class="dt">Database =</span> database,</a>
-<a class="sourceLine" id="cb21-15" data-line-number="15">  <span class="dt">UID =</span> uid,</a>
-<a class="sourceLine" id="cb21-16" data-line-number="16">  <span class="dt">PWD =</span> pwd</a>
-<a class="sourceLine" id="cb21-17" data-line-number="17">)</a>
-<a class="sourceLine" id="cb21-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb21-19" data-line-number="19"><span class="co"># disconnect when you&#39;re done using this connection</span></a>
-<a class="sourceLine" id="cb21-20" data-line-number="20"><span class="kw">dbDisconnect</span>(conn)</a></code></pre></div>
+<div id="keys" class="section level4">
+<h4><span class="header-section-number">2.2.1.2</span> Keys</h4>
+<p>A <em>primary key</em> is an attribute or set of attributes that uniquely identifies a tuple. For example, the primary key in the receipts relation is the receipt ID, unique to each row. A <em>foreign key</em> is an attribute or set of attributes that references the primary key of another relation. For instance, within the receipts relation, the customer ID attribute references the primary key of the customers relation.</p>
 </div>
-<div id="python" class="section level2">
-<h2><span class="header-section-number">4.4</span> Python</h2>
-<p>The driver used in Python may depend on your setup. If you’re working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name:</p>
-<p><code>driver = &quot;{ODBC Driver 17 for SQL Server}&quot;</code></p>
-<p>If you’re working on a Mac or Linux device, you cannot do this without further setup. It’s easiest to pass in the path to the <code>dylib</code> file, which should be installed to <code>/usr/local/lib</code> by default. With this setup, you will need to reference the driver like this:</p>
-<p><code>driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot;</code></p>
-<p>If copying and pasting the code below, switch which <code>driver =</code> line is commented depending on your operating system.</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb22-1" data-line-number="1"><span class="im">import</span> pyodbc</a>
-<a class="sourceLine" id="cb22-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb22-3" data-line-number="3">driver <span class="op">=</span> <span class="st">&quot;{ODBC Driver 17 for SQL Server}&quot;</span> <span class="co"># PC Users</span></a>
-<a class="sourceLine" id="cb22-4" data-line-number="4"><span class="co"># driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot; # Mac Users</span></a>
-<a class="sourceLine" id="cb22-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb22-6" data-line-number="6">address <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Address: &quot;</span>)</a>
-<a class="sourceLine" id="cb22-7" data-line-number="7">database <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Database name: &quot;</span>)</a>
-<a class="sourceLine" id="cb22-8" data-line-number="8">username <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Username: &quot;</span>)</a>
-<a class="sourceLine" id="cb22-9" data-line-number="9">password <span class="op">=</span> getpass.getpass(prompt <span class="op">=</span> <span class="st">&quot;Password: &quot;</span>)</a>
-<a class="sourceLine" id="cb22-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb22-11" data-line-number="11"><span class="co"># open connection</span></a>
-<a class="sourceLine" id="cb22-12" data-line-number="12">conn <span class="op">=</span> pyodbc.<span class="ex">connect</span>(</a>
-<a class="sourceLine" id="cb22-13" data-line-number="13">    <span class="st">&quot;;&quot;</span>.join([</a>
-<a class="sourceLine" id="cb22-14" data-line-number="14">        <span class="st">&quot;Driver=&quot;</span><span class="op">+</span>driver,</a>
-<a class="sourceLine" id="cb22-15" data-line-number="15">        <span class="st">&quot;Address=&quot;</span><span class="op">+</span>address,</a>
-<a class="sourceLine" id="cb22-16" data-line-number="16">        <span class="st">&quot;Database=&quot;</span><span class="op">+</span>database,</a>
-<a class="sourceLine" id="cb22-17" data-line-number="17">        <span class="st">&quot;UID=&quot;</span><span class="op">+</span>username,</a>
-<a class="sourceLine" id="cb22-18" data-line-number="18">        <span class="st">&quot;PWD=&quot;</span><span class="op">+</span>password</a>
-<a class="sourceLine" id="cb22-19" data-line-number="19">    ])</a>
-<a class="sourceLine" id="cb22-20" data-line-number="20">)</a>
-<a class="sourceLine" id="cb22-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb22-22" data-line-number="22"><span class="co"># get cursor</span></a>
-<a class="sourceLine" id="cb22-23" data-line-number="23">cursor <span class="op">=</span> conn.cursor()</a>
-<a class="sourceLine" id="cb22-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb22-25" data-line-number="25"><span class="co"># disconnect when you&#39;re done using this connection</span></a>
-<a class="sourceLine" id="cb22-26" data-line-number="26">conn.close()</a></code></pre></div>
 </div>
-<div id="jsl" class="section level2">
-<h2><span class="header-section-number">4.5</span> JSL</h2>
-<pre class="text"><code>opendatabaseconnection(
-        &quot;Driver={ODBC Driver 17 for SQL Server};Address=&lt;address&gt;;Database=&lt;database&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;&quot;
-)</code></pre>
+<div id="basic-introduction-to-sql" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Basic Introduction to SQL</h3>
+<p>Structured query language, more commonly known as SQL, is used to build tables, write data, and query data. SQL includes data definition language (DDL), data manipulation language (DML), data control language (DCL), and query language (QL).</p>
+<ul>
+<li>DDL: Data definition language is used to define and manipulate relational schemas. This means defining the table’s attributes and keys. DDL includes statements like <code>create table</code> and <code>alter table</code> that you’ll see later in this book, espcially in <a href="04-writing.Rmd">the section on writing to a database</a>.</li>
+<li>DML: Data manipulation language is used to add, update, and delete data from tables. This includes statements like <code>insert</code>, which you will see later in this book, as well as <code>update</code> and <code>delete</code>, espcially in <a href="04-writing.Rmd">the section on writing to a database</a>.</li>
+<li>DCL: Data control language is used to implement security and access rules. This is something a professor who created the database can use to decide which students can see what data. We wont discuss any DCL in this book.</li>
+<li>QL: Query language is used to request information from the database. The most used command in QL is <code>select</code>. You will see a lot of this in this book, espically in <a href="05-querying.Rmd">the section on querying a database</a>.</li>
+</ul>
+<div id="more-details-on-query-language" class="section level4">
+<h4><span class="header-section-number">2.2.2.1</span> More details on query language</h4>
+<p>To explore some common SQL queries, we’ll look at the iris dataset. Recall that its attributes are sepal length, sepal width, petal length, petal width, and species.</p>
+<p>The most basic SQL query is <code>select * from iris</code>. This will return the full table.</p>
+<div id="order-by-and-top" class="section level5">
+<h5><span class="header-section-number">2.2.2.1.1</span> Order by and Top</h5>
+<p>Order by is used to sort a relation by an attribute. Limit can be used to take the first <code>n</code> tuples from a relation. For example, the statement below returns data for the five flowers with the highest sepal length.</p>
+<pre><code>select top 5 SepalLength, Species from iris 
+  order by SepalLength;</code></pre>
+<pre><code>  SepalLength Species
+1         4.3  setosa
+2         4.4  setosa
+3         4.4  setosa
+4         4.4  setosa
+5         4.5  setosa</code></pre>
+</div>
+<div id="where" class="section level5">
+<h5><span class="header-section-number">2.2.2.1.2</span> Where</h5>
+<p>The returned table can be subsetted to the desired data with a <code>where</code> clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:</p>
+<pre><code>select * from iris
+  where Species = &#39;setosa&#39; and
+        Petal.Length &gt; 1;</code></pre>
+<pre><code>   SepalLength SepalWidth PetalLength PetalWidth Species
+1          5.1        3.5         1.4        0.2  setosa
+2          4.9        3.0         1.4        0.2  setosa
+...</code></pre>
+<p>We can also select only specific columns. The following statement will return only the petal measurements and species.</p>
+<pre><code>select PetalLength, PetalWidth, Species from iris
+  where Species = &#39;setosa&#39; and
+        PetalLength &gt; 1;</code></pre>
+<pre><code>   PetalLength PetalWidth Species
+1          1.4        0.2  setosa
+2          1.4        0.2  setosa
+...</code></pre>
+<p>Note that SQL uses a single equal sign for a statement of equality and strings have single quotes.</p>
+</div>
+<div id="summary-statistics" class="section level5">
+<h5><span class="header-section-number">2.2.2.1.3</span> Summary Statistics</h5>
+<p>Summary statistics can be obtained by using summary functions in when defining what variables to return. For example, if we want to view the average and maximum petal length, we can use the <code>avg</code> and <code>max</code> summary functions. We can also give these attributes new names with an <code>as</code> clause.</p>
+<pre><code>select avg(PetalLength) as average_petal_length, max(PetalLength) as max_petal_length from iris;</code></pre>
+<pre><code>  average_petal_length max_petal_length
+1                3.758              6.9</code></pre>
+</div>
+<div id="group-by-having" class="section level5">
+<h5><span class="header-section-number">2.2.2.1.4</span> Group By / Having</h5>
+<p><code>group by</code> allows us to split, apply, and combine in SQL. For instance, if we wanted the average petal length of flowers, separated by species, we could 1) split: group by species, 2) apply: take the average of petal length, and 3) combine: return a single table with this information.</p>
+<pre><code>select Species, avg(PetalLength) as average_petal_length from iris
+  group by Species;</code></pre>
+<pre><code>     Species average_petal_length
+1     setosa                1.462
+2 versicolor                4.260
+3  virginica                5.552</code></pre>
+<p><code>having</code> allows us to place where-like conditions related to the grouping variable. For instance, if we only wanted to display the species and average petal length for irises with over 10 observations, we could use having. (In this case, all species have 50 observations, so all averages are still reported).</p>
+<pre><code>select Species, avg(PetalLength) as average_petal_length from iris
+  group by Species
+  having count(*) &gt; 10;</code></pre>
+<pre><code>     Species average_petal_length
+1     setosa                1.462
+2 versicolor                4.260
+3  virginica                5.552</code></pre>
+<p>Note that conditions unrelated to the grouping variable can still be present in a where clause, which would go before the group by statement. Suppose, for instance, we wanted the average petal length of flowers with sepal lengths over 6 centimeters, by species, for species with over 10 observations with sepal lengths over 6 centimeters. (Note that setosa flowers don’t have enough long-sepaled observations to be included in this output).</p>
+<pre><code>select Species, avg(PetalLength) as average_petal_length from iris
+  where Sepal.Length &gt; 6
+  group by Species
+  having count(*) &gt; 10;</code></pre>
+<pre><code>     Species average_petal_length
+1 versicolor             4.585000
+2  virginica             5.682927</code></pre>
+</div>
+<div id="case" class="section level5">
+<h5><span class="header-section-number">2.2.2.1.5</span> Case</h5>
+<p>Case can be used to create new attributes based on some condition. The statement below creates a new attribute, long_sepal, is set to true when the sepa is over 6 centimeters long, and false otherwise.</p>
+<pre><code>select SepalLength, (
+  case when SepalLength &gt; 6 then &#39;true&#39; 
+  else &#39;false&#39; 
+  end) as long_sepal from iris;</code></pre>
 
+</div>
+</div>
+</div>
 </div>
 </div>
             </section>
@@ -331,8 +316,8 @@ quit;</code></pre>
           </div>
         </div>
       </div>
-<a href="machine-setup.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="writing-to-a-database.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="machine-setup.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
