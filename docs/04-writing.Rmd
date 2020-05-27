@@ -1,8 +1,8 @@
 # Writing to a Database
 
-Once you are connected to a database, you can write tables to it (assuming you have write access). If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database](05-querying.Rmd).
+Once you are connected to a database, you can write tables to it (assuming you have write access). If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database][Querying a Database].
 
-In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database](03-connections.Rmd).
+In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database][Connecting to a Database].
 
 ## Julia  
 
