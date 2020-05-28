@@ -1,39 +1,36 @@
 # Querying a Database
 
+**Contents**
+
+1. [Querying a Database in Julia](#query_julia)
+1. [Querying a Database in SAS](#query_sas)
+1. [Querying a Database in R](#query_r)
+1. [Querying a Database in Python](#query_python)
+
 Once you are connected to a database, you can query the tables that are there or the ones you have written. To review writing tables, see the previous chapter on [writing to a database][Writing to a Database].
 
 In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the third chapter on [connecting to a database][Connecting to a Database].
 
-In this chapter, we discuss the *logistics* of passing a query onto the database and reading the output using each language, rather than the basics of how to use sql. If you're new to sql, please review the query syntax for MS SQL Server. Here are some references we recommend:
+In this chapter, we discuss the *logistics* of passing a query onto the database and reading the output using each language, rather than the basics of how to use SQL A brief introduction to SQL can be found in the [background chapter][Background]. If you're new to SQL and want more resources, here are some references we recommend:
 
 - [SQL Keywords Reference by w3schools](https://www.w3schools.com/sql/sql_ref_keywords.asp): where there are multiple options (i.e. MySQL or SQL Server / Oracle / MS Access) make sure you follow instructions for SQL Server
 - [SQL Tutorial by w3schools](https://www.w3schools.com/sql/)
 - [SQL Server Basics by sqlservertutorial](https://www.sqlservertutorial.net/sql-server-basics/)
 
-## Julia
+## Julia{#query_julia}
 
-**Connect to Database**
-
-```julia
-dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
-```
-**Query and filter using server-side sql commands**
-
-Note, lower case "query" returns a dataframe, as opposed to uppercase "Query"
+To query a database in Julia, we use the `ODBC.query` function. This takes in the connection `dsn` and a raw string for the query. This can be a one-line string, but we recommend using tripple quotes to pass in a multi-line string so you can use pretty SQL syntax.
 
 ```julia
-res=ODBC.query(dsn,"""
-
-select cyl, drat 
-from mtcars 
-where disp > 200
-      
+res = ODBC.query(dsn,"""
+  select cyl, drat 
+    from mtcars 
+    where disp > 200
 """) 
 ```
 
-### Query database to select all rows, then filter/select rows in julia
+This can also be done LINQ style, using `ODBC.Query`, with a capital Q.
 
-**LINQ style**
 ```julia
 res=@from i in ODBC.Query(dsn,"select * from mtcars") begin 
     @where i.disp > 200
@@ -41,7 +38,9 @@ res=@from i in ODBC.Query(dsn,"select * from mtcars") begin
     @collect table 
 end 
 ```
-**dyplr/tidyverse style** 
+
+To get the same result, you could also query the entire table and filter and select in Julia.
+
 ```julia
 res = ODBC.query(dsn,"select * from mtcars") |> 
 @filter( _.disp > 200) |>
@@ -49,8 +48,37 @@ res = ODBC.query(dsn,"select * from mtcars") |>
 DataFrame
 ```
 
+## SAS{#query_sas}
 
-## R
+In SAS, we query using `proc sql`. The following code block references the connection libname created in [the connections chapter][#connect_sas].
+
+```sas
+proc sql;
+  create table mtcars as
+  select * from conn2.mtcars ;
+  quit;
+  
+libname conn2 clear;
+```
+
+In this example, we don't use the libname. This works just the same, but the syntax is a bit more convoluted.
+
+```sas
+proc sql;
+  connect to odbc as conn
+  required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
+
+  create table event as
+  select * from connection to conn
+  (select * from events) ;
+
+  disconnect from conn;
+  
+quit;
+```
+
+## R{#query_r}
+
 In R, you can choose to read a full table or query a subset with a sql query. Both options will return a `data.frame`.
 
 **Read full table**
@@ -68,7 +96,7 @@ species <- dbGetQuery(
 species
 ```
 
-## Python
+## Python{#query_python}
 
 ### Standard Python
 In standard python, we pass a `select` statement to `cursor.execute`. To fetch the results as a list of rows, we use `cursor.fetchall`. Each row in this output is of the type `pyodbc.Row`, and with this data type we can access values by the column names of the table using dot notation.
@@ -89,38 +117,4 @@ With pandas, we can use the `read_sql` function to query tables. This function r
 import pandas as pd
 
 iris_df_out = pd.read_sql("select * from iris", conn)
-```
-
-## SAS
-
-**Query Using Libname**
-
-Make the database connection.
-```sas
-libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
-```
-Pull the rows that you need and disconnect from the database.
-```sas
-proc sql;
-create table event as
-select * from conn2.events ;
-quit;
-libname conn2 clear;
-```
-**Query without libname**
-
-While this means a libname is unecessary, the syntax is much more convoluted
-```sas
-proc sql;
-connect to odbc as conn
-required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
-
-create table event as
-select * from connection to conn
-(select * from events) ;
-
-disconnect from conn;
-quit;
-
 ```

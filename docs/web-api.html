@@ -24,7 +24,7 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-27" />
+<meta name="date" content="2020-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -165,21 +165,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
-<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query-database-to-select-all-rows-then-filterselect-rows-in-julia"><i class="fa fa-check"></i><b>6.1.1</b> Query database to select all rows, then filter/select rows in julia</a></li>
+<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query_julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
+<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#query_sas"><i class="fa fa-check"></i><b>6.2</b> SAS</a></li>
+<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#query_r"><i class="fa fa-check"></i><b>6.3</b> R</a></li>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.4.1</b> Standard Python</a></li>
+<li class="chapter" data-level="6.4.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.4.2</b> Pandas</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#r"><i class="fa fa-check"></i><b>6.2</b> R</a></li>
-<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#python"><i class="fa fa-check"></i><b>6.3</b> Python</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.3.1</b> Standard Python</a></li>
-<li class="chapter" data-level="6.3.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.3.2</b> Pandas</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#sas"><i class="fa fa-check"></i><b>6.4</b> SAS</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
-<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#julia-1"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#r-1"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#python-1"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
-<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#sas-1"><i class="fa fa-check"></i><b>7.4</b> SAS</a></li>
+<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="web-api.html"><a href="web-api.html#todo-nick-finish-this-and-describe-what-it-is"><i class="fa fa-check"></i><b>7.1.1</b> TODO: Nick finish this and describe what it is</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
+<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
 </ul></li>
 </ul>
 
@@ -200,136 +200,145 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="web-api" class="section level1">
 <h1><span class="header-section-number">7</span> Web API</h1>
+<p><strong>Contents</strong></p>
+<ol style="list-style-type: decimal">
+<li><a href="web-api.html#api_julia">Working with APIs in Julia</a></li>
+<li><a href="web-api.html#api_sas">Working with APIs in SAS</a></li>
+<li><a href="web-api.html#api_r">Working with APIs in R</a></li>
+<li><a href="web-api.html#api_python">Working with APIs in Python</a></li>
+</ol>
 <p>Application programming interfaces, or API’s, loosely refer to inputs a user can submit to a computer program. If that sounds vague, don’t worry. The term API can cover a broad range of situations and in this section of the tutorial we are going to cover some of the basics of a more specific Web API.</p>
-<p>For statistical purposes, a web API is a method of integrating downloading data from a website into your code.Unlike SQL queries, web API requests are specific to the website you are attempting to download from to allow more flexibility. Web API’s are used by a variety of developers to request and retrieve data, and the tabular structure of returned by a SQL query may not be ideal. Web API’s utilize specific URL strings to locate the data that you wish to request, and typically give it to you in a format known as JSON. To address the first requirement, it’s ideal to do a quick web search and find the documentation of the API so that you understand the URL syntax. Assuming you have that correct and the website grants your request for data, the last step is to convert the JSON data to something a bit more usable for statistics.</p>
-<p>In this section, we’ll be using the COVID tracking API. More information on this API can be found <a href="https://covidtracking.com/api">here</a>.</p>
-<div id="julia-1" class="section level2">
-<h2><span class="header-section-number">7.1</span> Julia</h2>
-<p>For Statisticians, one of the most useful parts of a web API is the <strong>Query String</strong>.
+<p>For statistical purposes, a web API is a method of integrating data from a website into your code. Unlike SQL queries, web API requests are specific to the website you are attempting to download from to allow more flexibility. Web API’s are used by a variety of developers to request and retrieve data, and the tabular structure of returned by a SQL query may not be ideal. Web API’s utilize specific URL strings to locate the data that you wish to request, and typically give it to you in a format known as JSON. To address the first requirement, it’s ideal to do a quick web search and find the documentation of the API so that you understand the URL syntax. Assuming you have that correct and the website grants your request for data, the last step is to convert the JSON data to something a bit more usable for statistics.</p>
+<p>One of the most useful parts of a web API is the <strong>Query String</strong>.
 The query string is not found on all apis, but it is commonly used when pulling data
 where a user might need to specify additional material, like what column names you’d like
 to query or what year of data that you’d like to pull. Concretely, the query string comes after
-the main url, or <strong>endpoint</strong>, and is separated by a ?. Each new parameter is designated by
-an &amp;. An example could look like:</p>
-<p>https.//fake.data.com/fakeapi?&amp;parm1=value1&amp;parm2=value2</p>
+the main url, or <strong>endpoint</strong>, and is separated by a question mark (?). Each new parameter is designated by
+an ampersand (&amp;). An example could look like:</p>
+<pre><code>https.//fake.data.com/fakeapi?&amp;parm1=value1&amp;parm2=value2</code></pre>
 <p>If you know the query string, you could type it into your web browser, and get the raw JSON
 data printed. There’s generally two ways to specify query string parameters. You can specify them
-directly into the url string, which should always work. If the package or programming language allows it,
+directly into the url string, which will always work. If the package or programming language allows it,
 there might be a more user friendly way to enter these parameters in, where the software appends
 the query string to the url itself. Like API’s in general, query strings are specific to the website,
-but many of them are desinged to be familiar. The example below uses a SODA API, who’s query string follows
-SQL-like syntax.</p>
-<p><strong>imports</strong></p>
-<div class="sourceCode" id="cb59"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb59-1" data-line-number="1">using HTTP, JSON, DataFrames, Query</a></code></pre></div>
-<p><strong>Enter the Correct URL and make the request</strong></p>
-<div class="sourceCode" id="cb60"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb60-1" data-line-number="1">urlcacurrent = <span class="st">&quot;https://covidtracking.com/api/v1/states/CA/current.json&quot;</span></a>
-<a class="sourceLine" id="cb60-2" data-line-number="2">rawdata=HTTP.get(urlcurrent)</a></code></pre></div>
-<p><strong>Parse the JSON data</strong></p>
-<div class="sourceCode" id="cb61"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb61-1" data-line-number="1"><span class="co">#select the body of the API call, convert it into a string</span></a>
-<a class="sourceLine" id="cb61-2" data-line-number="2">JSONdata = rawdata.body |&gt; <span class="dt">String</span></a>
-<a class="sourceLine" id="cb61-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb61-4" data-line-number="4"><span class="co">#parse JSON data, convert it into a DataFrame</span></a>
-<a class="sourceLine" id="cb61-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb61-6" data-line-number="6">CACOVID = JSONdata |&gt; JSON.parse |&gt; DataFrame</a></code></pre></div>
-<p><strong>With A Query String using the LA City Data API</strong></p>
-<div class="sourceCode" id="cb62"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb62-1" data-line-number="1">using DataKnots, JSON, HTPP </a>
-<a class="sourceLine" id="cb62-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb62-3" data-line-number="3">url = <span class="st">&quot;https://data.seattle.gov/resource/65db-xm6k.json&quot;</span></a>
-<a class="sourceLine" id="cb62-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb62-5" data-line-number="5">parameters = <span class="dt">Dict</span>(<span class="st">&quot;$select&quot;</span> =&gt; <span class="st">&quot;Time, Age&quot;</span>)</a></code></pre></div>
+but many of them are desinged to be familiar.</p>
+<p>In this section, we’ll be using the COVID tracking API. More information on this API can be found <a href="https://covidtracking.com/api">here</a>.</p>
+<div id="api_julia" class="section level2">
+<h2><span class="header-section-number">7.1</span> Julia</h2>
+<p>In Julia, we access APIs using the <code>HTTP</code> and <code>JSON</code> packages.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb58-1" data-line-number="1">using HTTP, JSON, DataFrames, Query</a></code></pre></div>
+<p>The first step is to make a request with the <code>HTTP.get</code> function.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb59-1" data-line-number="1">urlcacurrent = <span class="st">&quot;https://covidtracking.com/api/v1/states/CA/current.json&quot;</span></a>
+<a class="sourceLine" id="cb59-2" data-line-number="2">rawdata = HTTP.get(urlcurrent)</a></code></pre></div>
+<p>Next, we need to turn this raw output into a string, and parse the JSON into a dataframe with <code>JSON.parse</code>.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb60-1" data-line-number="1"><span class="co">#select the body of the API call, convert it into a string</span></a>
+<a class="sourceLine" id="cb60-2" data-line-number="2">JSONdata = rawdata.body |&gt; <span class="dt">String</span></a>
+<a class="sourceLine" id="cb60-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb60-4" data-line-number="4"><span class="co">#parse JSON data, convert it into a DataFrame</span></a>
+<a class="sourceLine" id="cb60-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb60-6" data-line-number="6">CACOVID = JSONdata |&gt; JSON.parse |&gt; DataFrame</a></code></pre></div>
+<div id="todo-nick-finish-this-and-describe-what-it-is" class="section level3">
+<h3><span class="header-section-number">7.1.1</span> TODO: Nick finish this and describe what it is</h3>
+<div class="sourceCode" id="cb61"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb61-1" data-line-number="1">using DataKnots, JSON, HTPP </a>
+<a class="sourceLine" id="cb61-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb61-3" data-line-number="3">url = <span class="st">&quot;https://data.seattle.gov/resource/65db-xm6k.json&quot;</span></a>
+<a class="sourceLine" id="cb61-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb61-5" data-line-number="5">parameters = <span class="dt">Dict</span>(<span class="st">&quot;$select&quot;</span> =&gt; <span class="st">&quot;Time, Age&quot;</span>)</a></code></pre></div>
 </div>
-<div id="r-1" class="section level2">
-<h2><span class="header-section-number">7.2</span> R</h2>
+</div>
+<div id="api_sas" class="section level2">
+<h2><span class="header-section-number">7.2</span> SAS</h2>
+<p>To access APIs in SAS, we use <code>proc http</code>.</p>
+<p>This api uses the path segement of the url to specify parameters, but if you are using an an api that utilizes a query string use the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in <code>&quot;parm&quot; = &quot;val&quot;</code> form. The resulting JSON data will be stored in <code>raw_json</code>, or whatever is specified as the <code>out</code> parameter.</p>
+<pre class="sas"><code>filename raw_json temp;
+
+/*use proc http to make the API call*/
+
+proc http
+  url = &quot;https://covidtracking.com/api/v1/us/current.json&quot;
+  method = &quot;GET&quot;
+  out = raw_json
+
+  QUERY=(&quot;parm1&quot; = &quot;val1&quot; &quot;parm2&quot; = &quot;val2&quot;);
+
+quit;</code></pre>
+<p>To convert the JSON file to a sas table, we use the libname statement.</p>
+<pre class="sas"><code>libname Calif JSON fileref = raw_json;
+
+proc print data = Calif.alldata;
+run;</code></pre>
+</div>
+<div id="api_r" class="section level2">
+<h2><span class="header-section-number">7.3</span> R</h2>
 <p>To connect to APIs in R, we utilize the <code>httr</code> and <code>jsonlite</code> packages.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb63-1" data-line-number="1"><span class="kw">library</span>(httr)</a>
-<a class="sourceLine" id="cb63-2" data-line-number="2"><span class="kw">library</span>(jsonlite)</a></code></pre></div>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1"><span class="kw">library</span>(httr)</a>
+<a class="sourceLine" id="cb64-2" data-line-number="2"><span class="kw">library</span>(jsonlite)</a></code></pre></div>
 <p>To get data from an API, we’ll use the <code>GET</code> command from the <code>httr</code> library. This function takes in a URL and can also take in extra parameters, depending on the API.</p>
-<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb64-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
-<a class="sourceLine" id="cb64-2" data-line-number="2">res</a></code></pre></div>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb65-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
+<a class="sourceLine" id="cb65-2" data-line-number="2">res</a></code></pre></div>
 <pre><code>Response [https://covidtracking.com/api/v1/states/current.json]
   Date: 2020-05-20 03:17
   Status: 200
   Content-Type: application/json
   Size: 45 kB</code></pre>
 <p>Looking into the res variable, we see a description of our request and what was returned. To look at the data received, we convert the unicode content of the response into characters. APIs typically return data in JSON format, so we can use the <code>fromJSON</code> function from the <code>jsonlite</code> package to translate this into a dataframe.</p>
-<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb66-1" data-line-number="1">json_data &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb66-2" data-line-number="2"><span class="st">  </span><span class="kw">rawToChar</span>() </a>
-<a class="sourceLine" id="cb66-3" data-line-number="3">  </a>
-<a class="sourceLine" id="cb66-4" data-line-number="4">data &lt;-<span class="st"> </span>json_data <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb66-5" data-line-number="5"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
-<a class="sourceLine" id="cb66-6" data-line-number="6">  </a>
-<a class="sourceLine" id="cb66-7" data-line-number="7"><span class="kw">head</span>(data)</a></code></pre></div>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb67-1" data-line-number="1">json_data &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb67-2" data-line-number="2"><span class="st">  </span><span class="kw">rawToChar</span>() </a>
+<a class="sourceLine" id="cb67-3" data-line-number="3">  </a>
+<a class="sourceLine" id="cb67-4" data-line-number="4">data &lt;-<span class="st"> </span>json_data <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb67-5" data-line-number="5"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
+<a class="sourceLine" id="cb67-6" data-line-number="6">  </a>
+<a class="sourceLine" id="cb67-7" data-line-number="7"><span class="kw">head</span>(data)</a></code></pre></div>
 <pre><code>state positive positiveScore
 1     AK       399            ...
 2     AL       12376          ...
 ...</code></pre>
 <p>As an example of using an API with other query parameters that you can pass in, lets look at the API for jeopardy trivia questions! Information on this API can be found <a href="https://jservice.io/">here</a>.</p>
 <p>The “random question” section of the API allows you to to pass in a “count” parameter for how many questions you would like. The <code>GET</code> function in R can take these query specifications through the <code>query</code> parameter as a named list.</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb68-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(</a>
-<a class="sourceLine" id="cb68-2" data-line-number="2">  <span class="st">&quot;http://jservice.io/api/random&quot;</span>,</a>
-<a class="sourceLine" id="cb68-3" data-line-number="3">  <span class="dt">query =</span> <span class="kw">list</span>(</a>
-<a class="sourceLine" id="cb68-4" data-line-number="4">    <span class="dt">count =</span> <span class="dv">2</span></a>
-<a class="sourceLine" id="cb68-5" data-line-number="5">    <span class="co"># could insert other query specifications here!</span></a>
-<a class="sourceLine" id="cb68-6" data-line-number="6">  )</a>
-<a class="sourceLine" id="cb68-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb68-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb68-9" data-line-number="9">questions &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb68-10" data-line-number="10"><span class="st">  </span><span class="kw">rawToChar</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb68-11" data-line-number="11"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
-<a class="sourceLine" id="cb68-12" data-line-number="12">  </a>
-<a class="sourceLine" id="cb68-13" data-line-number="13">questions</a></code></pre></div>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb69-1" data-line-number="1">res &lt;-<span class="st"> </span><span class="kw">GET</span>(</a>
+<a class="sourceLine" id="cb69-2" data-line-number="2">  <span class="st">&quot;http://jservice.io/api/random&quot;</span>,</a>
+<a class="sourceLine" id="cb69-3" data-line-number="3">  <span class="dt">query =</span> <span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb69-4" data-line-number="4">    <span class="dt">count =</span> <span class="dv">2</span></a>
+<a class="sourceLine" id="cb69-5" data-line-number="5">    <span class="co"># could insert other query specifications here!</span></a>
+<a class="sourceLine" id="cb69-6" data-line-number="6">  )</a>
+<a class="sourceLine" id="cb69-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb69-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb69-9" data-line-number="9">questions &lt;-<span class="st"> </span>res<span class="op">$</span>content <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-10" data-line-number="10"><span class="st">  </span><span class="kw">rawToChar</span>() <span class="op">%&gt;%</span><span class="st"> </span></a>
+<a class="sourceLine" id="cb69-11" data-line-number="11"><span class="st">  </span><span class="kw">fromJSON</span>()</a>
+<a class="sourceLine" id="cb69-12" data-line-number="12">  </a>
+<a class="sourceLine" id="cb69-13" data-line-number="13">questions</a></code></pre></div>
 <pre><code>     id       answer                                         question value
 1 71610 a centennial   A celebration to mark at 10-decade anniversary  1000  ...
 2 71611    Patagonia   ...
 ...</code></pre>
 </div>
-<div id="python-1" class="section level2">
-<h2><span class="header-section-number">7.3</span> Python</h2>
+<div id="api_python" class="section level2">
+<h2><span class="header-section-number">7.4</span> Python</h2>
 <p>To connect with APIs in Python, we use the <code>requests</code> package. We’ll also use the <code>pandas</code> package later to convert the data into a DataFrame.</p>
 <pre><code>import requests
 import pandas as pd</code></pre>
 <p>To get data from an API, we’ll use the <code>get</code> command from the <code>requests</code> library. This function takes in a URL and can also take in extra parameters, depending on the API.</p>
-<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb71-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
-<a class="sourceLine" id="cb71-2" data-line-number="2">req</a></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb72-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;https://covidtracking.com/api/v1/states/current.json&quot;</span>)</a>
+<a class="sourceLine" id="cb72-2" data-line-number="2">req</a></code></pre></div>
 <pre><code>&lt;Response [200]&gt;</code></pre>
 <p>Looking into the res variable, we see that our request was successful (status 200). To look at the data received, can use the <code>json</code> method of the request. We can convert this into a dataframe with the <code>DataFrame</code> function from <code>pandas</code>.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb73-1" data-line-number="1">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
-<a class="sourceLine" id="cb73-2" data-line-number="2">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
-<a class="sourceLine" id="cb73-3" data-line-number="3"><span class="kw">data.head</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb74-1" data-line-number="1">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
+<a class="sourceLine" id="cb74-2" data-line-number="2">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
+<a class="sourceLine" id="cb74-3" data-line-number="3"><span class="kw">data.head</span>()</a></code></pre></div>
 <pre><code>  state  ...                                      hash
 0    AK  ...  22375f1c5b622e4c0aee670cc25b05584c1e3341
 1    AL  ...  dc3754f5631d38c30317c938b33a1cbcb5a19bee</code></pre>
 <p>Same as in the <code>R</code> section, we’ll use the API for jeopardy trivia questions to give an example of how to pass a query parameter to the API.</p>
 <p>The “random question” section of the API allows you to to pass in a “count” parameter for how many questions you would like. The <code>requests.get</code> function in Python can take these query specifications through the <code>params</code> parameter as a dictionary of strings.</p>
-<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb75-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;http://jservice.io/api/random&quot;</span>, <span class="dt">params =</span> {<span class="st">&quot;count&quot;</span><span class="op">:</span><span class="st"> &quot;2&quot;</span>})</a>
-<a class="sourceLine" id="cb75-2" data-line-number="2">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
-<a class="sourceLine" id="cb75-3" data-line-number="3">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
-<a class="sourceLine" id="cb75-4" data-line-number="4">data</a></code></pre></div>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb76-1" data-line-number="1">req =<span class="st"> </span><span class="kw">requests.get</span>(<span class="st">&quot;http://jservice.io/api/random&quot;</span>, <span class="dt">params =</span> {<span class="st">&quot;count&quot;</span><span class="op">:</span><span class="st"> &quot;2&quot;</span>})</a>
+<a class="sourceLine" id="cb76-2" data-line-number="2">json_data =<span class="st"> </span><span class="kw">req.json</span>()</a>
+<a class="sourceLine" id="cb76-3" data-line-number="3">data =<span class="st"> </span><span class="kw">pd.DataFrame</span>(json_data)</a>
+<a class="sourceLine" id="cb76-4" data-line-number="4">data</a></code></pre></div>
 <pre><code>   id  ...                                   category
 0  59388  ...  {&#39;id&#39;: 2741, &#39;title&#39;: &#39;think pink&#39;...
 1  59389  ...  {&#39;id&#39;: 7597, &#39;title&#39;: &#39;veggie-pourri&#39;...</code></pre>
-<p>You’ll note that because there was an internal obje</p>
-</div>
-<div id="sas-1" class="section level2">
-<h2><span class="header-section-number">7.4</span> SAS</h2>
-<p><strong>define a temporary file to read the JSON data into</strong>
-filename raw_json temp;</p>
-<p>use proc http to make the API call</p>
-<pre class="sas"><code>proc http
-url = &quot;https://covidtracking.com/api/v1/us/current.json&quot;
-method = &quot;GET&quot;
-out = raw_json
-
-QUERY=(&quot;parm1&quot; = &quot;val1&quot; &quot;parm2&quot; = &quot;val2&quot;);
-
-quit;</code></pre>
-<p>This api uses the path segement of the url to specify parameters, but ifyou are using an an api that utilizes a query string use
-the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in <code>&quot;parm&quot; = &quot;val&quot;</code> form.</p>
-<p>use the libname statement to convert the json file to a sas table</p>
-<pre class="sas"><code>libname Calif JSON fileref = raw_json;
-
-proc print data = Calif.alldata;
-run;</code></pre>
+<p>You’ll note that because there was an internal object, the <code>category</code> column is still in JSON format.</p>
 
 </div>
 </div>

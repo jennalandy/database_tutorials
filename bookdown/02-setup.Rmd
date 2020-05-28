@@ -1,13 +1,13 @@
 # Machine Setup
 
-The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
-
 **Contents**
 
 1. [Setup on Linux][Linux - Ubuntu]
 2. [Setup on Mac OS][Mac OS]
 3. [Setup on Windows][Windows]
 4. [Other Connection Options][Other Connection Options]
+
+The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
 
 ## Linux - Ubuntu
 ```bash

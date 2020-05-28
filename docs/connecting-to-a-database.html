@@ -24,7 +24,7 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-27" />
+<meta name="date" content="2020-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -165,21 +165,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
-<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query-database-to-select-all-rows-then-filterselect-rows-in-julia"><i class="fa fa-check"></i><b>6.1.1</b> Query database to select all rows, then filter/select rows in julia</a></li>
+<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query_julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
+<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#query_sas"><i class="fa fa-check"></i><b>6.2</b> SAS</a></li>
+<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#query_r"><i class="fa fa-check"></i><b>6.3</b> R</a></li>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.4.1</b> Standard Python</a></li>
+<li class="chapter" data-level="6.4.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.4.2</b> Pandas</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#r"><i class="fa fa-check"></i><b>6.2</b> R</a></li>
-<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#python"><i class="fa fa-check"></i><b>6.3</b> Python</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.3.1</b> Standard Python</a></li>
-<li class="chapter" data-level="6.3.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.3.2</b> Pandas</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#sas"><i class="fa fa-check"></i><b>6.4</b> SAS</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
-<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#julia-1"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#r-1"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#python-1"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
-<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#sas-1"><i class="fa fa-check"></i><b>7.4</b> SAS</a></li>
+<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="web-api.html"><a href="web-api.html#todo-nick-finish-this-and-describe-what-it-is"><i class="fa fa-check"></i><b>7.1.1</b> TODO: Nick finish this and describe what it is</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
+<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
 </ul></li>
 </ul>
 
@@ -200,7 +200,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="connecting-to-a-database" class="section level1">
 <h1><span class="header-section-number">4</span> Connecting to a Database</h1>
-<p>The first step to reading or writing to a database is the connection.</p>
 <p><strong>Contents</strong></p>
 <ol style="list-style-type: decimal">
 <li><a href="connecting-to-a-database.html#connect_julia">Connecting to a Database in Julia</a></li>
@@ -209,7 +208,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="connecting-to-a-database.html#connect_python">Connecting to a Database in Python</a></li>
 <li><a href="connecting-to-a-database.html#connect_jsl">Connecting to a Database in JSL (JMP Scripting Language)</a></li>
 </ol>
-<p>Note that with Julia, R, and Python, we can ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you’re sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you’re working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. <code>database = &quot;database name&quot;</code>).</p>
+<p>The first step to reading or writing to a database is the connection.</p>
+<p>For each language, we go through code to ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you’re sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you’re working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. <code>database = &quot;database name&quot;</code>).</p>
 <div id="connect_julia" class="section level2">
 <h2><span class="header-section-number">4.1</span> Julia</h2>
 <pre class="text"><code>using ODBC
