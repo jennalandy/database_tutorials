@@ -1,13 +1,13 @@
 # Machine Setup
 
-The manual takes uses the OCDB driver / connection string method to connect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
-
 **Contents**
 
 1. [Setup on Linux][Linux - Ubuntu]
 2. [Setup on Mac OS][Mac OS]
 3. [Setup on Windows][Windows]
 4. [Other Connection Options][Other Connection Options]
+
+The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
 
 ## Linux - Ubuntu
 ```bash
@@ -61,9 +61,4 @@ For Windows the driver and connection string can be found [here](https://docs.mi
 
 Once drivers are installed, you can set a dsn (data source name) for the connection to the database using the ODBC/DSN manager for your system. This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source.
 
-<<<<<<< HEAD
-This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source. 
-Therefore, to more easily share code and to not have to mess with their behind-the-scenes settings, I use the connection string method from here further. 
-=======
-To more easily share code, we recommend use the connection string method from here further. A connection string is a raw string that includes database name, user credentials, an the address of the server. In [the chapter on connecting to a database][Connecting to a Database], we go over how to share code without sharing user credentials. A common practice is to write code to ask for credentials as user input when the program is run.
->>>>>>> 91af122f945eb28148c390e886ad3a08e0ecc3d5
+To more easily share code, we recommend use the connection string method instead. A connection string is a raw string that includes database name, user credentials, an the address of the server. In [the chapter on connecting to a database][Connecting to a Database], we go over how to share code without sharing user credentials. A common practice is to write code to ask for credentials as user input when the program is run.

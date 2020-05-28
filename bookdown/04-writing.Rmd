@@ -1,15 +1,15 @@
 # Writing to a Database
 
-Once you are connected to a database, you can create tables with data! If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database][Querying a Database].
-
-In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database][Connecting to a Database].
-
 **Contents**
 
 1. [Writing to a Database in Julia](#writing_julia)
 1. [Writing to a Database in SAS](#writing_sas)
 1. [Writing to a Database in R](#writing_r)
 1. [Writing to a Database in Python](#writing_python)
+
+Once you are connected to a database, you can create tables with data! If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database][Querying a Database].
+
+In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database][Connecting to a Database].
 
 ## Julia{#writing_julia}
 

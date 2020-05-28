@@ -1,7 +1,5 @@
 # Connecting to a Database
 
-The first step to reading or writing to a database is the connection.
-
 **Contents**
 
 1. [Connecting to a Database in Julia](#connect_julia)
@@ -10,7 +8,9 @@ The first step to reading or writing to a database is the connection.
 1. [Connecting to a Database in Python](#connect_python)
 
 
-Note that with Julia, R, and Python, we can ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you're sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you're working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. `database = "database name"`).
+The first step to reading or writing to a database is the connection.
+
+For each language, we go through code to ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you're sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you're working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. `database = "database name"`).
 
 ## Julia{#connect_julia}
 

@@ -24,7 +24,7 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-27" />
+<meta name="date" content="2020-05-28" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -165,21 +165,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
-<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a><ul>
-<li class="chapter" data-level="6.1.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query-database-to-select-all-rows-then-filterselect-rows-in-julia"><i class="fa fa-check"></i><b>6.1.1</b> Query database to select all rows, then filter/select rows in julia</a></li>
+<li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query_julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
+<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#query_sas"><i class="fa fa-check"></i><b>6.2</b> SAS</a></li>
+<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#query_r"><i class="fa fa-check"></i><b>6.3</b> R</a></li>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a><ul>
+<li class="chapter" data-level="6.4.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.4.1</b> Standard Python</a></li>
+<li class="chapter" data-level="6.4.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.4.2</b> Pandas</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#r"><i class="fa fa-check"></i><b>6.2</b> R</a></li>
-<li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#python"><i class="fa fa-check"></i><b>6.3</b> Python</a><ul>
-<li class="chapter" data-level="6.3.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.3.1</b> Standard Python</a></li>
-<li class="chapter" data-level="6.3.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.3.2</b> Pandas</a></li>
-</ul></li>
-<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#sas"><i class="fa fa-check"></i><b>6.4</b> SAS</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
-<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#julia-1"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#r-1"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#python-1"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
-<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#sas-1"><i class="fa fa-check"></i><b>7.4</b> SAS</a></li>
+<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a><ul>
+<li class="chapter" data-level="7.1.1" data-path="web-api.html"><a href="web-api.html#todo-nick-finish-this-and-describe-what-it-is"><i class="fa fa-check"></i><b>7.1.1</b> TODO: Nick finish this and describe what it is</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
+<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
 </ul></li>
 </ul>
 
@@ -200,7 +200,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="machine-setup" class="section level1">
 <h1><span class="header-section-number">3</span> Machine Setup</h1>
-<p>The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.</p>
 <p><strong>Contents</strong></p>
 <ol style="list-style-type: decimal">
 <li><a href="machine-setup.html#linux---ubuntu">Setup on Linux</a></li>
@@ -208,6 +207,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="machine-setup.html#windows">Setup on Windows</a></li>
 <li><a href="machine-setup.html#other-connection-options">Other Connection Options</a></li>
 </ol>
+<p>The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.</p>
 <div id="linux---ubuntu" class="section level2">
 <h2><span class="header-section-number">3.1</span> Linux - Ubuntu</h2>
 <div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="fu">sudo</span> su</a>
@@ -258,7 +258,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="other-connection-options" class="section level2">
 <h2><span class="header-section-number">3.4</span> Other Connection Options</h2>
 <p>Once drivers are installed, you can set a dsn (data source name) for the connection to the database using the ODBC/DSN manager for your system. This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source.</p>
-<p>To more easily share code, we recommend use the connection string method from here further. A connection string is a raw string that includes database name, user credentials, an the address of the server. In <a href="connecting-to-a-database.html#connecting-to-a-database">the chapter on connecting to a database</a>, we go over how to share code without sharing user credentials. A common practice is to write code to ask for credentials as user input when the program is run.</p>
+<p>To more easily share code, we recommend use the connection string method instead. A connection string is a raw string that includes database name, user credentials, an the address of the server. In <a href="connecting-to-a-database.html#connecting-to-a-database">the chapter on connecting to a database</a>, we go over how to share code without sharing user credentials. A common practice is to write code to ask for credentials as user input when the program is run.</p>
 
 </div>
 </div>
