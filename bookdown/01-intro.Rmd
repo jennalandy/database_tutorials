@@ -1,6 +1,6 @@
 # Introduction
 With the advent of large and remote data sources comes a need properly understand the methods for interacting with such data. 
-The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion 
+The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discretion 
 of professors to include such material in their courses, and possibly leaves students to learn these essential skills outside of the classroom.
 
 The technical purpose of this book is to demonstrate how to *connect to*, *upload data to*, and *read data from* the statistics department online dataset repository.
@@ -26,9 +26,9 @@ if appropriate. In this regard, the name "query" makes a little more sense.
 # Sequels and Prequels 
 A relational database actually has it's own language for queries, called SQL (and pronounced Sequel). There's a number of classes on campus that teach the
 syntax and advanced uses of the sql language, such as the Statistic's department's STAT 441. If you haven't already seen SQL I would highly suggest taking stat 441
-or the computer science database course to get into some of the really cool features of SQL. If you don't have the time or the preqrequists necessary for those, 
+or the computer science database course to get into some of the really cool features of SQL. If you don't have the time or the prerequisite necessary for those, 
 there's a ton of  Luckily for us, SQL is very statistical in nature and many of the languages you've already encountered can easily translate to sql. The below code is
-a simple "Rosetta Stone" that you can use to translate code from R or SAS into SQL. Given the iris dataset, all the following codeblocks will output the same data. 
+a simple "Rosetta Stone" that you can use to translate code from R or SAS into SQL. Given the iris dataset, all the following code blocks will output the same data. 
 
 **R - Tidyverse**
 ```{r}
@@ -63,9 +63,6 @@ GROUP BY Species
 ;
 
 ```
-
-
-
 
 If you'd like more practice with SQL consider trying the sqldf R package to use SQL language to manipulate DataFrames. If you prefer SAS, try swapping your data step 
 with Proc Sql. 

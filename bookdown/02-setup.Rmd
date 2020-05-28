@@ -1,6 +1,6 @@
 # Machine Setup
 
-The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
+The manual takes uses the OCDB driver / connection string method to connect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
 
 Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to.
 
@@ -51,4 +51,5 @@ download and open the msodbcsql.msi file.
 
 Once drivers are installed, you can set a dsn (data source name) for the connection to the database using the ODBC/DSN manager for your system.
 
-This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source. Therefore, to more easily share code and to not have to mess with their behind-the-scenes settings, I use the connection string method from here further. 
+This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source. 
+Therefore, to more easily share code and to not have to mess with their behind-the-scenes settings, I use the connection string method from here further. 
