@@ -1,8 +1,8 @@
 # Machine Setup
 
-The manual takes uses the OCDB driver / connection string method to connnect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
+Before getting started, you must have a driver installed for Open Database Connectivity (ODBC). These drivers will depend on the SQL service you are using. In this book, we use [Microsoft SQL Server](https://www.microsoft.com/en-us/sql-server/default.aspx), so this page walks through the installation and setup of the ODBC for this service.
 
-Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to.
+1. [Installation instructions for Linux]
 
 ## Linux - Ubuntu
 ```bash

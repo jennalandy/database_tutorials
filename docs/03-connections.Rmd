@@ -2,9 +2,17 @@
 
 The first step to reading or writing to a database is the connection.
 
-Note that with Julia, R, and Python, we can ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you're sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you're working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.x. `database = "database name"`).
+**Contents**
 
-## Julia
+1. [Connecting to a Database in Julia](#connect_julia)
+1. [Connecting to a Database in SAS](#connect_sas)
+1. [Connecting to a Database in R](#connect_r)
+1. [Connecting to a Database in Python](#connect_python)
+1. [Connecting to a Database in JSL (JMP Scripting Language)](#connect_jsl)
+
+Note that with Julia, R, and Python, we can ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you're sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you're working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. `database = "database name"`).
+
+## Julia{#connect_julia}
 
 ```{f, eval=FALSE, highlight=FALSE}
 using ODBC
@@ -25,7 +33,7 @@ user = begin
     readline() 
 end 
 
-crypt = Base.getpass("Enter Password")
+crypt = Base.getpass("Enter Password: ")
 pass = read(crypt,String)
 
 # setting up database  
@@ -35,7 +43,7 @@ dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=$address;Database
 ODBC.disconnect()
 ```
 
-## SAS
+## SAS{#connect_sas}
 
 When using SAS, we can connect through proc sql or using a libname. We would recommend the latter, as the connection can be referenced throughout your sql file, as opposed to within one proc sql statement.
 
@@ -70,7 +78,30 @@ disconnect from conn2;
 quit;
 ```
 
-## R
+**User input for credentials**
+
+Here we are going to assign a new libname in order to demonstrate the password protective features of SAS. Running this code chunk will prompt the user to input their credentials, then create a connection with the inputted id and password.
+
+```sas
+/** %WINDOW defines the prompt **/
+%window info
+  #5 @5 'Please enter userid:'
+  #5 @26 id 8 attr=underline
+  #7 @5 'Please enter password:'
+  #7 @28 pass 8 attr=underline display=no;
+
+/** %DISPLAY invokes the prompt **/
+%display info;
+
+libname conn2 odbc
+  required ="Driver={ODBC Driver 17 for SQL Server};Address=<address>;Database=<database name>;UID=&id;PWD=&pass"
+  bulkload = YES
+;
+```
+
+The bulkload option can be removed if you don't have permissions. It will be a bit slower, but will work the same.
+
+## R{#connect_r}
 
 Using R, we connect to the database using the `odbc` and `DBI` packages.
 
@@ -78,6 +109,7 @@ Using R, we connect to the database using the `odbc` and `DBI` packages.
 library(odbc)
 library(DBI)
 
+# prompt user input for credentials
 address = rstudioapi::showPrompt("Address","Address")
 database = rstudioapi::showPrompt("Database name","Database name")
 uid = rstudioapi::showPrompt("Database username", "Database username")
@@ -97,13 +129,13 @@ conn <- dbConnect(
 dbDisconnect(conn)
 ```
 
-## Python 
+## Python{#connect_python}
 
-The driver used in Python may depend on your setup. If you're working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name: 
+The driver used in Python may depend on your setup. If you're working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name like this: 
 
 `driver = "{ODBC Driver 17 for SQL Server}"` 
 
-If you're working on a Mac or Linux device, you cannot do this without further setup. It's easiest to pass in the path to the `dylib` file, which should be installed to `/usr/local/lib` by default. With this setup, you will need to reference the driver like this: 
+If you're working on a Mac or Linux device, you cannot do this without further setup. It's easiest to pass in the path to the installed `.dylib` file, which should be installed to `/usr/local/lib` by default. With this setup, you will need to reference the driver like this: 
 
 `driver = "/usr/local/lib/libmsodbcsql.17.dylib"`
 
@@ -115,6 +147,7 @@ import pyodbc
 driver = "{ODBC Driver 17 for SQL Server}" # PC Users
 # driver = "/usr/local/lib/libmsodbcsql.17.dylib" # Mac Users
 
+# prompt user input for credentials
 address = input("Address: ")
 database = input("Database name: ")
 username = input("Username: ")
@@ -139,10 +172,11 @@ conn.close()
 ```
 
 
-## JSL
+## JSL{#connect_jsl}
+In JMP scripting language, we simply pass a connection string to the `opendatabaseconnection` function.
 ```{r,eval=FALSE,highlight=FALSE}
 opendatabaseconnection(
-        "Driver={ODBC Driver 17 for SQL Server};Address=<address>;Database=<database>;UID=<username>;PWD=<password>"
+  "Driver={ODBC Driver 17 for SQL Server};Address=<address>;Database=<database>;UID=<username>;PWD=<password>"
 )
 ```
 
