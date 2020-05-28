@@ -15,7 +15,7 @@ In this chapter, we discuss the *logistics* of passing a query onto the database
 **Connect to Database**
 
 ```julia
-dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=$database;UID=$user;PWD=$pass;")
+dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=&address;Database=$database;UID=$user;PWD=$pass;")
 ```
 **Query and filter using server-side sql commands**
 
@@ -100,7 +100,7 @@ iris_df_out = pd.read_sql("select * from iris", conn)
 Make the database connection.
 ```sas
 libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
+required ="Driver={ODBC Driver 17 for SQL Server};Address=&address;Database=&database;UID=&id;PWD=&pass";
 ```
 
 
@@ -120,7 +120,7 @@ We'd recommend using the libname engine, since it provides a more direct interfa
 ```sas
 proc sql;
 connect to odbc as conn
-required="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass";
+required="Driver={ODBC Driver 17 for SQL Server};Address=&address;Database=&address;UID=&id;PWD=&pass";
 
 create table event as
 select * from connection to conn
