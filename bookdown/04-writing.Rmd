@@ -19,8 +19,13 @@ MS SQL Server along with other ODBC drivers/database systems don't support this,
 
 **Imports**
 ```julia
-using ODBC, CSV, JuliaDB, Query
+using ODBC, CSV, JuliaDB, Query, DataFrames
 ```
+The Julia Language Community has suggested structure and instructions for working with tabular data, known as the Tables.jl interface.
+Both the indexed table type from JuliaDB and the more familiar DataFrame implement these standards, and integrate well with the ODBC package.
+Any of these queries can be converted into a dataframe for a more familiar interface, or into a JuliaDB IndexedTable if you need to run online algorithims or have easier
+access to parallel features.  
+
 **Clear Up Workplace**
 ```julia
 ODBC.execute!(
@@ -28,7 +33,7 @@ ODBC.execute!(
     """
     drop table if exists goods; 
     drop table if exists items;
-    drop table if exists reciepts;
+    drop table if exists receipts;
     drop table if exists customers;
     drop table if exists iris;
     drop table if exists iris2;
@@ -39,40 +44,65 @@ ODBC.execute!(
 **Create tables**
 ```julia
 ODBC.execute!(
-  dsn,
-  """
-  create table projects 
-  (Class VARCHAR(10), id INT, StartDate INT, EndDate INT)
-  """
+    dsn,
+    """
+create table customers
+(Id int Primary Key, LastName VARCHAR(30), FirstName VARCHAR(30))
+""",
 )
 
 ODBC.execute!(
-  dsn,
-  """
-  create table users 
-  (Class VARCHAR(10), Fname VARCHAR(16), Lname VARCHAR(16), 
-  Email VARCHAR(36), Phone VARCHAR(9), Dept VARCHAR(10), id INT) 
-  """
+    dsn,
+    "create table goods
+    (Id VARCHAR(30) Primary Key, Flavor VARCHAR(30), Food VARCHAR(30), Price FLOAT)",
 )
+
+ODBC.execute!(
+    dsn,
+    """
+create table receipts
+(ReceiptNumber int PRIMARY KEY, Date VARCHAR(30), CustomerId int, CONSTRAINT CustomerID FOREIGN KEY (CustomerId) references customers(Id) )
+""",
+)
+
+ODBC.execute!(
+    dsn,
+    "create table items
+    (Receipt INT, Ordinal INT, Item VARCHAR(30),  PRIMARY KEY (Receipt,Ordinal), CONSTRAINT ReceiptNumber FOREIGN KEY (Receipt) REFERENCES receipts (ReceiptNumber) 
+    , CONSTRAINT ItemId FOREIGN KEY(Item) References goods (Id) )
+    ",
+)
+
 ```
-
-**Insert values into tables**
-First prepare an insert statement with blank values using `?`s. Then, iterate through the rows of your data table. The line `ODBC.execute!(insert_statement, row)` will put the values from this row of data into the blank values of the insert statement, and then execute this complete SQL statement.
-
+**Insert the Data**
+First, make a sql statement with "blank" values that we'll put in actual values into 
 ```julia
-# grid projects
-insert_statement = ODBC.prepare(dsn,"insert into projects values(?,?,?,?)")
-
-for row in rows(gridprojects)
-    ODBC.execute!(insert_statement, row)
+insertstmt = ODBC.prepare(dsn, "insert into customers values(?,?,?)")
+```
+Now, for each row in the rows of our csv files, run the previous insert statement, with the values for each row 
+inserted into the previous "blank rows" ie those question marks
+```julia
+for row in rows(customers)
+    ODBC.execute!(insertstmt, row)
 end
 
-# grid users
-insert_statement = ODBC.prepare(dsn,"insert into users values(?,?,?,?,?,?,?)")
-
-for row in rows(gridusers)
-    ODBC.execute!(insert_statement, row)
+## Now do this for the remaining three tables
+insertstmt = ODBC.prepare(dsn, "insert into goods values(?,?,?,?)")
+for row in rows(goods)
+    ODBC.execute!(insertstmt, row)
 end
+
+insertstmt = ODBC.prepare(dsn, "insert into receipts values(?,?,?)")
+for row in rows(receipts)
+    ODBC.execute!(insertstmt, row)
+end
+
+
+insertstmt = ODBC.prepare(dsn, "insert into items values(?,?,?)")
+for row in rows(items)
+    ODBC.execute!(insertstmt, row)
+end
+
 ```
 
 ### Alternative method for big data

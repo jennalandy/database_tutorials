@@ -8,7 +8,7 @@ The first step to reading or writing to a database is the connection.
 1. [Connecting to a Database in SAS](#connect_sas)
 1. [Connecting to a Database in R](#connect_r)
 1. [Connecting to a Database in Python](#connect_python)
-1. [Connecting to a Database in JSL (JMP Scripting Language)](#connect_jsl)
+
 
 Note that with Julia, R, and Python, we can ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you're sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you're working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. `database = "database name"`).
 
@@ -171,12 +171,4 @@ cursor = conn.cursor()
 conn.close()
 ```
 
-
-## JSL{#connect_jsl}
-In JMP scripting language, we simply pass a connection string to the `opendatabaseconnection` function.
-```{r,eval=FALSE,highlight=FALSE}
-opendatabaseconnection(
-  "Driver={ODBC Driver 17 for SQL Server};Address=<address>;Database=<database>;UID=<username>;PWD=<password>"
-)
-```
 
