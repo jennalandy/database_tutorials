@@ -1,8 +1,8 @@
 # Querying a Database
 
-Once you are connected to a database, you can query the tables that are there or the ones you have written. To review writing tables, see the previous chapter on [writing to a database](04-writing.Rmd).
+Once you are connected to a database, you can query the tables that are there or the ones you have written. To review writing tables, see the previous chapter on [writing to a database][Writing to a Database].
 
-In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the third chapter on [connecting to a database](03-connections.Rmd).
+In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the third chapter on [connecting to a database][Connecting to a Database].
 
 In this chapter, we discuss the *logistics* of passing a query onto the database and reading the output using each language, rather than the basics of how to use sql. If you're new to sql, please review the query syntax for MS SQL Server. Here are some references we recommend:
 

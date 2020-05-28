@@ -1,0 +1,153 @@
+# Background
+
+**Contents**
+
+1. [Motivation][Motivation]
+2. [About Databases][About Databases]
+3. [Relational Database Model][Relational Database Model]
+4. [Basic Introduction to SQL][Basic Introduction to SQL]
+  
+
+## Motivation
+With the advent of large and remote data sources comes a need to for proper training in accessing and utilizing databases. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in their courses, and possibly leaves students to learn these essential skills outside of the classroom.
+
+The technical purpose of this book is to demostrate how to [connect to](03-connections.Rmd), [upload data to](04-writing.Rmd), and [read data from](05-querying.Rmd) a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessens can likely be extended to any database, with a few google-able differences. 
+
+## About Databases
+A database stores data, and is usually controlled by a database management system. Data in most databases is typically modeled in a way similar to what we usually see as statisticians--rows and columns in a series of tables. Most databases utilize structured query language (SQL) to build tables, write data, and query data. Most databases are also stored on a remote server. 
+
+### Relational Database Model
+#### Relation and Relationships
+Many databases follow the relational model. In a relational model, each table is a *relation*. These relations consist of *attriutes*, or columns, and *tuples*, or rows. A relationship is a connection between relations (tables).
+
+An example database we'll use in this book is about a bakery. The *relations* are customers, items, receipts, and goods. In the receipts relation, the *attributes* are receipt ID, customer ID, and date of purchase. Each *tuple* represents one receipt. One *relation* is that customer ID references the ID attribute of the customers relation.
+
+#### Keys
+A *primary key* is an attribute or set of attributes that uniquely identifies a tuple. For example, the primary key in the receipts relation is the receipt ID, unique to each row. A *foreign key* is an attribute or set of attributes that references the primary key of another relation. For instance, within the receipts relation, the customer ID attribute references the primary key of the customers relation.
+
+### Basic Introduction to SQL
+Structured query language, more commonly known as SQL, is used to build tables, write data, and query data. SQL includes data definition language (DDL), data manipulation language (DML), data control language (DCL), and query language (QL).
+
+- DDL: Data definition language is used to define and manipulate relational schemas. This means defining the table's attributes and keys. DDL includes statements like `create table` and `alter table` that you'll see later in this book, espcially in [the section on writing to a database](04-writing.Rmd).
+- DML: Data manipulation language is used to add, update, and delete data from tables. This includes statements like `insert`, which you will see later in this book, as well as `update` and `delete`, espcially in [the section on writing to a database](04-writing.Rmd).
+- DCL: Data control language is used to implement security and access rules. This is something a professor who created the database can use to decide which students can see what data. We wont discuss any DCL in this book.
+- QL: Query language is used to request information from the database. The most used command in QL is `select`. You will see a lot of this in this book, espically in [the section on querying a database](05-querying.Rmd).
+
+** More details on query language **
+To explore some common SQL queries, we'll look at the iris dataset. Recall that its attributes are sepal length, sepal width, petal length, petal width, and species.
+
+The most basic SQL query is `select * from iris`. This will return the full table.
+
+#### Order by and Top
+Order by is used to sort a relation by an attribute. Limit can be used to take the first `n` tuples from a relation. For example, the statement below returns data for the five flowers with the highest sepal length.
+
+```
+select top 5 SepalLength, Species from iris 
+  order by SepalLength;
+```
+```
+  SepalLength Species
+1         4.3  setosa
+2         4.4  setosa
+3         4.4  setosa
+4         4.4  setosa
+5         4.5  setosa
+```
+
+#### Where
+The returned table can be subsetted to the desired data with a `where` clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:
+
+```
+select * from iris
+  where Species = 'setosa' and
+        Petal.Length > 1;
+```
+```
+   SepalLength SepalWidth PetalLength PetalWidth Species
+1          5.1        3.5         1.4        0.2  setosa
+2          4.9        3.0         1.4        0.2  setosa
+...
+```
+
+We can also select only specific columns. The following statement will return only the petal measurements and species.
+
+```
+select PetalLength, PetalWidth, Species from iris
+  where Species = 'setosa' and
+        PetalLength > 1;
+```
+```
+   PetalLength PetalWidth Species
+1          1.4        0.2  setosa
+2          1.4        0.2  setosa
+...
+```
+
+Note that SQL uses a single equal sign for a statement of equality and strings have single quotes.
+
+#### Summary Statistics
+Summary statistics can be obtained by using summary functions in when defining what variables to return. For example, if we want to view the average and maximum petal length, we can use the `avg` and `max` summary functions. We can also give these attributes new names with an `as` clause.
+
+```
+select avg(PetalLength) as average_petal_length, max(PetalLength) as max_petal_length from iris;
+```
+```
+  average_petal_length max_petal_length
+1                3.758              6.9
+```
+
+#### Group By / Having
+
+`group by` allows us to split, apply, and combine in SQL. For instance, if we wanted the average petal length of flowers, separated by species, we could 1) split: group by species, 2) apply: take the average of petal length, and 3) combine: return a single table with this information.
+
+```
+select Species, avg(PetalLength) as average_petal_length from iris
+  group by Species;
+```
+```
+     Species average_petal_length
+1     setosa                1.462
+2 versicolor                4.260
+3  virginica                5.552
+```
+
+`having` allows us to place where-like conditions related to the grouping variable. For instance, if we only wanted to display the species and average petal length for irises with over 10 observations, we could use having. (In this case, all species have 50 observations, so all averages are still reported).
+
+```
+select Species, avg(PetalLength) as average_petal_length from iris
+  group by Species
+  having count(*) > 10;
+```
+```
+     Species average_petal_length
+1     setosa                1.462
+2 versicolor                4.260
+3  virginica                5.552
+```
+
+Note that conditions unrelated to the grouping variable can still be present in a where clause, which would go before the group by statement. Suppose, for instance, we wanted the average petal length of flowers with sepal lengths over 6 centimeters, by species, for species with over 10 observations with sepal lengths over 6 centimeters. (Note that setosa flowers don't have enough long-sepaled observations to be included in this output).
+
+```
+select Species, avg(PetalLength) as average_petal_length from iris
+  where Sepal.Length > 6
+  group by Species
+  having count(*) > 10;
+```
+```
+     Species average_petal_length
+1 versicolor             4.585000
+2  virginica             5.682927
+```
+
+#### Case
+
+Case can be used to create new attributes based on some condition. The statement below creates a new attribute, long_sepal, is set to true when the sepa is over 6 centimeters long, and false otherwise.
+
+```
+select SepalLength, (
+  case when SepalLength > 6 then 'true' 
+  else 'false' 
+  end) as long_sepal from iris;
+```
+
+

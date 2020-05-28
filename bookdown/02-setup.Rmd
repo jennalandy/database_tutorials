@@ -2,7 +2,12 @@
 
 The manual takes uses the OCDB driver / connection string method to connect to the Stats repository. These drivers are proprietary to the SQL service you are using, so they need to be installed for each server type you wish to connect to.
 
-Connection strings refer to the passwords and information needed to connect to the database, as well as the format that that information needs to be specified in. Connection strings are also specific to the database you are connecting to.
+**Contents**
+
+1. [Setup on Linux][Linux - Ubuntu]
+2. [Setup on Mac OS][Mac OS]
+3. [Setup on Windows][Windows]
+4. [Other Connection Options][Other Connection Options]
 
 ## Linux - Ubuntu
 ```bash
@@ -22,34 +27,43 @@ curl https://packages.microsoft.com/config/ubuntu/18.04/prod.list > /etc/apt/sou
 curl https://packages.microsoft.com/config/ubuntu/19.10/prod.list > /etc/apt/sources.list.d/mssql-release.list
 
 exit
+
 sudo apt-get update
 sudo ACCEPT_EULA=Y apt-get install msodbcsql17
+
 # optional: for bcp and sqlcmd
 sudo ACCEPT_EULA=Y apt-get install mssql-tools
+
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bash_profile
 echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc
+
 source ~/.bashrc
+
 # optional: for unixODBC development headers
 sudo apt-get install unixodbc-dev
 ```
 
 ## Mac OS
 ```bash
+# install homebrew if not already there
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# install MSSQL latest release
 brew tap microsoft/mssql-release https://github.com/Microsoft/homebrew-mssql-release
 brew update
 HOMEBREW_NO_ENV_FILTERING=1 ACCEPT_EULA=Y brew install msodbcsql17 mssql-tools
 ```
 
 ## Windows
-For Windows the driver and connection string can be found at:
-https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15#download-for-windows
-
-download and open the msodbcsql.msi file.
+For Windows the driver and connection string can be found [here](https://docs.microsoft.com/en-us/sql/connect/odbc/microsoft-odbc-driver-for-sql-server?view=sql-server-ver15#download-for-windows). Download and open the msodbcsql.msi file.
 
 ## Other Connection Options
 
-Once drivers are installed, you can set a dsn (data source name) for the connection to the database using the ODBC/DSN manager for your system.
+Once drivers are installed, you can set a dsn (data source name) for the connection to the database using the ODBC/DSN manager for your system. This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source.
 
+<<<<<<< HEAD
 This is OS-specific and while it will allow a single user to access the database more easily, it must be configured for every user who wishes to connect to the data source. 
 Therefore, to more easily share code and to not have to mess with their behind-the-scenes settings, I use the connection string method from here further. 
+=======
+To more easily share code, we recommend use the connection string method from here further. A connection string is a raw string that includes database name, user credentials, an the address of the server. In [the chapter on connecting to a database][Connecting to a Database], we go over how to share code without sharing user credentials. A common practice is to write code to ask for credentials as user input when the program is run.
+>>>>>>> 91af122f945eb28148c390e886ad3a08e0ecc3d5

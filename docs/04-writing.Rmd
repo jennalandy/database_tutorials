@@ -1,10 +1,17 @@
 # Writing to a Database
 
-Once you are connected to a database, you can write tables to it (assuming you have write access). If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database](05-querying.Rmd).
+Once you are connected to a database, you can create tables with data! If you're only using a database to access data, and aren't writing to it, feel free to continue to the next chapter on [querying a database][Querying a Database].
 
-In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database](03-connections.Rmd).
+In the code blocks below, we assume you've already connected to your database and have named the connection as shown in the previous chapter on [connecting to a database][Connecting to a Database].
 
-## Julia  
+**Contents**
+
+1. [Writing to a Database in Julia](#writing_julia)
+1. [Writing to a Database in SAS](#writing_sas)
+1. [Writing to a Database in R](#writing_r)
+1. [Writing to a Database in Python](#writing_python)
+
+## Julia{#writing_julia}
 
 Depending on your ODBC driver, you could write a table with a simple line of code: `ODBC.load(database, "name of sql table", julia_table)`
 
@@ -128,7 +135,32 @@ ODBC.execute!(
 )
 ```
 
-## R
+## SAS{#writing_sas}
+
+**Downloading Data**
+
+Here we use a url libname to download the iris csv file from the internet, and preprocess it using a data step.
+
+```sas
+filename download url "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv";
+
+data iris;
+  infile download delimiter = "," firstobs=2;
+  input var1-var4 species $;
+run;
+```
+
+**Writing Data**
+
+Finally, we write this data to the database.
+
+```SAS
+proc sql;
+  create table conn2.iris as (select * from work.iris);
+quit;
+```
+
+## R{#writing_r}
 
 ### Simple Table: Iris
 The first example is a basic one to illustrate how to create and fill a table.
@@ -288,7 +320,7 @@ while (length(oneLine <- readLines(f, n = 1)) > 0) {
 close(f)
 ```
 
-## Python
+## Python{#writing_python}
 
 In python, there's no pretty function to create a table from a file or pandas DataFrame like there is in R. Here, we rely exclusively on the cursor's `execute` method and raw sql strings. To keep the code readable, we suggest using the `.join` method on an empty string or space (`" "`) and using the same indentation you would in a sql file.
 
@@ -516,50 +548,5 @@ with open('BAKERY/items.csv') as file:
                 int(line[1]),
                 line[2].strip()
             )
-```
-
-## SAS 
-**Security using SAS**
-Here we are going to assign a new libname in order to show off some of the password protective features of SAA
-```sas
-/*Window Prompt Courtesy of SAS Documentation */
-/** This code is for the SAS windowing environment only. **/
-
-/** %WINDOW defines the prompt **/
-%window info
-  #5 @5 'Please enter userid:'
-  #5 @26 id 8 attr=underline
-  #7 @5 'Please enter password:'
-  #7 @28 pass 8 attr=underline display=no;
-
-/** %DISPLAY invokes the prompt **/
-%display info;
-```
-**Connection using Saved inputs**
-Make a connection using inputted user information. If you have bulkload permissions, you might want to enable that option in order to speed up file upload. 
-```sas
-libname conn2 odbc
-required ="Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=&id;PWD=&pass"
-/*bulkload = YES*/
-;
-```
-**URL Libname and Data Input**
-Here we show off the url libname to download the iris csv file from the internet, and preprocess it using a data step.
-```sas
-filename download url "https://raw.githubusercontent.com/uiuc-cse/data-fa14/gh-pages/data/iris.csv";
-
-data iris;
-infile download delimiter = "," firstobs=2;
-input var1-var4 species $;
-run;
-```
-**Writing Data**
-Finally, we write this data to the database. Since sas processess data observation by observation, we don't need to worry about memory constraints.
-
-```SAS
-proc sql;
-create table conn2.iris as 
-(select * from work.iris);
-quit;
 ```
 
