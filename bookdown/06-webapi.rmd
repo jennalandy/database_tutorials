@@ -80,8 +80,44 @@ base = DataKnot(:crime => crimedata )
 base[It.crime]
 ```
 Finally, put the data into a useable DataKnot. 
+## SAS{#api_julia} 
 
-## R
+The SAS option requires 3 steps to work properly. First, you must define a where you will store the data from the API. Then, use proc http to make the api call  
+
+**define a temporary file to read the JSON data into**
+
+```{SAS}
+filename raw_json temp;
+```
+
+**use proc http to make the API call**
+Use get to 
+
+```sas
+proc http
+url = "https://covidtracking.com/api/v1/us/current.json"
+method = "GET"
+out = raw_json
+
+QUERY=("parm1" = "val1" "parm2" = "val2");
+
+quit;
+```
+
+This api uses the path segment of the url to specify parameters, but if you are using an an api that utilizes a query string use
+the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in `"parm" = "val"` form.
+
+**use the libname statement to convert the json file to a sas table**
+
+```sas
+libname Calif JSON fileref = raw_json;
+
+proc print data = Calif.alldata;
+run;
+```
+You'll note that because there was an internal object, the `category` column is still in JSON format.
+
+## R{#api_julia}
 
 To connect to APIs in R, we utilize the `httr` and `jsonlite` packages.
 
@@ -198,4 +234,6 @@ data
 1  59389  ...  {'id': 7597, 'title': 'veggie-pourri'...
 ```
 
-You'll note that because there was an internal object, the `category` column is still in JSON format.
+
+
+

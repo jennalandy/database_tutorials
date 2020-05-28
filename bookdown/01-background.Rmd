@@ -11,7 +11,7 @@
 ## Motivation
 With the advent of large and remote data sources comes a need to for proper training in accessing and utilizing databases. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in their courses, and possibly leaves students to learn these essential skills outside of the classroom.
 
-The technical purpose of this book is to demostrate how to [connect to](03-connections.Rmd), [upload data to](04-writing.Rmd), and [read data from](05-querying.Rmd) a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessons can likely be extended to any database, with a few google-able differences. 
+The technical purpose of this book is to demonstrate how to [connect to](03-connections.Rmd), [upload data to](04-writing.Rmd), and [read data from](05-querying.Rmd) a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessons can likely be extended to any database, with a few google-able differences. 
 
 ## About Databases
 A database stores data, and is usually controlled by a database management system. Data in most databases is typically modeled in a way similar to what we usually see as statisticians--rows and columns in a series of tables. Most databases utilize structured query language (SQL) to build tables, write data, and query data. Most databases are also stored on a remote server. 
@@ -22,7 +22,7 @@ with extra security so that no one can just open the folder and mess with your d
 
 ### Relational Database Model
 #### Relation and Relationships
-Many databases follow the relational model. In a relational model, each table is a *relation*. These relations consist of *attriutes*, or columns, and *tuples*, or rows. A relationship is a connection between relations (tables).
+Many databases follow the relational model. In a relational model, each table is a *relation*. These relations consist of *attributes*, or columns, and *tuples*, or rows. A relationship is a connection between relations (tables).
 
 An example database we'll use in this book is about a bakery. The *relations* are customers, items, receipts, and goods. In the receipts relation, the *attributes* are receipt ID, customer ID, and date of purchase. Each *tuple* represents one receipt. One *relation* is that customer ID references the ID attribute of the customers relation.
 
@@ -32,10 +32,10 @@ A *primary key* is an attribute or set of attributes that uniquely identifies a 
 ### Basic Introduction to SQL
 Structured query language, more commonly known as SQL, is used to build tables, write data, and query data. SQL includes data definition language (DDL), data manipulation language (DML), data control language (DCL), and query language (QL).
 
-- DDL: Data definition language is used to define and manipulate relational schemas. This means defining the table's attributes and keys. DDL includes statements like `create table` and `alter table` that you'll see later in this book, espcially in [the section on writing to a database](04-writing.Rmd).
+- DDL: Data definition language is used to define and manipulate relational schemas. This means defining the table's attributes and keys. DDL includes statements like `create table` and `alter table` that you'll see later in this book, especially in [the section on writing to a database](04-writing.Rmd).
 - DML: Data manipulation language is used to add, update, and delete data from tables. This includes statements like `insert`, which you will see later in this book, as well as `update` and `delete`, espcially in [the section on writing to a database](04-writing.Rmd).
 - DCL: Data control language is used to implement security and access rules. This is something a professor who created the database can use to decide which students can see what data. We wont discuss any DCL in this book.
-- QL: Query language is used to request information from the database. The most used command in QL is `select`. You will see a lot of this in this book, espically in [the section on querying a database](05-querying.Rmd).
+- QL: Query language is used to request information from the database. The most used command in QL is `select`. You will see a lot of this in this book, especially in [the section on querying a database](05-querying.Rmd).
 
 ** More details on query language **
 To explore some common SQL queries, we'll look at the iris dataset. Recall that its attributes are sepal length, sepal width, petal length, petal width, and species.
@@ -59,7 +59,7 @@ select top 5 SepalLength, Species from iris
 ```
 
 #### Where
-The returned table can be subsetted to the desired data with a `where` clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:
+The returned table can be subset to the desired data with a `where` clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:
 
 ```
 select * from iris
