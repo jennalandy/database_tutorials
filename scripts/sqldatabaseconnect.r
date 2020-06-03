@@ -6,7 +6,7 @@ library(datasets)
 conn <- dbConnect(
   odbc(),
   Driver = "ODBC Driver 17 for SQL Server",
-  Server = "24.205.251.117",
+  Server = rstudioapi::showPrompt("Server address","Server address"),
   Database = rstudioapi::showPrompt("Database name","Database name"),
   UID = rstudioapi::showPrompt("Database username", "Database username"),
   PWD = rstudioapi::askForPassword("Database password")

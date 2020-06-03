@@ -13,6 +13,7 @@ driver = "/usr/local/lib/libmsodbcsql.17.dylib"
 # default location where file is stored on mac
 
 # get user input
+server = input("Address: ")
 database = input("Database name: ")
 username = input("Username: ")
 password = getpass.getpass(prompt = "Password: ")
@@ -21,7 +22,7 @@ password = getpass.getpass(prompt = "Password: ")
 conn = pyodbc.connect(
     ";".join([
         "Driver="+driver,
-        "Address=24.205.251.117",
+        "Address="+server,
         "Database="+database,
         "UID="+username,
         "PWD="+password

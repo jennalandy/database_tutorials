@@ -1,0 +1,14 @@
+conn = opendatabaseconnection(
+	"Driver={ODBC Driver 17 for SQL Server};Address=<server>;Database=<db>;UID=<uid>;PWD=<pwd>")
+	
+res = executesql(conn,
+    "select * from mtcars"
+)
+
+
+#need to import csv
+res2 = executesql(conn,
+    "create table iris (var1 float, var2 float, var3 float, var4 float, var6 varchar") 
+)
+#fake data, will figure out how to write real data
+executesql("insert into iris values (1,2,3,4,"fakespecies")")

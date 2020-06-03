@@ -1,3 +1,7 @@
+db = ""
+server = ""
+uid = ""
+pwd = ""
 
 using Query, JuliaDB, SASLib, ODBC, CSV, Distributed
 
@@ -21,7 +25,7 @@ pass = read(crypt, String)
 
 # setting up database  
 @everywhere dsn =
-    ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=Nick;PWD=WaveTrack3@;")
+    ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=server;Database=db;UID=uid;PWD=pwd;")
 
 #Query and filter using database sql commands, when using lower case "query" returns a dataframe, as opposed to uppercase "Query"
 
@@ -186,7 +190,7 @@ end
 
 
 dsn =
-    ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=24.205.251.117;Database=NickDb;UID=Nick;PWD=WaveTrack3@;")
+    ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=server;Database=db;UID=uid;PWD=pwd;")
 
 ODBC.execute!(
     dsn,
