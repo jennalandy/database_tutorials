@@ -18,6 +18,8 @@
 # 4. Add a new item to the menu writes to goods database
 
 library(shiny)
+library(shinycssloaders)
+library(shinyWidgets)
 library(DT)
 library(tidyverse)
 source('app_utils.R')
@@ -25,74 +27,108 @@ source('app_utils.R')
 # Define UI for application that draws a histogram
 ui <- fluidPage(
 
-    # Application title
-    titlePanel("BAKERY"),
-
-    # Sidebar with a slider input for number of bins 
-    tabsetPanel(
-        
-        # Panel 1: Reading from Database
-        tabPanel(
-            title = "Reading from Database",
-            sidebarLayout(
-                sidebarPanel(
-                    checkboxInput(
-                        "advanced_options", 
-                        label = "Show Advanced Options"
-                    ),
-                    conditionalPanel(
-                      "input.advanced_options",
-                      radioButtons(
-                        "just_bakery",
-                        label = "Tables to include", 
-                        choices = c("Just BAKERY","All Tables"), 
-                        selected = "Just BAKERY",
-                        inline = TRUE
-                      ),
-                      textInput(
-                        "custom_query", 
-                        label = "Enter your own query", 
-                        placeholder = "select..."
-                      )
-                    ),
-                    uiOutput("select_table"),
-                    uiOutput("select_columns"),
-                    uiOutput("wheres"),
-                    uiOutput("foreign_wheres"),
-                    actionButton(
-                      "go",
-                      label = "Show Table"
-                    )
-                ),
-        
-                mainPanel(
-                    verbatimTextOutput("query"),
-                    DTOutput("out")
-                )
-            )
-        ),
-        
-        # Panel 2: Writing to Database
-        tabPanel(
-             title ="Upload to nick database",
-             sidebarLayout(
-                 sidebarPanel(
-                    selectInput("table_name", "Select Table to Append To", ntables(conn))
-                    ),
-
-                mainPanel(
-                # This outputs the dynamic UI component
-                verbatimTextOutput("status"),
-                uiOutput("ui"),
-                actionButton("upload","Upload Data Row"))
-             )
-        )
-    )    
+    prettySwitch(
+      inputId = "show_conn",
+      label = "Show Database Connection Options",
+      value = TRUE
+    ),
+    
+    conditionalPanel(
+      "input.show_conn",
+      textInput('server', 'Server Address:'),
+      textInput('db', 'Database Name:'),
+      textInput('uid', 'Username:'),
+      passwordInput('pwd', 'Password:'),
+      
+      actionButton("connect", "Connect!")
+    ),
+    
+    br(),
+    uiOutput("connected")  %>% withSpinner(color="#325d88")
 )
 
 # Define server logic required to draw a histogram
-server <- function(input, output) {
+server <- function(input, output, session) {
+    connected <- eventReactive(input$connect, {
+      tryCatch({
+        conn <<- make_connection(
+          input$server,
+          input$db,
+          input$uid,
+          input$pwd
+        )
+        updatePrettySwitch(session, "show_conn", value = FALSE)
+        return({
+          # Sidebar with a slider input for number of bins
+          tabsetPanel(
+            
+            # Panel 1: Reading from Database
+            tabPanel(
+              title = "Reading from Database",
+              sidebarLayout(
+                sidebarPanel(
+                  checkboxInput(
+                    "advanced_options",
+                    label = "Show Advanced Options"
+                  ),
+                  conditionalPanel(
+                    "input.advanced_options",
+                    radioButtons(
+                      "just_bakery",
+                      label = "Tables to include",
+                      choices = c("Just BAKERY","All Tables"),
+                      selected = "Just BAKERY",
+                      inline = TRUE
+                    ),
+                    textInput(
+                      "custom_query",
+                      label = "Enter your own query",
+                      placeholder = "select..."
+                    )
+                  ),
+                  uiOutput("select_table"),
+                  uiOutput("select_columns"),
+                  uiOutput("wheres"),
+                  uiOutput("foreign_wheres"),
+                  actionButton(
+                    "go",
+                    label = "Show Table"
+                  )
+                ),
+                
+                mainPanel(
+                  verbatimTextOutput("query"),
+                  DTOutput("out")
+                )
+              )
+            ),
+            
+            # Panel 2: Writing to Database
+            tabPanel(
+              title ="Upload to Database",
+              sidebarLayout(
+                sidebarPanel(
+                  selectInput("table_name", "Select Table to Append To", ntables())
+                ),
+                
+                mainPanel(
+                  # This outputs the dynamic UI component
+                  verbatimTextOutput("status"),
+                  uiOutput("ui"),
+                  actionButton("upload","Upload Data Row"))
+              )
+            )
+          )
+        })
+      }, error = function(e) {
+        return({
+          h4("Invalid connection. Check credentials and try again.")
+        })
+      })
+    })
     
+    output$connected <- renderUI(connected())
+  
     output$choice_table <- renderPrint({ input$select_table })
 
     output$select_table <- renderUI({

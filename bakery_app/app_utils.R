@@ -3,33 +3,38 @@ library(DBI)
 library(DT)
 library(tidyverse)
 
-conn <- dbConnect(
-  odbc(),
-  Driver = "ODBC Driver 17 for SQL Server",
-  Server = "24.205.251.117",
-  Database = "JennaDb", #rstudioapi::showPrompt("Database name","Database name"),
-  UID = "Jenna", #rstudioapi::showPrompt("Database username", "Database username"),
-  PWD = "ShadeHome8$" #rstudioapi::askForPassword("Database password")
-)
+make_connection <- function(server, db, uid, pwd) {
+  conn <- dbConnect(
+    odbc(),
+    Driver = "ODBC Driver 17 for SQL Server", #"SQL Server", #/usr/local/lib/libmsodbcsql.17.dylib"
+    Server = server, #rstudioapi::showPrompt("Server","Server"),
+    Database = db, #rstudioapi::showPrompt("Database name","Database name"),
+    UID = uid, #rstudioapi::showPrompt("Database username", "Database username"),
+    PWD = pwd #rstudioapi::askForPassword("Database password")
+  )
+  return(conn)
+}
 
 get_tables <- function(just_bakery) {
-  print(just_bakery)
-  all_tables <- dbGetQuery(
-    conn, 'select TABLE_NAME from INFORMATION_SCHEMA.TABLES'
-  ) %>% unlist() %>% unname()
-  
-  all_tables <- all_tables[!grepl("\\s", all_tables)]
-  print(all_tables)
-  
-  if (is.null(just_bakery) | just_bakery == "Just BAKERY") {
-    values = all_tables[grepl('BAKERY', all_tables)]
-    names = str_replace(values, 'BAKERY_', '')
-  } else {
-    values = all_tables
-    names = values
+  if (exists('conn')) {
+    print(just_bakery)
+    all_tables <- dbGetQuery(
+      conn, 'select TABLE_NAME from INFORMATION_SCHEMA.TABLES'
+    ) %>% unlist() %>% unname()
+    
+    all_tables <- all_tables[!grepl("\\s", all_tables)]
+    print(all_tables)
+    
+    if (is.null(just_bakery) | just_bakery == "Just BAKERY") {
+      values = all_tables[grepl('BAKERY', all_tables)]
+      names = str_replace(values, 'BAKERY_', '')
+    } else {
+      values = all_tables
+      names = values
+    }
+    tables = as.list(setNames(values, names))
+    return(tables)
   }
-  tables = as.list(setNames(values, names))
-  tables
 }
 
 get_table_info <- function(table) {
@@ -408,9 +413,11 @@ getcols = function(conn,tablename){
     return(res)
 }
 
-ntables = function(conn){
-  res = dbGetQuery(conn,"select name from sys.tables")
-  return(res)
+ntables = function(){
+  if (exists('conn')) {
+    res = dbGetQuery(conn,"select name from sys.tables")
+    return(res)
+  }
 }
 
 

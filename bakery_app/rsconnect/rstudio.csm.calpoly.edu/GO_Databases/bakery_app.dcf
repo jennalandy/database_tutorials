@@ -5,8 +5,8 @@ account: GO_Databases
 server: rstudio.csm.calpoly.edu
 hostUrl: https://rstudio.csm.calpoly.edu/__api__
 appId: 119
-bundleId: 268
+bundleId: 283
 url: https://rstudio.csm.calpoly.edu/content/119/
-when: 1589946825.07048
+when: 1591218642.23809
 asMultiple: FALSE
 asStatic: FALSE
