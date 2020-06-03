@@ -6,11 +6,11 @@ library(tidyverse)
 make_connection <- function(server, db, uid, pwd) {
   conn <- dbConnect(
     odbc(),
-    Driver = "ODBC Driver 17 for SQL Server", #"SQL Server", #/usr/local/lib/libmsodbcsql.17.dylib"
-    Server = server, #rstudioapi::showPrompt("Server","Server"),
-    Database = db, #rstudioapi::showPrompt("Database name","Database name"),
-    UID = uid, #rstudioapi::showPrompt("Database username", "Database username"),
-    PWD = pwd #rstudioapi::askForPassword("Database password")
+    Driver = "ODBC Driver 17 for SQL Server",
+    Server = server,
+    Database = db,
+    UID = uid,
+    PWD = pwd
   )
   return(conn)
 }
