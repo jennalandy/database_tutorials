@@ -23,3 +23,4 @@ This book demostrates how to [connect to][Connecting to a Database], [upload dat
 4. [Creating and Writing to Tables][Writing to a Database]
 5. [Querying a Database][Querying a Database]
 6. [Using APIs][Web API]
+7. [Integrating this Material into a Statistics Course][Integrating into a Statistics Course]

@@ -4,11 +4,11 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>4 Connecting to a Database | Using Databases</title>
-  <meta name="description" content="4 Connecting to a Database | Using Databases" />
+  <title>8 Integrating This Material into a Statistics Course | Using Databases</title>
+  <meta name="description" content="8 Integrating This Material into a Statistics Course | Using Databases" />
   <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="4 Connecting to a Database | Using Databases" />
+  <meta property="og:title" content="8 Integrating This Material into a Statistics Course | Using Databases" />
   <meta property="og:type" content="book" />
   
   
@@ -16,7 +16,7 @@
   <meta name="github-repo" content="jennalandy/stat400_database_tutorials" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="4 Connecting to a Database | Using Databases" />
+  <meta name="twitter:title" content="8 Integrating This Material into a Statistics Course | Using Databases" />
   
   
   
@@ -31,8 +31,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="machine-setup.html"/>
-<link rel="next" href="writing-to-a-database.html"/>
+<link rel="prev" href="web-api.html"/>
+
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -178,7 +178,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
 <li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="integrating-into-a-statistics-course.html"><a href="integrating-into-a-statistics-course.html"><i class="fa fa-check"></i><b>8</b> Integrating into a Statistics Course</a></li>
+<li class="chapter" data-level="8" data-path="integrating-this-material-into-a-statistics-course.html"><a href="integrating-this-material-into-a-statistics-course.html"><i class="fa fa-check"></i><b>8</b> Integrating This Material into a Statistics Course</a></li>
 </ul>
 
       </nav>
@@ -196,161 +196,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="connecting-to-a-database" class="section level1">
-<h1><span class="header-section-number">4</span> Connecting to a Database</h1>
-<p><strong>Contents</strong></p>
-<ol style="list-style-type: decimal">
-<li><a href="connecting-to-a-database.html#connect_julia">Connecting to a Database in Julia</a></li>
-<li><a href="connecting-to-a-database.html#connect_sas">Connecting to a Database in SAS</a></li>
-<li><a href="connecting-to-a-database.html#connect_r">Connecting to a Database in R</a></li>
-<li><a href="connecting-to-a-database.html#connect_python">Connecting to a Database in Python</a></li>
-</ol>
-<p>The first step to reading or writing to a database is the connection.</p>
-<p>For each language, we go through code to ask the user to input the address, database name, username, and password each time the code is run. Asking the user to input credentials is good practice for scenarios when you’re sharing code, working on a shared computer, posting code publically on GitHub or elsewhere, or using sensitive data. However, if the files you’re working with are private and you feel comfortable, you can replace these with the raw strings of your credentials (e.g. <code>database = &quot;database name&quot;</code>).</p>
-<div id="connect_julia" class="section level2">
-<h2><span class="header-section-number">4.1</span> Julia</h2>
-<pre class="text"><code>using ODBC
+<div id="integrating-this-material-into-a-statistics-course" class="section level1">
+<h1><span class="header-section-number">8</span> Integrating This Material into a Statistics Course</h1>
+<p>Existing classes that material could be incorporated into:
+- STAT 331 or 431: Lecture and/or lab on database usage in R
+- Courses that utilize R, but don’t teach it (STAT 419, 417, etc.): A lab or exercise where the dataset is obtained from an API or an existing database.
+- STAT 330: Lecture and/or lab on database or API usage in SAS
+- DATA 301: Lecture and/or homework exercise on database or API usage in Python</p>
 
-# Get user credentials
-address = begin 
-    print(&quot;Enter Address: &quot;)
-    readline()
-end 
-
-database = begin 
-    print(&quot;Enter Database Name: &quot;)
-    readline()
-end 
-
-user = begin 
-    print(&quot;Enter Username: &quot;)
-    readline() 
-end 
-
-crypt = Base.getpass(&quot;Enter Password: &quot;)
-pass = read(crypt,String)
-
-# setting up database  
-dsn = ODBC.DSN(&quot;Driver={ODBC Driver 17 for SQL Server};Address=$address;Database=$database;UID=$user;PWD=$pass;&quot;)
-
-# disconnect when you&#39;re done using this connection
-ODBC.disconnect()</code></pre>
-</div>
-<div id="connect_sas" class="section level2">
-<h2><span class="header-section-number">4.2</span> SAS</h2>
-<p>When using SAS, we can connect through proc sql or using a libname. We would recommend the latter, as the connection can be referenced throughout your sql file, as opposed to within one proc sql statement.</p>
-<p><strong>Proc Sql</strong></p>
-<pre class="sas"><code>/*from proc sql directly*/
-proc sql;
-connect to odbc as conn
-required=&quot;Driver={ODBC Driver 17 for SQL Server};Address=&lt;address&gt;;Database=&lt;database name&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;&quot;;
-
-create table event as
-select * from connection to conn
-(select * from events) ;
-
-/*disconnect when you&#39;re done using this connection*/
-disconnect from conn;
-quit;</code></pre>
-<p><strong>Libname</strong></p>
-<pre class="sas"><code>/*by using a libname*/
-libname conn2 odbc
-required =&quot;Driver={ODBC Driver 17 for SQL Server};Address=&lt;address&gt;;Database=&lt;database name&gt;;UID=&lt;username&gt;;PWD=&lt;password&gt;&quot;;
-
-proc sql;
-create table event as
-select * from conn2.events ;
-
-/*disconnect when you&#39;re done using this connection*/
-disconnect from conn2;
-quit;</code></pre>
-<p><strong>User input for credentials</strong></p>
-<p>Here we are going to assign a new libname in order to demonstrate the password protective features of SAS. Running this code chunk will prompt the user to input their credentials, then create a connection with the inputted id and password.</p>
-<pre class="sas"><code>/** %WINDOW defines the prompt **/
-%window info
-  #5 @5 &#39;Please enter userid:&#39;
-  #5 @26 id 8 attr=underline
-  #7 @5 &#39;Please enter password:&#39;
-  #7 @28 pass 8 attr=underline display=no;
-
-/** %DISPLAY invokes the prompt **/
-%display info;
-
-libname conn2 odbc
-  required =&quot;Driver={ODBC Driver 17 for SQL Server};Address=&lt;address&gt;;Database=&lt;database name&gt;;UID=&amp;id;PWD=&amp;pass&quot;
-  bulkload = YES
-;</code></pre>
-<p>The bulkload option can be removed if you don’t have permissions. It will be a bit slower, but will work the same.</p>
-</div>
-<div id="connect_r" class="section level2">
-<h2><span class="header-section-number">4.3</span> R</h2>
-<p>Using R, we connect to the database using the <code>odbc</code> and <code>DBI</code> packages.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1"><span class="kw">library</span>(odbc)</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2"><span class="kw">library</span>(DBI)</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4"><span class="co"># prompt user input for credentials</span></a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">address =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Address&quot;</span>,<span class="st">&quot;Address&quot;</span>)</a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">database =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database name&quot;</span>,<span class="st">&quot;Database name&quot;</span>)</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">uid =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">showPrompt</span>(<span class="st">&quot;Database username&quot;</span>, <span class="st">&quot;Database username&quot;</span>)</a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">pwd =<span class="st"> </span>rstudioapi<span class="op">::</span><span class="kw">askForPassword</span>(<span class="st">&quot;Database password&quot;</span>)</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb26-10" data-line-number="10"><span class="co"># open connection</span></a>
-<a class="sourceLine" id="cb26-11" data-line-number="11">conn &lt;-<span class="st"> </span><span class="kw">dbConnect</span>(</a>
-<a class="sourceLine" id="cb26-12" data-line-number="12">  <span class="kw">odbc</span>(),</a>
-<a class="sourceLine" id="cb26-13" data-line-number="13">  <span class="dt">Driver =</span> <span class="st">&quot;ODBC Driver 17 for SQL Server&quot;</span>,</a>
-<a class="sourceLine" id="cb26-14" data-line-number="14">  <span class="dt">Server =</span> address,</a>
-<a class="sourceLine" id="cb26-15" data-line-number="15">  <span class="dt">Database =</span> database,</a>
-<a class="sourceLine" id="cb26-16" data-line-number="16">  <span class="dt">UID =</span> uid,</a>
-<a class="sourceLine" id="cb26-17" data-line-number="17">  <span class="dt">PWD =</span> pwd</a>
-<a class="sourceLine" id="cb26-18" data-line-number="18">)</a>
-<a class="sourceLine" id="cb26-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb26-20" data-line-number="20"><span class="co"># disconnect when you&#39;re done using this connection</span></a>
-<a class="sourceLine" id="cb26-21" data-line-number="21"><span class="kw">dbDisconnect</span>(conn)</a></code></pre></div>
-</div>
-<div id="connect_python" class="section level2">
-<h2><span class="header-section-number">4.4</span> Python</h2>
-<p>The driver used in Python may depend on your setup. If you’re working on a PC, downloading the driver and connection from Microsoft directly should allow you to reference the driver name like this:</p>
-<p><code>driver = &quot;{ODBC Driver 17 for SQL Server}&quot;</code></p>
-<p>If you’re working on a Mac or Linux device, you cannot do this without further setup. It’s easiest to pass in the path to the installed <code>.dylib</code> file, which should be installed to <code>/usr/local/lib</code> by default. With this setup, you will need to reference the driver like this:</p>
-<p><code>driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot;</code></p>
-<p>If copying and pasting the code below, switch which <code>driver =</code> line is commented depending on your operating system.</p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="im">import</span> pyodbc</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">driver <span class="op">=</span> <span class="st">&quot;{ODBC Driver 17 for SQL Server}&quot;</span> <span class="co"># PC Users</span></a>
-<a class="sourceLine" id="cb27-4" data-line-number="4"><span class="co"># driver = &quot;/usr/local/lib/libmsodbcsql.17.dylib&quot; # Mac Users</span></a>
-<a class="sourceLine" id="cb27-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb27-6" data-line-number="6"><span class="co"># prompt user input for credentials</span></a>
-<a class="sourceLine" id="cb27-7" data-line-number="7">address <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Address: &quot;</span>)</a>
-<a class="sourceLine" id="cb27-8" data-line-number="8">database <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Database name: &quot;</span>)</a>
-<a class="sourceLine" id="cb27-9" data-line-number="9">username <span class="op">=</span> <span class="bu">input</span>(<span class="st">&quot;Username: &quot;</span>)</a>
-<a class="sourceLine" id="cb27-10" data-line-number="10">password <span class="op">=</span> getpass.getpass(prompt <span class="op">=</span> <span class="st">&quot;Password: &quot;</span>)</a>
-<a class="sourceLine" id="cb27-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb27-12" data-line-number="12"><span class="co"># open connection</span></a>
-<a class="sourceLine" id="cb27-13" data-line-number="13">conn <span class="op">=</span> pyodbc.<span class="ex">connect</span>(</a>
-<a class="sourceLine" id="cb27-14" data-line-number="14">    <span class="st">&quot;;&quot;</span>.join([</a>
-<a class="sourceLine" id="cb27-15" data-line-number="15">        <span class="st">&quot;Driver=&quot;</span><span class="op">+</span>driver,</a>
-<a class="sourceLine" id="cb27-16" data-line-number="16">        <span class="st">&quot;Address=&quot;</span><span class="op">+</span>address,</a>
-<a class="sourceLine" id="cb27-17" data-line-number="17">        <span class="st">&quot;Database=&quot;</span><span class="op">+</span>database,</a>
-<a class="sourceLine" id="cb27-18" data-line-number="18">        <span class="st">&quot;UID=&quot;</span><span class="op">+</span>username,</a>
-<a class="sourceLine" id="cb27-19" data-line-number="19">        <span class="st">&quot;PWD=&quot;</span><span class="op">+</span>password</a>
-<a class="sourceLine" id="cb27-20" data-line-number="20">    ])</a>
-<a class="sourceLine" id="cb27-21" data-line-number="21">)</a>
-<a class="sourceLine" id="cb27-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb27-23" data-line-number="23"><span class="co"># get cursor</span></a>
-<a class="sourceLine" id="cb27-24" data-line-number="24">cursor <span class="op">=</span> conn.cursor()</a>
-<a class="sourceLine" id="cb27-25" data-line-number="25"></a>
-<a class="sourceLine" id="cb27-26" data-line-number="26"><span class="co"># disconnect when you&#39;re done using this connection</span></a>
-<a class="sourceLine" id="cb27-27" data-line-number="27">conn.close()</a></code></pre></div>
-
-</div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
-<a href="machine-setup.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="writing-to-a-database.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="web-api.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

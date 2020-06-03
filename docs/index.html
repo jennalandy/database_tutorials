@@ -24,7 +24,7 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-28" />
+<meta name="date" content="2020-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -134,6 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.1" data-path="background.html"><a href="background.html#relational-database-model"><i class="fa fa-check"></i><b>2.2.1</b> Relational Database Model</a></li>
 <li class="chapter" data-level="2.2.2" data-path="background.html"><a href="background.html#basic-introduction-to-sql"><i class="fa fa-check"></i><b>2.2.2</b> Basic Introduction to SQL</a></li>
 </ul></li>
+<li class="chapter" data-level="2.3" data-path="background.html"><a href="background.html#converting-code-to-sql"><i class="fa fa-check"></i><b>2.3</b> Converting Code to SQL</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a><ul>
 <li class="chapter" data-level="3.1" data-path="machine-setup.html"><a href="machine-setup.html#linux---ubuntu"><i class="fa fa-check"></i><b>3.1</b> Linux - Ubuntu</a></li>
@@ -146,7 +147,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_sas"><i class="fa fa-check"></i><b>4.2</b> SAS</a></li>
 <li class="chapter" data-level="4.3" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_r"><i class="fa fa-check"></i><b>4.3</b> R</a></li>
 <li class="chapter" data-level="4.4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_python"><i class="fa fa-check"></i><b>4.4</b> Python</a></li>
-<li class="chapter" data-level="4.5" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_jsl"><i class="fa fa-check"></i><b>4.5</b> JSL</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a><ul>
 <li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_julia"><i class="fa fa-check"></i><b>5.1</b> Julia</a><ul>
@@ -174,13 +174,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
-<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="web-api.html"><a href="web-api.html#todo-nick-finish-this-and-describe-what-it-is"><i class="fa fa-check"></i><b>7.1.1</b> TODO: Nick finish this and describe what it is</a></li>
+<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
-<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
-</ul></li>
+<li class="chapter" data-level="8" data-path="integrating-into-a-statistics-course.html"><a href="integrating-into-a-statistics-course.html"><i class="fa fa-check"></i><b>8</b> Integrating into a Statistics Course</a></li>
 </ul>
 
       </nav>
@@ -201,7 +199,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">Using Databases</h1>
 <p class="author"><em>Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen</em></p>
-<p class="date"><em>2020-05-28</em></p>
+<p class="date"><em>2020-06-03</em></p>
 </div>
 <div id="introduction" class="section level1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
@@ -215,6 +213,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="writing-to-a-database.html#writing-to-a-database">Creating and Writing to Tables</a></li>
 <li><a href="querying-a-database.html#querying-a-database">Querying a Database</a></li>
 <li><a href="web-api.html#web-api">Using APIs</a></li>
+<li><a href="integrating-into-a-statistics-course.html#integrating-into-a-statistics-course">Integrating this Material into a Statistics Course</a></li>
 </ol>
 
 </div>

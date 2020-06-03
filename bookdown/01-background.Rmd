@@ -171,7 +171,7 @@ are inspired by sql and easily translate to sql queries. The below code is a sim
 ```
 
 **SAS - Data Step**
-```{sas}
+```sas
 proc sort data = iris;
 by species, petal width;
 run; 
@@ -185,7 +185,7 @@ run;
 ```
 
 **SQL**
-```{sas}
+```sas
 
 SELECT Sepal.Length, Sepal.Width 
 FROM iris

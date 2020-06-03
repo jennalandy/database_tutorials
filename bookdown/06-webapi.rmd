@@ -11,12 +11,10 @@ Application programming interfaces, or API’s, loosely refer to inputs a user c
 
 For statistical purposes, a web API is a method of integrating data from a website into your code. Unlike SQL queries, web API requests are specific to the website you are attempting to download from to allow more flexibility. Web API’s are used by a variety of developers to request and retrieve data, and the tabular structure of returned by a SQL query may not be ideal. Web API’s utilize specific URL strings to locate the data that you wish to request, and typically give it to you in a format known as JSON. To address the first requirement, it’s ideal to do a quick web search and find the documentation of the API so that you understand the URL syntax. Assuming you have that correct and the website grants your request for data, the last step is to convert the JSON data to something a bit more usable for statistics. 
 
+APIs can be integrated with databases by writing data to a database once it has been obtained from an API. An example of why you may want to do this is if the API doesn't keep all historical records. For instance, the Twitter API only allows you to search trends of the past two weeks. If you wanted to track specific trends for a whole year, you could periodically query the Twitter API and add new rows to a table in your database. By the end of the year, you would have a dataset of trends from the entire year, even though this data would no longer be available through the API. Another example of why you would want to integrate APIs with databases is if you need to do a lot of data manipulation beore the data is usable. Rather than performing alterations everytime you need to load the data, you could perform the alterations once, store the final tables to a database, and pull the usable data from there. Some APIs limit the number of requests you can make, so in these cases it can be beneficial to store data in a database that you can query as frequently as you'd like. Finally, you may want to put data from an API into a database if you don't always have reliable internet when you're working on your project, and your database is stored locally on your computer. While you need an internet connection to pull from an API, you dont need internet to pull from a local database.
+
 One of the most useful parts of a web API is the **Query String**.
-The query string is not found on all apis, but it is commonly used when pulling data
-where a user might need to specify additional material, like what column names you'd like
-to query or what year of data that you'd like to pull. Concretely, the query string  comes after
-the main url, or **endpoint**, and is separated by a question mark (?). Each new parameter is designated by 
-an ampersand (&). An example could look like:
+The query string is not found on all apis, but it is commonly used when pulling data where a user might need to specify additional material, like what column names you'd like to query or what year of data that you'd like to pull. Concretely, the query string  comes after the main url, or **endpoint**, and is separated by a question mark (?). Each new parameter is designated by an ampersand (&). An example could look like:
 
 ```
 https.//fake.data.com/fakeapi?&parm1=value1&parm2=value2
@@ -80,13 +78,13 @@ base = DataKnot(:crime => crimedata )
 base[It.crime]
 ```
 Finally, put the data into a useable DataKnot. 
-## SAS{#api_julia} 
+## SAS{#api_sas} 
 
 The SAS option requires 3 steps to work properly. First, you must define a where you will store the data from the API. Then, use proc http to make the api call  
 
 **define a temporary file to read the JSON data into**
 
-```{SAS}
+```sas
 filename raw_json temp;
 ```
 
@@ -117,7 +115,7 @@ run;
 ```
 You'll note that because there was an internal object, the `category` column is still in JSON format.
 
-## R{#api_julia}
+## R{#api_r}
 
 To connect to APIs in R, we utilize the `httr` and `jsonlite` packages.
 

@@ -39,8 +39,7 @@ res=@from i in ODBC.Query(dsn,"select * from mtcars") begin
 end 
 ```
 
-To get the same result, you could also query the entire table and filter and select in Julia.
-
+**dyplr/tidyverse style** 
 ```julia
 res = ODBC.query(dsn,"select * from mtcars") |> 
 @filter( _.disp > 200) |>

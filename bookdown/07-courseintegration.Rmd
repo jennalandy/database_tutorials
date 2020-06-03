@@ -1,0 +1,8 @@
+# Integrating into a Statistics Course
+
+Existing classes that material could be incorporated into:
+
+- STAT 331 or 431: Lecture and/or lab on database usage in R
+- Courses that utilize R, but don't teach it (STAT 419, 417, etc.): A lab or exercise where the dataset is obtained from an API or an existing database.
+- STAT 330: Lecture and/or lab on database or API usage in SAS
+- DATA 301: Lecture and/or homework exercise on database or API usage in Python

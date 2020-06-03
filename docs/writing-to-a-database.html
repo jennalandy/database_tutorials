@@ -24,7 +24,7 @@
 <meta name="author" content="Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen" />
 
 
-<meta name="date" content="2020-05-28" />
+<meta name="date" content="2020-06-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -134,6 +134,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="2.2.1" data-path="background.html"><a href="background.html#relational-database-model"><i class="fa fa-check"></i><b>2.2.1</b> Relational Database Model</a></li>
 <li class="chapter" data-level="2.2.2" data-path="background.html"><a href="background.html#basic-introduction-to-sql"><i class="fa fa-check"></i><b>2.2.2</b> Basic Introduction to SQL</a></li>
 </ul></li>
+<li class="chapter" data-level="2.3" data-path="background.html"><a href="background.html#converting-code-to-sql"><i class="fa fa-check"></i><b>2.3</b> Converting Code to SQL</a></li>
 </ul></li>
 <li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a><ul>
 <li class="chapter" data-level="3.1" data-path="machine-setup.html"><a href="machine-setup.html#linux---ubuntu"><i class="fa fa-check"></i><b>3.1</b> Linux - Ubuntu</a></li>
@@ -146,7 +147,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.2" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_sas"><i class="fa fa-check"></i><b>4.2</b> SAS</a></li>
 <li class="chapter" data-level="4.3" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_r"><i class="fa fa-check"></i><b>4.3</b> R</a></li>
 <li class="chapter" data-level="4.4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_python"><i class="fa fa-check"></i><b>4.4</b> Python</a></li>
-<li class="chapter" data-level="4.5" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_jsl"><i class="fa fa-check"></i><b>4.5</b> JSL</a></li>
 </ul></li>
 <li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a><ul>
 <li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_julia"><i class="fa fa-check"></i><b>5.1</b> Julia</a><ul>
@@ -174,13 +174,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
-<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a><ul>
-<li class="chapter" data-level="7.1.1" data-path="web-api.html"><a href="web-api.html#todo-nick-finish-this-and-describe-what-it-is"><i class="fa fa-check"></i><b>7.1.1</b> TODO: Nick finish this and describe what it is</a></li>
+<li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
 </ul></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
-<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
-</ul></li>
+<li class="chapter" data-level="8" data-path="integrating-into-a-statistics-course.html"><a href="integrating-into-a-statistics-course.html"><i class="fa fa-check"></i><b>8</b> Integrating into a Statistics Course</a></li>
 </ul>
 
       </nav>
@@ -214,102 +212,129 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Depending on your ODBC driver, you could write a table with a simple line of code: <code>ODBC.load(database, &quot;name of sql table&quot;, julia_table)</code></p>
 <p>MS SQL Server along with other ODBC drivers/database systems don’t support this, so we must use an alternative method.</p>
 <p><strong>Imports</strong></p>
-<div class="sourceCode" id="cb25"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb25-1" data-line-number="1">using ODBC, CSV, JuliaDB, Query</a></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb28-1" data-line-number="1">using ODBC, CSV, JuliaDB, Query, DataFrames</a></code></pre></div>
+<p>The Julia Language Community has suggested structure and instructions for working with tabular data, known as the Tables.jl interface.
+Both the indexed table type from JuliaDB and the more familiar DataFrame implement these standards, and integrate well with the ODBC package.
+Any of these queries can be converted into a dataframe for a more familiar interface, or into a JuliaDB IndexedTable if you need to run online algorithims or have easier
+access to parallel features.</p>
 <p><strong>Clear Up Workplace</strong></p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb26-1" data-line-number="1">ODBC.execute!(</a>
-<a class="sourceLine" id="cb26-2" data-line-number="2">    dsn,</a>
-<a class="sourceLine" id="cb26-3" data-line-number="3">    <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb26-4" data-line-number="4">    drop table <span class="kw">if</span> exists goods; </a>
-<a class="sourceLine" id="cb26-5" data-line-number="5">    drop table <span class="kw">if</span> exists items;</a>
-<a class="sourceLine" id="cb26-6" data-line-number="6">    drop table <span class="kw">if</span> exists reciepts;</a>
-<a class="sourceLine" id="cb26-7" data-line-number="7">    drop table <span class="kw">if</span> exists customers;</a>
-<a class="sourceLine" id="cb26-8" data-line-number="8">    drop table <span class="kw">if</span> exists iris;</a>
-<a class="sourceLine" id="cb26-9" data-line-number="9">    drop table <span class="kw">if</span> exists iris2;</a>
-<a class="sourceLine" id="cb26-10" data-line-number="10">    <span class="st">&quot;&quot;&quot;,</span></a>
-<a class="sourceLine" id="cb26-11" data-line-number="11">)</a></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb29-1" data-line-number="1">ODBC.execute!(</a>
+<a class="sourceLine" id="cb29-2" data-line-number="2">    dsn,</a>
+<a class="sourceLine" id="cb29-3" data-line-number="3">    <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb29-4" data-line-number="4">    drop table <span class="kw">if</span> exists goods; </a>
+<a class="sourceLine" id="cb29-5" data-line-number="5">    drop table <span class="kw">if</span> exists items;</a>
+<a class="sourceLine" id="cb29-6" data-line-number="6">    drop table <span class="kw">if</span> exists receipts;</a>
+<a class="sourceLine" id="cb29-7" data-line-number="7">    drop table <span class="kw">if</span> exists customers;</a>
+<a class="sourceLine" id="cb29-8" data-line-number="8">    drop table <span class="kw">if</span> exists iris;</a>
+<a class="sourceLine" id="cb29-9" data-line-number="9">    drop table <span class="kw">if</span> exists iris2;</a>
+<a class="sourceLine" id="cb29-10" data-line-number="10">    <span class="st">&quot;&quot;&quot;,</span></a>
+<a class="sourceLine" id="cb29-11" data-line-number="11">)</a></code></pre></div>
 <p><strong>Create tables</strong></p>
-<div class="sourceCode" id="cb27"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb27-1" data-line-number="1">ODBC.execute!(</a>
-<a class="sourceLine" id="cb27-2" data-line-number="2">  dsn,</a>
-<a class="sourceLine" id="cb27-3" data-line-number="3">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb27-4" data-line-number="4">  create table projects </a>
-<a class="sourceLine" id="cb27-5" data-line-number="5">  (Class VARCHAR(<span class="fl">10</span>), id INT, StartDate INT, EndDate INT)</a>
-<a class="sourceLine" id="cb27-6" data-line-number="6">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb27-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb27-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb27-9" data-line-number="9">ODBC.execute!(</a>
-<a class="sourceLine" id="cb27-10" data-line-number="10">  dsn,</a>
-<a class="sourceLine" id="cb27-11" data-line-number="11">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb27-12" data-line-number="12">  create table users </a>
-<a class="sourceLine" id="cb27-13" data-line-number="13">  (Class VARCHAR(<span class="fl">10</span>), Fname VARCHAR(<span class="fl">16</span>), Lname VARCHAR(<span class="fl">16</span>), </a>
-<a class="sourceLine" id="cb27-14" data-line-number="14">  Email VARCHAR(<span class="fl">36</span>), Phone VARCHAR(<span class="fl">9</span>), Dept VARCHAR(<span class="fl">10</span>), id INT) </a>
-<a class="sourceLine" id="cb27-15" data-line-number="15">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb27-16" data-line-number="16">)</a></code></pre></div>
-<p><strong>Insert values into tables</strong>
-First prepare an insert statement with blank values using <code>?</code>s. Then, iterate through the rows of your data table. The line <code>ODBC.execute!(insert_statement, row)</code> will put the values from this row of data into the blank values of the insert statement, and then execute this complete SQL statement.</p>
-<div class="sourceCode" id="cb28"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb28-1" data-line-number="1"><span class="co"># grid projects</span></a>
-<a class="sourceLine" id="cb28-2" data-line-number="2">insert_statement = ODBC.prepare(dsn,<span class="st">&quot;insert into projects values(?,?,?,?)&quot;</span>)</a>
-<a class="sourceLine" id="cb28-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb28-4" data-line-number="4"><span class="kw">for</span> row <span class="kw">in</span> rows(gridprojects)</a>
-<a class="sourceLine" id="cb28-5" data-line-number="5">    ODBC.execute!(insert_statement, row)</a>
-<a class="sourceLine" id="cb28-6" data-line-number="6"><span class="kw">end</span></a>
-<a class="sourceLine" id="cb28-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb28-8" data-line-number="8"><span class="co"># grid users</span></a>
-<a class="sourceLine" id="cb28-9" data-line-number="9">insert_statement = ODBC.prepare(dsn,<span class="st">&quot;insert into users values(?,?,?,?,?,?,?)&quot;</span>)</a>
-<a class="sourceLine" id="cb28-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb28-11" data-line-number="11"><span class="kw">for</span> row <span class="kw">in</span> rows(gridusers)</a>
-<a class="sourceLine" id="cb28-12" data-line-number="12">    ODBC.execute!(insert_statement, row)</a>
-<a class="sourceLine" id="cb28-13" data-line-number="13"><span class="kw">end</span></a></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb30-1" data-line-number="1">ODBC.execute!(</a>
+<a class="sourceLine" id="cb30-2" data-line-number="2">    dsn,</a>
+<a class="sourceLine" id="cb30-3" data-line-number="3">    <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb30-4" data-line-number="4">create table customers</a>
+<a class="sourceLine" id="cb30-5" data-line-number="5">(Id int Primary Key, LastName VARCHAR(<span class="fl">30</span>), FirstName VARCHAR(<span class="fl">30</span>))</a>
+<a class="sourceLine" id="cb30-6" data-line-number="6"><span class="st">&quot;&quot;&quot;,</span></a>
+<a class="sourceLine" id="cb30-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb30-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb30-9" data-line-number="9">ODBC.execute!(</a>
+<a class="sourceLine" id="cb30-10" data-line-number="10">    dsn,</a>
+<a class="sourceLine" id="cb30-11" data-line-number="11">    <span class="st">&quot;create table goods</span></a>
+<a class="sourceLine" id="cb30-12" data-line-number="12">    (Id VARCHAR(<span class="fl">30</span>) Primary Key, Flavor VARCHAR(<span class="fl">30</span>), Food VARCHAR(<span class="fl">30</span>), Price FLOAT)<span class="st">&quot;,</span></a>
+<a class="sourceLine" id="cb30-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb30-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb30-15" data-line-number="15">ODBC.execute!(</a>
+<a class="sourceLine" id="cb30-16" data-line-number="16">    dsn,</a>
+<a class="sourceLine" id="cb30-17" data-line-number="17">    <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb30-18" data-line-number="18">create table receipts</a>
+<a class="sourceLine" id="cb30-19" data-line-number="19">(ReceiptNumber int PRIMARY KEY, Date VARCHAR(<span class="fl">30</span>), CustomerId int, CONSTRAINT CustomerID FOREIGN KEY (CustomerId) references customers(Id) )</a>
+<a class="sourceLine" id="cb30-20" data-line-number="20"><span class="st">&quot;&quot;&quot;,</span></a>
+<a class="sourceLine" id="cb30-21" data-line-number="21">)</a>
+<a class="sourceLine" id="cb30-22" data-line-number="22"></a>
+<a class="sourceLine" id="cb30-23" data-line-number="23">ODBC.execute!(</a>
+<a class="sourceLine" id="cb30-24" data-line-number="24">    dsn,</a>
+<a class="sourceLine" id="cb30-25" data-line-number="25">    <span class="st">&quot;create table items</span></a>
+<a class="sourceLine" id="cb30-26" data-line-number="26">    (Receipt INT, Ordinal INT, Item VARCHAR(<span class="fl">30</span>),  PRIMARY KEY (Receipt,Ordinal), CONSTRAINT ReceiptNumber FOREIGN KEY (Receipt) REFERENCES receipts (ReceiptNumber) </a>
+<a class="sourceLine" id="cb30-27" data-line-number="27">    , CONSTRAINT ItemId FOREIGN KEY(Item) References goods (Id) )</a>
+<a class="sourceLine" id="cb30-28" data-line-number="28">    <span class="st">&quot;,</span></a>
+<a class="sourceLine" id="cb30-29" data-line-number="29">)</a></code></pre></div>
+<p><strong>Insert the Data</strong>
+First, make a sql statement with “blank” values that we’ll put in actual values into</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb31-1" data-line-number="1">insertstmt = ODBC.prepare(dsn, <span class="st">&quot;insert into customers values(?,?,?)&quot;</span>)</a></code></pre></div>
+<p>Now, for each row in the rows of our csv files, run the previous insert statement, with the values for each row
+inserted into the previous “blank rows” ie those question marks</p>
+<div class="sourceCode" id="cb32"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb32-1" data-line-number="1"><span class="kw">for</span> row <span class="kw">in</span> rows(customers)</a>
+<a class="sourceLine" id="cb32-2" data-line-number="2">    ODBC.execute!(insertstmt, row)</a>
+<a class="sourceLine" id="cb32-3" data-line-number="3"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb32-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb32-5" data-line-number="5"><span class="co">## Now do this for the remaining three tables</span></a>
+<a class="sourceLine" id="cb32-6" data-line-number="6">insertstmt = ODBC.prepare(dsn, <span class="st">&quot;insert into goods values(?,?,?,?)&quot;</span>)</a>
+<a class="sourceLine" id="cb32-7" data-line-number="7"><span class="kw">for</span> row <span class="kw">in</span> rows(goods)</a>
+<a class="sourceLine" id="cb32-8" data-line-number="8">    ODBC.execute!(insertstmt, row)</a>
+<a class="sourceLine" id="cb32-9" data-line-number="9"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb32-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb32-11" data-line-number="11">insertstmt = ODBC.prepare(dsn, <span class="st">&quot;insert into receipts values(?,?,?)&quot;</span>)</a>
+<a class="sourceLine" id="cb32-12" data-line-number="12"><span class="kw">for</span> row <span class="kw">in</span> rows(receipts)</a>
+<a class="sourceLine" id="cb32-13" data-line-number="13">    ODBC.execute!(insertstmt, row)</a>
+<a class="sourceLine" id="cb32-14" data-line-number="14"><span class="kw">end</span></a>
+<a class="sourceLine" id="cb32-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb32-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb32-17" data-line-number="17">insertstmt = ODBC.prepare(dsn, <span class="st">&quot;insert into items values(?,?,?)&quot;</span>)</a>
+<a class="sourceLine" id="cb32-18" data-line-number="18"><span class="kw">for</span> row <span class="kw">in</span> rows(items)</a>
+<a class="sourceLine" id="cb32-19" data-line-number="19">    ODBC.execute!(insertstmt, row)</a>
+<a class="sourceLine" id="cb32-20" data-line-number="20"><span class="kw">end</span></a></code></pre></div>
 <div id="alternative-method-for-big-data" class="section level3">
 <h3><span class="header-section-number">5.1.1</span> Alternative method for big data</h3>
 <p>The above method requires you to have the full dataset loaded into memory. But sometimes a data file is so large that it is inefficient to load everything at once and iterate through it to insert each row into a table.</p>
 <p>The method used here instead loads one row of data into memory at a time, and writes it to the SQL table before loading the next row.</p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb29-1" data-line-number="1">ODBC.execute!(</a>
-<a class="sourceLine" id="cb29-2" data-line-number="2">  dsn,</a>
-<a class="sourceLine" id="cb29-3" data-line-number="3">  <span class="st">&quot;&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb29-4" data-line-number="4">    create table iris </a>
-<a class="sourceLine" id="cb29-5" data-line-number="5">    (Sepal_length <span class="dt">Float</span>, Sepal_width <span class="dt">Float</span>, </a>
-<a class="sourceLine" id="cb29-6" data-line-number="6">    Petal_length FLOAT, Petal_width FLOAT, Species VARCHAR(<span class="fl">20</span>))</a>
-<a class="sourceLine" id="cb29-7" data-line-number="7">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb29-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb29-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb29-10" data-line-number="10">insert_statement = ODBC.prepare(dsn,<span class="st">&quot;insert into iris values(?,?,?,?,?)&quot;</span>)</a>
-<a class="sourceLine" id="cb29-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb29-12" data-line-number="12">open(<span class="st">&quot;iris.csv&quot;</span>) <span class="kw">do</span> f</a>
-<a class="sourceLine" id="cb29-13" data-line-number="13">  readline(f) <span class="co"># skip the header row (remove this line if no header)</span></a>
-<a class="sourceLine" id="cb29-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb29-15" data-line-number="15">  <span class="co"># read one line at a time, write to SQL table, and repeat</span></a>
-<a class="sourceLine" id="cb29-16" data-line-number="16">  <span class="kw">for</span> lines <span class="kw">in</span> readlines(f)</a>
-<a class="sourceLine" id="cb29-17" data-line-number="17">    rawline = map(<span class="dt">String</span>, split(lines, <span class="st">&quot;,&quot;</span>))</a>
-<a class="sourceLine" id="cb29-18" data-line-number="18">    ODBC.execute!(insert_statement, rawline)</a>
-<a class="sourceLine" id="cb29-19" data-line-number="19">   <span class="kw">end</span> </a>
-<a class="sourceLine" id="cb29-20" data-line-number="20"><span class="kw">end</span></a></code></pre></div>
+<div class="sourceCode" id="cb33"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb33-1" data-line-number="1">ODBC.execute!(</a>
+<a class="sourceLine" id="cb33-2" data-line-number="2">  dsn,</a>
+<a class="sourceLine" id="cb33-3" data-line-number="3">  <span class="st">&quot;&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb33-4" data-line-number="4">    create table iris </a>
+<a class="sourceLine" id="cb33-5" data-line-number="5">    (Sepal_length <span class="dt">Float</span>, Sepal_width <span class="dt">Float</span>, </a>
+<a class="sourceLine" id="cb33-6" data-line-number="6">    Petal_length FLOAT, Petal_width FLOAT, Species VARCHAR(<span class="fl">20</span>))</a>
+<a class="sourceLine" id="cb33-7" data-line-number="7">  <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb33-8" data-line-number="8">)</a>
+<a class="sourceLine" id="cb33-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb33-10" data-line-number="10">insert_statement = ODBC.prepare(dsn,<span class="st">&quot;insert into iris values(?,?,?,?,?)&quot;</span>)</a>
+<a class="sourceLine" id="cb33-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb33-12" data-line-number="12">open(<span class="st">&quot;iris.csv&quot;</span>) <span class="kw">do</span> f</a>
+<a class="sourceLine" id="cb33-13" data-line-number="13">  readline(f) <span class="co"># skip the header row (remove this line if no header)</span></a>
+<a class="sourceLine" id="cb33-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb33-15" data-line-number="15">  <span class="co"># read one line at a time, write to SQL table, and repeat</span></a>
+<a class="sourceLine" id="cb33-16" data-line-number="16">  <span class="kw">for</span> lines <span class="kw">in</span> readlines(f)</a>
+<a class="sourceLine" id="cb33-17" data-line-number="17">    rawline = map(<span class="dt">String</span>, split(lines, <span class="st">&quot;,&quot;</span>))</a>
+<a class="sourceLine" id="cb33-18" data-line-number="18">    ODBC.execute!(insert_statement, rawline)</a>
+<a class="sourceLine" id="cb33-19" data-line-number="19">   <span class="kw">end</span> </a>
+<a class="sourceLine" id="cb33-20" data-line-number="20"><span class="kw">end</span></a></code></pre></div>
 <p>The file can also be read using the CSV package. The code below would replace <code>open(&quot;iris.csv&quot;) do f</code> and everything following in the code chunk above .</p>
-<div class="sourceCode" id="cb30"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb30-1" data-line-number="1"><span class="kw">for</span> row <span class="kw">in</span> CSV.Rows(<span class="st">&quot;iris.csv&quot;</span>, skipto=<span class="fl">2</span> )</a>
-<a class="sourceLine" id="cb30-2" data-line-number="2">    ODBC.execute!(insert_statement, row)</a>
-<a class="sourceLine" id="cb30-3" data-line-number="3"><span class="kw">end</span> </a></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="kw">for</span> row <span class="kw">in</span> CSV.Rows(<span class="st">&quot;iris.csv&quot;</span>, skipto=<span class="fl">2</span> )</a>
+<a class="sourceLine" id="cb34-2" data-line-number="2">    ODBC.execute!(insert_statement, row)</a>
+<a class="sourceLine" id="cb34-3" data-line-number="3"><span class="kw">end</span> </a></code></pre></div>
 </div>
 <div id="bulk-insert" class="section level3">
 <h3><span class="header-section-number">5.1.2</span> Bulk Insert</h3>
 <p>If you have bulk insert permissions you can write data without reading it into memory. For more info, see <a href="https://docs.microsoft.com/en-us/sql/relational-databases/import-export/import-bulk-data-by-using-bulk-insert-or-openrowset-bulk-sql-server?view=sql-server-ver15#bulk-insert-statement">bulk insert documentation</a>.</p>
 <p>TODO: Test this. This code is not tested, since we do not have bulk load permissions.
 TODO: Explain the difference between these two options.</p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb31-1" data-line-number="1">ODBC.execute!(</a>
-<a class="sourceLine" id="cb31-2" data-line-number="2">  dsn,</a>
-<a class="sourceLine" id="cb31-3" data-line-number="3">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb31-4" data-line-number="4">    BULK INSERT iris</a>
-<a class="sourceLine" id="cb31-5" data-line-number="5">    FROM <span class="ch">&#39;iris.csv&#39;</span>;</a>
-<a class="sourceLine" id="cb31-6" data-line-number="6">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb31-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb31-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb31-9" data-line-number="9">ODBC.execute!(</a>
-<a class="sourceLine" id="cb31-10" data-line-number="10">  dsn, </a>
-<a class="sourceLine" id="cb31-11" data-line-number="11">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb31-12" data-line-number="12">    INSERT INTO iris (Sepal_length, Sepal_width, Petal_length, Petal_width, Species)</a>
-<a class="sourceLine" id="cb31-13" data-line-number="13">    SELECT *  </a>
-<a class="sourceLine" id="cb31-14" data-line-number="14">    FROM OPENROWSET (  </a>
-<a class="sourceLine" id="cb31-15" data-line-number="15">      BULK <span class="ch">&#39;iris.csv&#39;</span>) AS b;</a>
-<a class="sourceLine" id="cb31-16" data-line-number="16">  <span class="st">&quot;&quot;&quot;</span></a>
-<a class="sourceLine" id="cb31-17" data-line-number="17">)</a></code></pre></div>
+<div class="sourceCode" id="cb35"><pre class="sourceCode julia"><code class="sourceCode julia"><a class="sourceLine" id="cb35-1" data-line-number="1">ODBC.execute!(</a>
+<a class="sourceLine" id="cb35-2" data-line-number="2">  dsn,</a>
+<a class="sourceLine" id="cb35-3" data-line-number="3">  <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb35-4" data-line-number="4">    BULK INSERT iris</a>
+<a class="sourceLine" id="cb35-5" data-line-number="5">    FROM <span class="ch">&#39;iris.csv&#39;</span>;</a>
+<a class="sourceLine" id="cb35-6" data-line-number="6">  <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb35-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb35-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb35-9" data-line-number="9">ODBC.execute!(</a>
+<a class="sourceLine" id="cb35-10" data-line-number="10">  dsn, </a>
+<a class="sourceLine" id="cb35-11" data-line-number="11">  <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb35-12" data-line-number="12">    INSERT INTO iris (Sepal_length, Sepal_width, Petal_length, Petal_width, Species)</a>
+<a class="sourceLine" id="cb35-13" data-line-number="13">    SELECT *  </a>
+<a class="sourceLine" id="cb35-14" data-line-number="14">    FROM OPENROWSET (  </a>
+<a class="sourceLine" id="cb35-15" data-line-number="15">      BULK <span class="ch">&#39;iris.csv&#39;</span>) AS b;</a>
+<a class="sourceLine" id="cb35-16" data-line-number="16">  <span class="st">&quot;&quot;&quot;</span></a>
+<a class="sourceLine" id="cb35-17" data-line-number="17">)</a></code></pre></div>
 </div>
 </div>
 <div id="writing_sas" class="section level2">
@@ -333,83 +358,83 @@ quit;</code></pre>
 <div id="simple-table-iris" class="section level3">
 <h3><span class="header-section-number">5.3.1</span> Simple Table: Iris</h3>
 <p>The first example is a basic one to illustrate how to create and fill a table.</p>
-<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb34-1" data-line-number="1"><span class="co"># drop table from database, if it exists</span></a>
-<a class="sourceLine" id="cb34-2" data-line-number="2"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists iris;&#39;</span>)</a>
-<a class="sourceLine" id="cb34-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb34-4" data-line-number="4"><span class="co"># make column names sql-compatable, can&#39;t have &quot;.&quot; in a name</span></a>
-<a class="sourceLine" id="cb34-5" data-line-number="5"><span class="kw">names</span>(iris) &lt;-<span class="st"> </span><span class="kw">c</span>(</a>
-<a class="sourceLine" id="cb34-6" data-line-number="6">  <span class="st">&#39;SepalLength&#39;</span>,<span class="st">&#39;SepalWidth&#39;</span>,</a>
-<a class="sourceLine" id="cb34-7" data-line-number="7">  <span class="st">&#39;PetalLength&#39;</span>,<span class="st">&#39;PetalWidth&#39;</span>,</a>
-<a class="sourceLine" id="cb34-8" data-line-number="8">  <span class="st">&#39;Species&#39;</span></a>
-<a class="sourceLine" id="cb34-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb34-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb34-11" data-line-number="11"><span class="co"># create new table from iris dataset</span></a>
-<a class="sourceLine" id="cb34-12" data-line-number="12"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>,  <span class="dt">value =</span> iris)</a>
-<a class="sourceLine" id="cb34-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb34-14" data-line-number="14"><span class="co"># make sure table exists in database</span></a>
-<a class="sourceLine" id="cb34-15" data-line-number="15"><span class="kw">dbListTables</span>(conn, <span class="dt">table_name =</span> <span class="st">&quot;iris&quot;</span>)</a>
-<a class="sourceLine" id="cb34-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb34-17" data-line-number="17"><span class="co"># list fields the new table</span></a>
-<a class="sourceLine" id="cb34-18" data-line-number="18"><span class="kw">dbListFields</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># drop table from database, if it exists</span></a>
+<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists iris;&#39;</span>)</a>
+<a class="sourceLine" id="cb38-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb38-4" data-line-number="4"><span class="co"># make column names sql-compatable, can&#39;t have &quot;.&quot; in a name</span></a>
+<a class="sourceLine" id="cb38-5" data-line-number="5"><span class="kw">names</span>(iris) &lt;-<span class="st"> </span><span class="kw">c</span>(</a>
+<a class="sourceLine" id="cb38-6" data-line-number="6">  <span class="st">&#39;SepalLength&#39;</span>,<span class="st">&#39;SepalWidth&#39;</span>,</a>
+<a class="sourceLine" id="cb38-7" data-line-number="7">  <span class="st">&#39;PetalLength&#39;</span>,<span class="st">&#39;PetalWidth&#39;</span>,</a>
+<a class="sourceLine" id="cb38-8" data-line-number="8">  <span class="st">&#39;Species&#39;</span></a>
+<a class="sourceLine" id="cb38-9" data-line-number="9">)</a>
+<a class="sourceLine" id="cb38-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb38-11" data-line-number="11"><span class="co"># create new table from iris dataset</span></a>
+<a class="sourceLine" id="cb38-12" data-line-number="12"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>,  <span class="dt">value =</span> iris)</a>
+<a class="sourceLine" id="cb38-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb38-14" data-line-number="14"><span class="co"># make sure table exists in database</span></a>
+<a class="sourceLine" id="cb38-15" data-line-number="15"><span class="kw">dbListTables</span>(conn, <span class="dt">table_name =</span> <span class="st">&quot;iris&quot;</span>)</a>
+<a class="sourceLine" id="cb38-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb38-17" data-line-number="17"><span class="co"># list fields the new table</span></a>
+<a class="sourceLine" id="cb38-18" data-line-number="18"><span class="kw">dbListFields</span>(conn, <span class="dt">name =</span> <span class="st">&quot;iris&quot;</span>)</a></code></pre></div>
 </div>
 <div id="related-tables-connected-by-keys-bakery-files" class="section level3">
 <h3><span class="header-section-number">5.3.2</span> Related Tables Connected by Keys: Bakery Files</h3>
 <p>This example uses related tables. The table sused here represent data that may be stored by a bakery. There is a list of customers who have customer Ids, a list of goods sold with good Ids, a list of receipts with a receipt Id as well as the Id of the customer who purchased the goods, and finally a list of items on eaach receipt.</p>
 <p><strong>Load the data</strong></p>
-<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb35-1" data-line-number="1"><span class="co"># load dataframes</span></a>
-<a class="sourceLine" id="cb35-2" data-line-number="2">customers &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/customers.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb35-3" data-line-number="3">goods &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/goods.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb35-4" data-line-number="4">items &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/items.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb35-5" data-line-number="5">receipts &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/receipts.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb35-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb35-7" data-line-number="7"><span class="co"># clean Item column</span></a>
-<a class="sourceLine" id="cb35-8" data-line-number="8">items<span class="op">$</span>Item &lt;-<span class="st"> </span><span class="kw">trimws</span>(items<span class="op">$</span>Item)</a></code></pre></div>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb39-1" data-line-number="1"><span class="co"># load dataframes</span></a>
+<a class="sourceLine" id="cb39-2" data-line-number="2">customers &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/customers.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb39-3" data-line-number="3">goods &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/goods.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb39-4" data-line-number="4">items &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/items.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb39-5" data-line-number="5">receipts &lt;-<span class="st"> </span><span class="kw">read.csv</span>(<span class="st">&#39;BAKERY/receipts.csv&#39;</span>, <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb39-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb39-7" data-line-number="7"><span class="co"># clean Item column</span></a>
+<a class="sourceLine" id="cb39-8" data-line-number="8">items<span class="op">$</span>Item &lt;-<span class="st"> </span><span class="kw">trimws</span>(items<span class="op">$</span>Item)</a></code></pre></div>
 <p><strong>Drop tables if they already exist</strong>
 When tables are related, you can’t drop a table that’s referenced by another one. For example, the <code>receipts</code> table contains the customer Id of who made the purchase, referencing the <code>customers</code> table. This means that <code>receipts</code> must be dropped first. The relationships between tables will become more clear as we move into constructing tables.</p>
-<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb36-1" data-line-number="1"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists items;&#39;</span>)</a>
-<a class="sourceLine" id="cb36-2" data-line-number="2"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists goods;&#39;</span>)</a>
-<a class="sourceLine" id="cb36-3" data-line-number="3"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists receipts;&#39;</span>)</a>
-<a class="sourceLine" id="cb36-4" data-line-number="4"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists customers;&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists items;&#39;</span>)</a>
+<a class="sourceLine" id="cb40-2" data-line-number="2"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists goods;&#39;</span>)</a>
+<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists receipts;&#39;</span>)</a>
+<a class="sourceLine" id="cb40-4" data-line-number="4"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists customers;&#39;</span>)</a></code></pre></div>
 <p><strong>Create new tables</strong>
 We can now create new tables using the <code>dbWriteTable</code> function. When we create tables, each one should have a <em>primary key</em>, and some will also have a <em>foreign key</em>.</p>
 <p>The primary key is a column or multiple columns that serve as a unique identifier of each row of data. In the <code>customers</code> table, for instance, the primary key is the customer Id. This value cannot be empty. You’ll see that as we create each table, we first have to specify that the column is <code>not null</code>, and then add it as the <code>primary key</code>.</p>
 <p>A foreign key is a column in a table that references the primary key of another table. For instance, in <code>receipts</code>, we have a customer Id column telling us who made each purpose. In this case, customer Id is a foreign key in the <code>receipts</code> table referencing the primary key of the <code>customers</code> table. This value cannot be empty either, so you’ll see that again we specify the column is <code>not null</code> and then add it as a <code>foreign key</code>. The first example of this is for the receipts table.</p>
-<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb37-1" data-line-number="1"><span class="co">## --- customers ---</span></a>
-<a class="sourceLine" id="cb37-2" data-line-number="2"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;customers&quot;</span>, <span class="dt">value =</span> customers)</a>
-<a class="sourceLine" id="cb37-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb37-4" data-line-number="4"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table customers alter column Id int not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-5" data-line-number="5"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table customers add primary key (Id);&#39;</span>)</a>
-<a class="sourceLine" id="cb37-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb37-7" data-line-number="7"><span class="co">## --- goods ---</span></a>
-<a class="sourceLine" id="cb37-8" data-line-number="8"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;goods&quot;</span>,  <span class="dt">value =</span> goods)</a>
-<a class="sourceLine" id="cb37-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb37-10" data-line-number="10"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table goods alter column Id varchar(20) not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-11" data-line-number="11"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table goods add primary key (Id);&#39;</span>)</a>
-<a class="sourceLine" id="cb37-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb37-13" data-line-number="13"><span class="co">## --- receipts ---</span></a>
-<a class="sourceLine" id="cb37-14" data-line-number="14"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;receipts&quot;</span>,  <span class="dt">value =</span> receipts)</a>
-<a class="sourceLine" id="cb37-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb37-16" data-line-number="16"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts alter column ReceiptNumber int not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-17" data-line-number="17"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts add primary key (ReceiptNumber);&#39;</span>)</a>
-<a class="sourceLine" id="cb37-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb37-19" data-line-number="19"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts alter column CustomerID int not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-20" data-line-number="20"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts add foreign key (CustomerID) references customers (Id);&#39;</span>)</a>
-<a class="sourceLine" id="cb37-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb37-22" data-line-number="22"><span class="co">## --- items ---</span></a>
-<a class="sourceLine" id="cb37-23" data-line-number="23"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;items&quot;</span>,  <span class="dt">value =</span> items)</a>
-<a class="sourceLine" id="cb37-24" data-line-number="24"></a>
-<a class="sourceLine" id="cb37-25" data-line-number="25"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items alter column Receipt int not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-26" data-line-number="26"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items alter column Ordinal int not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-27" data-line-number="27"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items add primary key (Receipt, Ordinal);&#39;</span>)</a>
-<a class="sourceLine" id="cb37-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb37-29" data-line-number="29"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items add foreign key (Receipt) references receipts (ReceiptNumber);&#39;</span>)</a>
-<a class="sourceLine" id="cb37-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb37-31" data-line-number="31"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items alter column Item varchar(20) not null;&#39;</span>)</a>
-<a class="sourceLine" id="cb37-32" data-line-number="32"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items add foreign key (Item) references goods (Id);&#39;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co">## --- customers ---</span></a>
+<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;customers&quot;</span>, <span class="dt">value =</span> customers)</a>
+<a class="sourceLine" id="cb41-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb41-4" data-line-number="4"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table customers alter column Id int not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-5" data-line-number="5"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table customers add primary key (Id);&#39;</span>)</a>
+<a class="sourceLine" id="cb41-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb41-7" data-line-number="7"><span class="co">## --- goods ---</span></a>
+<a class="sourceLine" id="cb41-8" data-line-number="8"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;goods&quot;</span>,  <span class="dt">value =</span> goods)</a>
+<a class="sourceLine" id="cb41-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb41-10" data-line-number="10"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table goods alter column Id varchar(20) not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-11" data-line-number="11"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table goods add primary key (Id);&#39;</span>)</a>
+<a class="sourceLine" id="cb41-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb41-13" data-line-number="13"><span class="co">## --- receipts ---</span></a>
+<a class="sourceLine" id="cb41-14" data-line-number="14"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;receipts&quot;</span>,  <span class="dt">value =</span> receipts)</a>
+<a class="sourceLine" id="cb41-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb41-16" data-line-number="16"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts alter column ReceiptNumber int not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-17" data-line-number="17"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts add primary key (ReceiptNumber);&#39;</span>)</a>
+<a class="sourceLine" id="cb41-18" data-line-number="18"></a>
+<a class="sourceLine" id="cb41-19" data-line-number="19"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts alter column CustomerID int not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-20" data-line-number="20"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table receipts add foreign key (CustomerID) references customers (Id);&#39;</span>)</a>
+<a class="sourceLine" id="cb41-21" data-line-number="21"></a>
+<a class="sourceLine" id="cb41-22" data-line-number="22"><span class="co">## --- items ---</span></a>
+<a class="sourceLine" id="cb41-23" data-line-number="23"><span class="kw">dbWriteTable</span>(conn, <span class="dt">name =</span> <span class="st">&quot;items&quot;</span>,  <span class="dt">value =</span> items)</a>
+<a class="sourceLine" id="cb41-24" data-line-number="24"></a>
+<a class="sourceLine" id="cb41-25" data-line-number="25"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items alter column Receipt int not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-26" data-line-number="26"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items alter column Ordinal int not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-27" data-line-number="27"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items add primary key (Receipt, Ordinal);&#39;</span>)</a>
+<a class="sourceLine" id="cb41-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb41-29" data-line-number="29"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items add foreign key (Receipt) references receipts (ReceiptNumber);&#39;</span>)</a>
+<a class="sourceLine" id="cb41-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb41-31" data-line-number="31"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items alter column Item varchar(20) not null;&#39;</span>)</a>
+<a class="sourceLine" id="cb41-32" data-line-number="32"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;alter table items add foreign key (Item) references goods (Id);&#39;</span>)</a></code></pre></div>
 <p><strong>Check key usage</strong>
 The following query will display information on the key usage within a table. We can use this to check that the keys were applied the way we were expecting. For the <code>items</code> table, receipt and ordianl together should serve as the primary key, receipt should be a foreign key referencing the <code>receipts</code> table, and item should be a foreign key referencing the <code>goods</code> table.</p>
-<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb38-1" data-line-number="1"><span class="co"># check key usage in this table</span></a>
-<a class="sourceLine" id="cb38-2" data-line-number="2"><span class="kw">dbGetQuery</span>(conn, <span class="st">&quot;select * from information_schema.key_column_usage where TABLE_NAME = &#39;items&#39;;&quot;</span>)[<span class="kw">c</span>(<span class="st">&#39;CONSTRAINT_NAME&#39;</span>, <span class="st">&#39;COLUMN_NAME&#39;</span>)]</a></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># check key usage in this table</span></a>
+<a class="sourceLine" id="cb42-2" data-line-number="2"><span class="kw">dbGetQuery</span>(conn, <span class="st">&quot;select * from information_schema.key_column_usage where TABLE_NAME = &#39;items&#39;;&quot;</span>)[<span class="kw">c</span>(<span class="st">&#39;CONSTRAINT_NAME&#39;</span>, <span class="st">&#39;COLUMN_NAME&#39;</span>)]</a></code></pre></div>
 <pre><code>               CONSTRAINT_NAME COLUMN_NAME
 1    FK__items__Item__5006DFF2        Item
 2 FK__items__Receipt__4F12BBB9     Receipt
@@ -422,51 +447,51 @@ The following query will display information on the key usage within a table. We
 <p>The method used here instead loads one row of data into memory at a time, and writes it to the SQL table before loading the next row.</p>
 <p>It’s a bit more complex because we can’t use the simple <code>dbWriteTable</code> anymore. Instead, we define the table with a <code>create table</code> statement with <code>dbExecute</code>. To keep the code readable, we suggest using the <code>paste</code> function and using the same indentation you would in a sql file.</p>
 <p>For simplicity and lack of repetition, this example doesn’t use the four related datasets again. For information on defining primary and foreign keys in a <code>create table</code> statement, see the <a href="https://www.w3schools.com/sql/sql_primarykey.ASP">w3schools example for SQL primary key on SQL Server</a> and for <a href="https://www.w3schools.com/sql/sql_foreignkey.asp">foreign keys</a>.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb40-1" data-line-number="1"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists iris;&#39;</span>)</a>
-<a class="sourceLine" id="cb40-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb40-3" data-line-number="3"><span class="kw">dbExecute</span>(conn, <span class="kw">paste</span>(</a>
-<a class="sourceLine" id="cb40-4" data-line-number="4">  <span class="st">&quot;create table iris(&quot;</span>,</a>
-<a class="sourceLine" id="cb40-5" data-line-number="5">    <span class="st">&quot;SepalLength decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb40-6" data-line-number="6">    <span class="st">&quot;SepalWidth decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb40-7" data-line-number="7">    <span class="st">&quot;PetalLength decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb40-8" data-line-number="8">    <span class="st">&quot;PetalWidth decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb40-9" data-line-number="9">    <span class="st">&quot;Species varchar(50)&quot;</span>,</a>
-<a class="sourceLine" id="cb40-10" data-line-number="10">  <span class="st">&quot;);&quot;</span></a>
-<a class="sourceLine" id="cb40-11" data-line-number="11">))</a>
-<a class="sourceLine" id="cb40-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb40-13" data-line-number="13">f &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="st">&quot;iris.csv&quot;</span>, <span class="dt">open =</span> <span class="st">&quot;r&quot;</span>)</a>
-<a class="sourceLine" id="cb40-14" data-line-number="14">first =<span class="st"> </span><span class="ot">TRUE</span></a>
-<a class="sourceLine" id="cb40-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb40-16" data-line-number="16"><span class="co"># while the next line exists</span></a>
-<a class="sourceLine" id="cb40-17" data-line-number="17"><span class="cf">while</span> (<span class="kw">length</span>(oneLine &lt;-<span class="st"> </span><span class="kw">readLines</span>(f, <span class="dt">n =</span> <span class="dv">1</span>)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
-<a class="sourceLine" id="cb40-18" data-line-number="18">  </a>
-<a class="sourceLine" id="cb40-19" data-line-number="19">  <span class="co"># this skips the header row. delete this if there&#39;s no header</span></a>
-<a class="sourceLine" id="cb40-20" data-line-number="20">  <span class="cf">if</span> (first) {</a>
-<a class="sourceLine" id="cb40-21" data-line-number="21">    first =<span class="st"> </span><span class="ot">FALSE</span></a>
-<a class="sourceLine" id="cb40-22" data-line-number="22">    <span class="cf">next</span></a>
-<a class="sourceLine" id="cb40-23" data-line-number="23">  }</a>
-<a class="sourceLine" id="cb40-24" data-line-number="24">  </a>
-<a class="sourceLine" id="cb40-25" data-line-number="25">  <span class="co"># separate values</span></a>
-<a class="sourceLine" id="cb40-26" data-line-number="26">  myLine &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(oneLine, <span class="st">&quot;,&quot;</span>))</a>
-<a class="sourceLine" id="cb40-27" data-line-number="27">  </a>
-<a class="sourceLine" id="cb40-28" data-line-number="28">  <span class="co"># insert values</span></a>
-<a class="sourceLine" id="cb40-29" data-line-number="29">  insert_statement &lt;-<span class="st"> </span><span class="kw">paste</span>(</a>
-<a class="sourceLine" id="cb40-30" data-line-number="30">    <span class="st">&quot;insert into iris(&quot;</span>,</a>
-<a class="sourceLine" id="cb40-31" data-line-number="31">      <span class="st">&quot;SepalLength,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-32" data-line-number="32">      <span class="st">&quot;SepalWidth,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-33" data-line-number="33">      <span class="st">&quot;PetalLength,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-34" data-line-number="34">      <span class="st">&quot;PetalWidth,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-35" data-line-number="35">      <span class="st">&quot;Species&quot;</span>,</a>
-<a class="sourceLine" id="cb40-36" data-line-number="36">    <span class="st">&quot;) values (&quot;</span>,</a>
-<a class="sourceLine" id="cb40-37" data-line-number="37">      <span class="kw">as.numeric</span>(myLine[<span class="dv">1</span>]), <span class="st">&quot;,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-38" data-line-number="38">      <span class="kw">as.numeric</span>(myLine[<span class="dv">2</span>]), <span class="st">&quot;,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-39" data-line-number="39">      <span class="kw">as.numeric</span>(myLine[<span class="dv">3</span>]), <span class="st">&quot;,&quot;</span>,</a>
-<a class="sourceLine" id="cb40-40" data-line-number="40">      <span class="kw">as.numeric</span>(myLine[<span class="dv">4</span>]),<span class="st">&quot;,&#39;&quot;</span>,</a>
-<a class="sourceLine" id="cb40-41" data-line-number="41">      <span class="kw">str_replace_all</span>(myLine[<span class="dv">5</span>], <span class="st">&#39;</span><span class="ch">\&quot;</span><span class="st">&#39;</span>,<span class="st">&#39;&#39;</span>), <span class="st">&quot;&#39;);&quot;</span></a>
-<a class="sourceLine" id="cb40-42" data-line-number="42">  )</a>
-<a class="sourceLine" id="cb40-43" data-line-number="43">  <span class="kw">dbExecute</span>(conn, insert_statement)</a>
-<a class="sourceLine" id="cb40-44" data-line-number="44">}</a>
-<a class="sourceLine" id="cb40-45" data-line-number="45"><span class="kw">close</span>(f)</a></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="kw">dbExecute</span>(conn, <span class="st">&#39;drop table if exists iris;&#39;</span>)</a>
+<a class="sourceLine" id="cb44-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb44-3" data-line-number="3"><span class="kw">dbExecute</span>(conn, <span class="kw">paste</span>(</a>
+<a class="sourceLine" id="cb44-4" data-line-number="4">  <span class="st">&quot;create table iris(&quot;</span>,</a>
+<a class="sourceLine" id="cb44-5" data-line-number="5">    <span class="st">&quot;SepalLength decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb44-6" data-line-number="6">    <span class="st">&quot;SepalWidth decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb44-7" data-line-number="7">    <span class="st">&quot;PetalLength decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb44-8" data-line-number="8">    <span class="st">&quot;PetalWidth decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb44-9" data-line-number="9">    <span class="st">&quot;Species varchar(50)&quot;</span>,</a>
+<a class="sourceLine" id="cb44-10" data-line-number="10">  <span class="st">&quot;);&quot;</span></a>
+<a class="sourceLine" id="cb44-11" data-line-number="11">))</a>
+<a class="sourceLine" id="cb44-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb44-13" data-line-number="13">f &lt;-<span class="st"> </span><span class="kw">file</span>(<span class="st">&quot;iris.csv&quot;</span>, <span class="dt">open =</span> <span class="st">&quot;r&quot;</span>)</a>
+<a class="sourceLine" id="cb44-14" data-line-number="14">first =<span class="st"> </span><span class="ot">TRUE</span></a>
+<a class="sourceLine" id="cb44-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb44-16" data-line-number="16"><span class="co"># while the next line exists</span></a>
+<a class="sourceLine" id="cb44-17" data-line-number="17"><span class="cf">while</span> (<span class="kw">length</span>(oneLine &lt;-<span class="st"> </span><span class="kw">readLines</span>(f, <span class="dt">n =</span> <span class="dv">1</span>)) <span class="op">&gt;</span><span class="st"> </span><span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb44-18" data-line-number="18">  </a>
+<a class="sourceLine" id="cb44-19" data-line-number="19">  <span class="co"># this skips the header row. delete this if there&#39;s no header</span></a>
+<a class="sourceLine" id="cb44-20" data-line-number="20">  <span class="cf">if</span> (first) {</a>
+<a class="sourceLine" id="cb44-21" data-line-number="21">    first =<span class="st"> </span><span class="ot">FALSE</span></a>
+<a class="sourceLine" id="cb44-22" data-line-number="22">    <span class="cf">next</span></a>
+<a class="sourceLine" id="cb44-23" data-line-number="23">  }</a>
+<a class="sourceLine" id="cb44-24" data-line-number="24">  </a>
+<a class="sourceLine" id="cb44-25" data-line-number="25">  <span class="co"># separate values</span></a>
+<a class="sourceLine" id="cb44-26" data-line-number="26">  myLine &lt;-<span class="st"> </span><span class="kw">unlist</span>(<span class="kw">strsplit</span>(oneLine, <span class="st">&quot;,&quot;</span>))</a>
+<a class="sourceLine" id="cb44-27" data-line-number="27">  </a>
+<a class="sourceLine" id="cb44-28" data-line-number="28">  <span class="co"># insert values</span></a>
+<a class="sourceLine" id="cb44-29" data-line-number="29">  insert_statement &lt;-<span class="st"> </span><span class="kw">paste</span>(</a>
+<a class="sourceLine" id="cb44-30" data-line-number="30">    <span class="st">&quot;insert into iris(&quot;</span>,</a>
+<a class="sourceLine" id="cb44-31" data-line-number="31">      <span class="st">&quot;SepalLength,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-32" data-line-number="32">      <span class="st">&quot;SepalWidth,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-33" data-line-number="33">      <span class="st">&quot;PetalLength,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-34" data-line-number="34">      <span class="st">&quot;PetalWidth,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-35" data-line-number="35">      <span class="st">&quot;Species&quot;</span>,</a>
+<a class="sourceLine" id="cb44-36" data-line-number="36">    <span class="st">&quot;) values (&quot;</span>,</a>
+<a class="sourceLine" id="cb44-37" data-line-number="37">      <span class="kw">as.numeric</span>(myLine[<span class="dv">1</span>]), <span class="st">&quot;,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-38" data-line-number="38">      <span class="kw">as.numeric</span>(myLine[<span class="dv">2</span>]), <span class="st">&quot;,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-39" data-line-number="39">      <span class="kw">as.numeric</span>(myLine[<span class="dv">3</span>]), <span class="st">&quot;,&quot;</span>,</a>
+<a class="sourceLine" id="cb44-40" data-line-number="40">      <span class="kw">as.numeric</span>(myLine[<span class="dv">4</span>]),<span class="st">&quot;,&#39;&quot;</span>,</a>
+<a class="sourceLine" id="cb44-41" data-line-number="41">      <span class="kw">str_replace_all</span>(myLine[<span class="dv">5</span>], <span class="st">&#39;</span><span class="ch">\&quot;</span><span class="st">&#39;</span>,<span class="st">&#39;&#39;</span>), <span class="st">&quot;&#39;);&quot;</span></a>
+<a class="sourceLine" id="cb44-42" data-line-number="42">  )</a>
+<a class="sourceLine" id="cb44-43" data-line-number="43">  <span class="kw">dbExecute</span>(conn, insert_statement)</a>
+<a class="sourceLine" id="cb44-44" data-line-number="44">}</a>
+<a class="sourceLine" id="cb44-45" data-line-number="45"><span class="kw">close</span>(f)</a></code></pre></div>
 </div>
 </div>
 <div id="writing_python" class="section level2">
@@ -477,204 +502,204 @@ The following query will display information on the key usage within a table. We
 <h3><span class="header-section-number">5.4.1</span> Simple Table: Iris</h3>
 <p>The first example is a basic one to illustrate how to create and fill a table.</p>
 <p><strong>Load data</strong></p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb41-1" data-line-number="1"><span class="co"># load in data</span></a>
-<a class="sourceLine" id="cb41-2" data-line-number="2"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;iris.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb41-3" data-line-number="3">    iris_lines <span class="op">=</span> <span class="bu">file</span>.readlines()[<span class="dv">1</span>:]</a></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" data-line-number="1"><span class="co"># load in data</span></a>
+<a class="sourceLine" id="cb45-2" data-line-number="2"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;iris.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb45-3" data-line-number="3">    iris_lines <span class="op">=</span> <span class="bu">file</span>.readlines()[<span class="dv">1</span>:]</a></code></pre></div>
 <p><strong>Drop table if it exists, and create a new table</strong></p>
-<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb42-1" data-line-number="1"><span class="co"># drop table if it already exists</span></a>
-<a class="sourceLine" id="cb42-2" data-line-number="2">cursor.execute(<span class="st">&quot;drop table if exists iris;&quot;</span>)</a>
-<a class="sourceLine" id="cb42-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb42-4" data-line-number="4"><span class="co"># create new table</span></a>
-<a class="sourceLine" id="cb42-5" data-line-number="5">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb42-6" data-line-number="6">    <span class="st">&quot;create table iris(&quot;</span>,</a>
-<a class="sourceLine" id="cb42-7" data-line-number="7">        <span class="st">&quot;SepalLength decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb42-8" data-line-number="8">        <span class="st">&quot;SepalWidth decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb42-9" data-line-number="9">        <span class="st">&quot;PetalLength decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb42-10" data-line-number="10">        <span class="st">&quot;PetalWidth decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb42-11" data-line-number="11">        <span class="st">&quot;Species varchar(50)&quot;</span></a>
-<a class="sourceLine" id="cb42-12" data-line-number="12">    <span class="st">&quot;);&quot;</span></a>
-<a class="sourceLine" id="cb42-13" data-line-number="13">]))</a></code></pre></div>
+<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># drop table if it already exists</span></a>
+<a class="sourceLine" id="cb46-2" data-line-number="2">cursor.execute(<span class="st">&quot;drop table if exists iris;&quot;</span>)</a>
+<a class="sourceLine" id="cb46-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb46-4" data-line-number="4"><span class="co"># create new table</span></a>
+<a class="sourceLine" id="cb46-5" data-line-number="5">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb46-6" data-line-number="6">    <span class="st">&quot;create table iris(&quot;</span>,</a>
+<a class="sourceLine" id="cb46-7" data-line-number="7">        <span class="st">&quot;SepalLength decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb46-8" data-line-number="8">        <span class="st">&quot;SepalWidth decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb46-9" data-line-number="9">        <span class="st">&quot;PetalLength decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb46-10" data-line-number="10">        <span class="st">&quot;PetalWidth decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb46-11" data-line-number="11">        <span class="st">&quot;Species varchar(50)&quot;</span></a>
+<a class="sourceLine" id="cb46-12" data-line-number="12">    <span class="st">&quot;);&quot;</span></a>
+<a class="sourceLine" id="cb46-13" data-line-number="13">]))</a></code></pre></div>
 <p><strong>Insert values</strong>
 To insert values into a sql table, we have two options.</p>
 <p>This first strategy is beneficial because it doesn’t require you to load the full file into memory. This means that even if a dataset is very large, python can handle it. Here we only show using it to enter the first line of data, but this could be put inside of a for loop to iterate over all rows.</p>
-<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb43-1" data-line-number="1"><span class="co"># single input: write one item to table</span></a>
-<a class="sourceLine" id="cb43-2" data-line-number="2">line <span class="op">=</span> iris_lines[<span class="dv">0</span>].split(<span class="st">&#39;,&#39;</span>)</a>
-<a class="sourceLine" id="cb43-3" data-line-number="3">cursor.execute(</a>
-<a class="sourceLine" id="cb43-4" data-line-number="4">    <span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb43-5" data-line-number="5">        <span class="st">&quot;insert into iris(&quot;</span>,</a>
-<a class="sourceLine" id="cb43-6" data-line-number="6">            <span class="st">&quot;SepalLength,&quot;</span>,</a>
-<a class="sourceLine" id="cb43-7" data-line-number="7">            <span class="st">&quot;SepalWidth,&quot;</span>,</a>
-<a class="sourceLine" id="cb43-8" data-line-number="8">            <span class="st">&quot;PetalLength,&quot;</span>,</a>
-<a class="sourceLine" id="cb43-9" data-line-number="9">            <span class="st">&quot;PetalWidth,&quot;</span>,</a>
-<a class="sourceLine" id="cb43-10" data-line-number="10">            <span class="st">&quot;Species&quot;</span></a>
-<a class="sourceLine" id="cb43-11" data-line-number="11">        <span class="st">&quot;)&quot;</span></a>
-<a class="sourceLine" id="cb43-12" data-line-number="12">        <span class="st">&quot;values(?, ?, ?, ?, ?)&quot;</span>]),</a>
-<a class="sourceLine" id="cb43-13" data-line-number="13">    line[<span class="dv">0</span>],</a>
-<a class="sourceLine" id="cb43-14" data-line-number="14">    line[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb43-15" data-line-number="15">    line[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb43-16" data-line-number="16">    line[<span class="dv">3</span>],</a>
-<a class="sourceLine" id="cb43-17" data-line-number="17">    line[<span class="dv">4</span>].strip()</a>
-<a class="sourceLine" id="cb43-18" data-line-number="18">)</a></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="co"># single input: write one item to table</span></a>
+<a class="sourceLine" id="cb47-2" data-line-number="2">line <span class="op">=</span> iris_lines[<span class="dv">0</span>].split(<span class="st">&#39;,&#39;</span>)</a>
+<a class="sourceLine" id="cb47-3" data-line-number="3">cursor.execute(</a>
+<a class="sourceLine" id="cb47-4" data-line-number="4">    <span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb47-5" data-line-number="5">        <span class="st">&quot;insert into iris(&quot;</span>,</a>
+<a class="sourceLine" id="cb47-6" data-line-number="6">            <span class="st">&quot;SepalLength,&quot;</span>,</a>
+<a class="sourceLine" id="cb47-7" data-line-number="7">            <span class="st">&quot;SepalWidth,&quot;</span>,</a>
+<a class="sourceLine" id="cb47-8" data-line-number="8">            <span class="st">&quot;PetalLength,&quot;</span>,</a>
+<a class="sourceLine" id="cb47-9" data-line-number="9">            <span class="st">&quot;PetalWidth,&quot;</span>,</a>
+<a class="sourceLine" id="cb47-10" data-line-number="10">            <span class="st">&quot;Species&quot;</span></a>
+<a class="sourceLine" id="cb47-11" data-line-number="11">        <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb47-12" data-line-number="12">        <span class="st">&quot;values(?, ?, ?, ?, ?)&quot;</span>]),</a>
+<a class="sourceLine" id="cb47-13" data-line-number="13">    line[<span class="dv">0</span>],</a>
+<a class="sourceLine" id="cb47-14" data-line-number="14">    line[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb47-15" data-line-number="15">    line[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb47-16" data-line-number="16">    line[<span class="dv">3</span>],</a>
+<a class="sourceLine" id="cb47-17" data-line-number="17">    line[<span class="dv">4</span>].strip()</a>
+<a class="sourceLine" id="cb47-18" data-line-number="18">)</a></code></pre></div>
 <p>This second option is used to insert many rows of data into the table in one command. Using <code>cursor.executemany</code>, we can pass the same insert statement as above, but then a list of a list of values, where each inner list is 1 row of data. This is nice because it is less code. However, we prefer the first option because it is more consistent in that it will work for data tables of any size.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb44-1" data-line-number="1"><span class="co"># bulk input: write many items to table</span></a>
-<a class="sourceLine" id="cb44-2" data-line-number="2">cursor.executemany(</a>
-<a class="sourceLine" id="cb44-3" data-line-number="3">    <span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb44-4" data-line-number="4">            <span class="st">&quot;insert into iris(&quot;</span>,</a>
-<a class="sourceLine" id="cb44-5" data-line-number="5">                <span class="st">&quot;SepalLength,&quot;</span>,</a>
-<a class="sourceLine" id="cb44-6" data-line-number="6">                <span class="st">&quot;SepalWidth,&quot;</span>,</a>
-<a class="sourceLine" id="cb44-7" data-line-number="7">                <span class="st">&quot;PetalLength,&quot;</span>,</a>
-<a class="sourceLine" id="cb44-8" data-line-number="8">                <span class="st">&quot;PetalWidth,&quot;</span>,</a>
-<a class="sourceLine" id="cb44-9" data-line-number="9">                <span class="st">&quot;Species&quot;</span></a>
-<a class="sourceLine" id="cb44-10" data-line-number="10">            <span class="st">&quot;)&quot;</span></a>
-<a class="sourceLine" id="cb44-11" data-line-number="11">            <span class="st">&quot;values(?, ?, ?, ?, ?)&quot;</span>]),</a>
-<a class="sourceLine" id="cb44-12" data-line-number="12">    [line.split(<span class="st">&#39;,&#39;</span>) <span class="cf">for</span> line <span class="kw">in</span> iris_lines[<span class="dv">1</span>:]] <span class="co"># [1:] because observation 0 was inserted above</span></a>
-<a class="sourceLine" id="cb44-13" data-line-number="13">)</a></code></pre></div>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb48-1" data-line-number="1"><span class="co"># bulk input: write many items to table</span></a>
+<a class="sourceLine" id="cb48-2" data-line-number="2">cursor.executemany(</a>
+<a class="sourceLine" id="cb48-3" data-line-number="3">    <span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb48-4" data-line-number="4">            <span class="st">&quot;insert into iris(&quot;</span>,</a>
+<a class="sourceLine" id="cb48-5" data-line-number="5">                <span class="st">&quot;SepalLength,&quot;</span>,</a>
+<a class="sourceLine" id="cb48-6" data-line-number="6">                <span class="st">&quot;SepalWidth,&quot;</span>,</a>
+<a class="sourceLine" id="cb48-7" data-line-number="7">                <span class="st">&quot;PetalLength,&quot;</span>,</a>
+<a class="sourceLine" id="cb48-8" data-line-number="8">                <span class="st">&quot;PetalWidth,&quot;</span>,</a>
+<a class="sourceLine" id="cb48-9" data-line-number="9">                <span class="st">&quot;Species&quot;</span></a>
+<a class="sourceLine" id="cb48-10" data-line-number="10">            <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb48-11" data-line-number="11">            <span class="st">&quot;values(?, ?, ?, ?, ?)&quot;</span>]),</a>
+<a class="sourceLine" id="cb48-12" data-line-number="12">    [line.split(<span class="st">&#39;,&#39;</span>) <span class="cf">for</span> line <span class="kw">in</span> iris_lines[<span class="dv">1</span>:]] <span class="co"># [1:] because observation 0 was inserted above</span></a>
+<a class="sourceLine" id="cb48-13" data-line-number="13">)</a></code></pre></div>
 </div>
 <div id="related-tables-connected-by-keys-bakery-files-1" class="section level3">
 <h3><span class="header-section-number">5.4.2</span> Related Tables Connected by Keys: Bakery Files</h3>
 <p>This example uses related tables. The tables used here represent data that may be stored by a bakery. There is a list of customers who have customer Ids, a list of goods sold with good Ids, a list of receipts with a receipt Id as well as the Id of the customer who purchased the goods, and finally a list of items on eaach receipt.</p>
 <p><strong>Drop tables if they already exist</strong>
 When tables are related, you can’t drop a table that’s referenced by another one. For example, the <code>receipts</code> table contains the customer Id of who made the purchase, referencing the <code>customers</code> table. This means that <code>receipts</code> must be dropped first. The relationships between tables will become more clear as we move into constructing tables.</p>
-<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb45-1" data-line-number="1">cursor.execute(<span class="st">&quot;drop table if exists items;&quot;</span>)</a>
-<a class="sourceLine" id="cb45-2" data-line-number="2">cursor.execute(<span class="st">&quot;drop table if exists goods;&quot;</span>) <span class="co"># referenced by items</span></a>
-<a class="sourceLine" id="cb45-3" data-line-number="3">cursor.execute(<span class="st">&quot;drop table if exists receipts;&quot;</span>) <span class="co"># referenced by items</span></a>
-<a class="sourceLine" id="cb45-4" data-line-number="4">cursor.execute(<span class="st">&quot;drop table if exists customers;&quot;</span>) <span class="co"># referenced by receipts</span></a></code></pre></div>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb49-1" data-line-number="1">cursor.execute(<span class="st">&quot;drop table if exists items;&quot;</span>)</a>
+<a class="sourceLine" id="cb49-2" data-line-number="2">cursor.execute(<span class="st">&quot;drop table if exists goods;&quot;</span>) <span class="co"># referenced by items</span></a>
+<a class="sourceLine" id="cb49-3" data-line-number="3">cursor.execute(<span class="st">&quot;drop table if exists receipts;&quot;</span>) <span class="co"># referenced by items</span></a>
+<a class="sourceLine" id="cb49-4" data-line-number="4">cursor.execute(<span class="st">&quot;drop table if exists customers;&quot;</span>) <span class="co"># referenced by receipts</span></a></code></pre></div>
 <p><strong>Create new tables</strong>
 We can now create new tables using <code>create table</code> statements and <code>cursor.execute</code>. When we create tables, each one should have a <em>primary key</em>, and some will also have a <em>foreign key</em>.</p>
 <p>The primary key is a column or multiple columns that serve as a unique identifier of each row of data. In the <code>customers</code> table, for instance, the primary key is the customer Id. This value cannot be empty. This constraint is added automatically when we set the column(s) as the primary key.</p>
 <p>A foreign key is a column in a table that references the primary key of another table. For instance, in <code>receipts</code>, we have a customer Id column telling us who made each purpose. In this case, customer Id is a foreign key in the <code>receipts</code> table referencing the primary key of the <code>customers</code> table. This value cannot be empty either, and the constraint will automtically be applied when you set it as a foreign key.</p>
-<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb46-1" data-line-number="1"><span class="co"># create new tables</span></a>
-<a class="sourceLine" id="cb46-2" data-line-number="2">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb46-3" data-line-number="3">    <span class="st">&quot;create table customers(&quot;</span>,</a>
-<a class="sourceLine" id="cb46-4" data-line-number="4">        <span class="st">&quot;Id int,&quot;</span>,</a>
-<a class="sourceLine" id="cb46-5" data-line-number="5">        <span class="st">&quot;LastName varchar(50),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-6" data-line-number="6">        <span class="st">&quot;FirstName varchar(50),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-7" data-line-number="7">        <span class="st">&quot;constraint customers_pk primary key (Id)&quot;</span></a>
-<a class="sourceLine" id="cb46-8" data-line-number="8">    <span class="st">&quot;);&quot;</span></a>
-<a class="sourceLine" id="cb46-9" data-line-number="9">]))</a>
-<a class="sourceLine" id="cb46-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb46-11" data-line-number="11">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb46-12" data-line-number="12">    <span class="st">&quot;create table receipts(&quot;</span>,</a>
-<a class="sourceLine" id="cb46-13" data-line-number="13">        <span class="st">&quot;ReceiptNumber int,&quot;</span>,</a>
-<a class="sourceLine" id="cb46-14" data-line-number="14">        <span class="st">&quot;Date date,&quot;</span>,</a>
-<a class="sourceLine" id="cb46-15" data-line-number="15">        <span class="st">&quot;CustomerId int,&quot;</span>,</a>
-<a class="sourceLine" id="cb46-16" data-line-number="16">        <span class="st">&quot;constraint receipts_pk primary key (ReceiptNumber),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-17" data-line-number="17">        <span class="st">&quot;constraint receipts_customers_fk foreign key (CustomerId) references customers (Id)&quot;</span></a>
-<a class="sourceLine" id="cb46-18" data-line-number="18">    <span class="st">&quot;);&quot;</span></a>
-<a class="sourceLine" id="cb46-19" data-line-number="19">]))</a>
-<a class="sourceLine" id="cb46-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb46-21" data-line-number="21">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb46-22" data-line-number="22">    <span class="st">&quot;create table goods(&quot;</span>,</a>
-<a class="sourceLine" id="cb46-23" data-line-number="23">        <span class="st">&quot;Id varchar(50),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-24" data-line-number="24">        <span class="st">&quot;Flavor varchar(50),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-25" data-line-number="25">        <span class="st">&quot;Food varchar(50),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-26" data-line-number="26">        <span class="st">&quot;Price decimal(5,2),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-27" data-line-number="27">        <span class="st">&quot;constraint goods_pk primary key (Id)&quot;</span></a>
-<a class="sourceLine" id="cb46-28" data-line-number="28">    <span class="st">&quot;);&quot;</span></a>
-<a class="sourceLine" id="cb46-29" data-line-number="29">]))</a>
-<a class="sourceLine" id="cb46-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb46-31" data-line-number="31">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb46-32" data-line-number="32">    <span class="st">&quot;create table items(&quot;</span>,</a>
-<a class="sourceLine" id="cb46-33" data-line-number="33">        <span class="st">&quot;Receipt int,&quot;</span>,</a>
-<a class="sourceLine" id="cb46-34" data-line-number="34">        <span class="st">&quot;Ordinal int,&quot;</span>,</a>
-<a class="sourceLine" id="cb46-35" data-line-number="35">        <span class="st">&quot;Item varchar(50),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-36" data-line-number="36">        <span class="st">&quot;constraint items_pk primary key (Receipt, Ordinal),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-37" data-line-number="37">        <span class="st">&quot;constraint items_goods_fk foreign key (Item) references goods (Id),&quot;</span>,</a>
-<a class="sourceLine" id="cb46-38" data-line-number="38">        <span class="st">&quot;constraint items_receipts_fk foreign key (Receipt) references receipts (ReceiptNumber)&quot;</span></a>
-<a class="sourceLine" id="cb46-39" data-line-number="39">    <span class="st">&quot;);&quot;</span></a>
-<a class="sourceLine" id="cb46-40" data-line-number="40">]))</a></code></pre></div>
+<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb50-1" data-line-number="1"><span class="co"># create new tables</span></a>
+<a class="sourceLine" id="cb50-2" data-line-number="2">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb50-3" data-line-number="3">    <span class="st">&quot;create table customers(&quot;</span>,</a>
+<a class="sourceLine" id="cb50-4" data-line-number="4">        <span class="st">&quot;Id int,&quot;</span>,</a>
+<a class="sourceLine" id="cb50-5" data-line-number="5">        <span class="st">&quot;LastName varchar(50),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-6" data-line-number="6">        <span class="st">&quot;FirstName varchar(50),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-7" data-line-number="7">        <span class="st">&quot;constraint customers_pk primary key (Id)&quot;</span></a>
+<a class="sourceLine" id="cb50-8" data-line-number="8">    <span class="st">&quot;);&quot;</span></a>
+<a class="sourceLine" id="cb50-9" data-line-number="9">]))</a>
+<a class="sourceLine" id="cb50-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb50-11" data-line-number="11">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb50-12" data-line-number="12">    <span class="st">&quot;create table receipts(&quot;</span>,</a>
+<a class="sourceLine" id="cb50-13" data-line-number="13">        <span class="st">&quot;ReceiptNumber int,&quot;</span>,</a>
+<a class="sourceLine" id="cb50-14" data-line-number="14">        <span class="st">&quot;Date date,&quot;</span>,</a>
+<a class="sourceLine" id="cb50-15" data-line-number="15">        <span class="st">&quot;CustomerId int,&quot;</span>,</a>
+<a class="sourceLine" id="cb50-16" data-line-number="16">        <span class="st">&quot;constraint receipts_pk primary key (ReceiptNumber),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-17" data-line-number="17">        <span class="st">&quot;constraint receipts_customers_fk foreign key (CustomerId) references customers (Id)&quot;</span></a>
+<a class="sourceLine" id="cb50-18" data-line-number="18">    <span class="st">&quot;);&quot;</span></a>
+<a class="sourceLine" id="cb50-19" data-line-number="19">]))</a>
+<a class="sourceLine" id="cb50-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb50-21" data-line-number="21">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb50-22" data-line-number="22">    <span class="st">&quot;create table goods(&quot;</span>,</a>
+<a class="sourceLine" id="cb50-23" data-line-number="23">        <span class="st">&quot;Id varchar(50),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-24" data-line-number="24">        <span class="st">&quot;Flavor varchar(50),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-25" data-line-number="25">        <span class="st">&quot;Food varchar(50),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-26" data-line-number="26">        <span class="st">&quot;Price decimal(5,2),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-27" data-line-number="27">        <span class="st">&quot;constraint goods_pk primary key (Id)&quot;</span></a>
+<a class="sourceLine" id="cb50-28" data-line-number="28">    <span class="st">&quot;);&quot;</span></a>
+<a class="sourceLine" id="cb50-29" data-line-number="29">]))</a>
+<a class="sourceLine" id="cb50-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb50-31" data-line-number="31">cursor.execute(<span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb50-32" data-line-number="32">    <span class="st">&quot;create table items(&quot;</span>,</a>
+<a class="sourceLine" id="cb50-33" data-line-number="33">        <span class="st">&quot;Receipt int,&quot;</span>,</a>
+<a class="sourceLine" id="cb50-34" data-line-number="34">        <span class="st">&quot;Ordinal int,&quot;</span>,</a>
+<a class="sourceLine" id="cb50-35" data-line-number="35">        <span class="st">&quot;Item varchar(50),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-36" data-line-number="36">        <span class="st">&quot;constraint items_pk primary key (Receipt, Ordinal),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-37" data-line-number="37">        <span class="st">&quot;constraint items_goods_fk foreign key (Item) references goods (Id),&quot;</span>,</a>
+<a class="sourceLine" id="cb50-38" data-line-number="38">        <span class="st">&quot;constraint items_receipts_fk foreign key (Receipt) references receipts (ReceiptNumber)&quot;</span></a>
+<a class="sourceLine" id="cb50-39" data-line-number="39">    <span class="st">&quot;);&quot;</span></a>
+<a class="sourceLine" id="cb50-40" data-line-number="40">]))</a></code></pre></div>
 <p><strong>Load in data</strong>
 For each table, open file and insert values one line at a time. See the simple table example above for more details.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb47-1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/customers.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-2" data-line-number="2">    header <span class="op">=</span> <span class="va">True</span></a>
-<a class="sourceLine" id="cb47-3" data-line-number="3">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-4" data-line-number="4">        line <span class="op">=</span> line.split(<span class="st">&#39;, &#39;</span>)</a>
-<a class="sourceLine" id="cb47-5" data-line-number="5">        <span class="cf">if</span> header: <span class="co"># dont write header row to database!</span></a>
-<a class="sourceLine" id="cb47-6" data-line-number="6">            header <span class="op">=</span> <span class="va">False</span></a>
-<a class="sourceLine" id="cb47-7" data-line-number="7">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb47-8" data-line-number="8">            cursor.execute(</a>
-<a class="sourceLine" id="cb47-9" data-line-number="9">                <span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb47-10" data-line-number="10">                    <span class="st">&quot;insert into customers(&quot;</span>,</a>
-<a class="sourceLine" id="cb47-11" data-line-number="11">                        <span class="st">&quot;Id,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-12" data-line-number="12">                        <span class="st">&quot;FirstName,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-13" data-line-number="13">                        <span class="st">&quot;LastName&quot;</span>,</a>
-<a class="sourceLine" id="cb47-14" data-line-number="14">                    <span class="st">&quot;)&quot;</span></a>
-<a class="sourceLine" id="cb47-15" data-line-number="15">                    <span class="st">&quot;values(?, ?, ?)&quot;</span>]),</a>
-<a class="sourceLine" id="cb47-16" data-line-number="16">                line[<span class="dv">0</span>],</a>
-<a class="sourceLine" id="cb47-17" data-line-number="17">                line[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb47-18" data-line-number="18">                line[<span class="dv">2</span>].strip()</a>
-<a class="sourceLine" id="cb47-19" data-line-number="19">            )</a>
-<a class="sourceLine" id="cb47-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb47-21" data-line-number="21"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/receipts.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-22" data-line-number="22">    header <span class="op">=</span> <span class="va">True</span></a>
-<a class="sourceLine" id="cb47-23" data-line-number="23">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-24" data-line-number="24">        line <span class="op">=</span> line.split(<span class="st">&#39;, &#39;</span>)</a>
-<a class="sourceLine" id="cb47-25" data-line-number="25">        <span class="cf">if</span> header:</a>
-<a class="sourceLine" id="cb47-26" data-line-number="26">            header <span class="op">=</span> <span class="va">False</span></a>
-<a class="sourceLine" id="cb47-27" data-line-number="27">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb47-28" data-line-number="28">            <span class="co"># reformatting year: YYYYMMDD from DD-Mon-YYYY</span></a>
-<a class="sourceLine" id="cb47-29" data-line-number="29">            <span class="co"># sql likes the YYYYMMDD format</span></a>
-<a class="sourceLine" id="cb47-30" data-line-number="30">            date <span class="op">=</span> line[<span class="dv">1</span>].strip().replace(<span class="st">&quot;&#39;&quot;</span>,<span class="st">&#39;&#39;</span>)</a>
-<a class="sourceLine" id="cb47-31" data-line-number="31">            year <span class="op">=</span> date.split(<span class="st">&#39;-&#39;</span>)[<span class="dv">2</span>]</a>
-<a class="sourceLine" id="cb47-32" data-line-number="32">            day <span class="op">=</span> date.split(<span class="st">&#39;-&#39;</span>)[<span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb47-33" data-line-number="33">            <span class="cf">if</span> <span class="bu">len</span>(day) <span class="op">==</span> <span class="dv">1</span>:</a>
-<a class="sourceLine" id="cb47-34" data-line-number="34">                day <span class="op">=</span> <span class="st">&#39;0&#39;</span><span class="op">+</span>day</a>
-<a class="sourceLine" id="cb47-35" data-line-number="35">            month <span class="op">=</span> <span class="bu">str</span>(month_abbr_dict[date.split(<span class="st">&#39;-&#39;</span>)[<span class="dv">1</span>]])</a>
-<a class="sourceLine" id="cb47-36" data-line-number="36">            date2 <span class="op">=</span> year<span class="op">+</span>month<span class="op">+</span>day</a>
-<a class="sourceLine" id="cb47-37" data-line-number="37">            cursor.execute(</a>
-<a class="sourceLine" id="cb47-38" data-line-number="38">                <span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb47-39" data-line-number="39">                    <span class="st">&quot;insert into receipts(&quot;</span>,</a>
-<a class="sourceLine" id="cb47-40" data-line-number="40">                        <span class="st">&quot;ReceiptNumber,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-41" data-line-number="41">                        <span class="st">&quot;Date,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-42" data-line-number="42">                        <span class="st">&quot;CustomerId&quot;</span>,</a>
-<a class="sourceLine" id="cb47-43" data-line-number="43">                    <span class="st">&quot;)&quot;</span></a>
-<a class="sourceLine" id="cb47-44" data-line-number="44">                    <span class="st">&quot;values(?, ?, ?)&quot;</span>]),</a>
-<a class="sourceLine" id="cb47-45" data-line-number="45">                line[<span class="dv">0</span>],</a>
-<a class="sourceLine" id="cb47-46" data-line-number="46">                date2,</a>
-<a class="sourceLine" id="cb47-47" data-line-number="47">                line[<span class="dv">2</span>].strip()</a>
-<a class="sourceLine" id="cb47-48" data-line-number="48">            )</a>
-<a class="sourceLine" id="cb47-49" data-line-number="49"></a>
-<a class="sourceLine" id="cb47-50" data-line-number="50"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/goods.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-51" data-line-number="51">    header <span class="op">=</span> <span class="va">True</span></a>
-<a class="sourceLine" id="cb47-52" data-line-number="52">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-53" data-line-number="53">        line <span class="op">=</span> line.strip().split(<span class="st">&#39;,&#39;</span>)</a>
-<a class="sourceLine" id="cb47-54" data-line-number="54">        <span class="cf">if</span> header:</a>
-<a class="sourceLine" id="cb47-55" data-line-number="55">            header <span class="op">=</span> <span class="va">False</span></a>
-<a class="sourceLine" id="cb47-56" data-line-number="56">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb47-57" data-line-number="57">            cursor.execute(</a>
-<a class="sourceLine" id="cb47-58" data-line-number="58">                <span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb47-59" data-line-number="59">                    <span class="st">&quot;insert into goods(&quot;</span>,</a>
-<a class="sourceLine" id="cb47-60" data-line-number="60">                        <span class="st">&quot;Id,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-61" data-line-number="61">                        <span class="st">&quot;Flavor,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-62" data-line-number="62">                        <span class="st">&quot;Food,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-63" data-line-number="63">                        <span class="st">&quot;Price&quot;</span></a>
-<a class="sourceLine" id="cb47-64" data-line-number="64">                    <span class="st">&quot;)&quot;</span></a>
-<a class="sourceLine" id="cb47-65" data-line-number="65">                    <span class="st">&quot;values(?, ?, ?, ?)&quot;</span>]),</a>
-<a class="sourceLine" id="cb47-66" data-line-number="66">                line[<span class="dv">0</span>],</a>
-<a class="sourceLine" id="cb47-67" data-line-number="67">                line[<span class="dv">1</span>],</a>
-<a class="sourceLine" id="cb47-68" data-line-number="68">                line[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb47-69" data-line-number="69">                <span class="bu">float</span>(line[<span class="dv">3</span>])</a>
-<a class="sourceLine" id="cb47-70" data-line-number="70">            )</a>
-<a class="sourceLine" id="cb47-71" data-line-number="71"></a>
-<a class="sourceLine" id="cb47-72" data-line-number="72"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/items.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-73" data-line-number="73">    header <span class="op">=</span> <span class="va">True</span></a>
-<a class="sourceLine" id="cb47-74" data-line-number="74">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
-<a class="sourceLine" id="cb47-75" data-line-number="75">        line <span class="op">=</span> line.split(<span class="st">&#39;, &#39;</span>)</a>
-<a class="sourceLine" id="cb47-76" data-line-number="76">        <span class="cf">if</span> header:</a>
-<a class="sourceLine" id="cb47-77" data-line-number="77">            header <span class="op">=</span> <span class="va">False</span></a>
-<a class="sourceLine" id="cb47-78" data-line-number="78">        <span class="cf">else</span>:</a>
-<a class="sourceLine" id="cb47-79" data-line-number="79">            cursor.execute(</a>
-<a class="sourceLine" id="cb47-80" data-line-number="80">                <span class="st">&quot; &quot;</span>.join([</a>
-<a class="sourceLine" id="cb47-81" data-line-number="81">                    <span class="st">&quot;insert into items(&quot;</span>,</a>
-<a class="sourceLine" id="cb47-82" data-line-number="82">                        <span class="st">&quot;Receipt,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-83" data-line-number="83">                        <span class="st">&quot;Ordinal,&quot;</span>,</a>
-<a class="sourceLine" id="cb47-84" data-line-number="84">                        <span class="st">&quot;Item&quot;</span>,</a>
-<a class="sourceLine" id="cb47-85" data-line-number="85">                    <span class="st">&quot;)&quot;</span></a>
-<a class="sourceLine" id="cb47-86" data-line-number="86">                    <span class="st">&quot;values(?, ?, ?)&quot;</span>]),</a>
-<a class="sourceLine" id="cb47-87" data-line-number="87">                <span class="bu">int</span>(line[<span class="dv">0</span>]),</a>
-<a class="sourceLine" id="cb47-88" data-line-number="88">                <span class="bu">int</span>(line[<span class="dv">1</span>]),</a>
-<a class="sourceLine" id="cb47-89" data-line-number="89">                line[<span class="dv">2</span>].strip()</a>
-<a class="sourceLine" id="cb47-90" data-line-number="90">            )</a></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><a class="sourceLine" id="cb51-1" data-line-number="1"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/customers.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-2" data-line-number="2">    header <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb51-3" data-line-number="3">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-4" data-line-number="4">        line <span class="op">=</span> line.split(<span class="st">&#39;, &#39;</span>)</a>
+<a class="sourceLine" id="cb51-5" data-line-number="5">        <span class="cf">if</span> header: <span class="co"># dont write header row to database!</span></a>
+<a class="sourceLine" id="cb51-6" data-line-number="6">            header <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb51-7" data-line-number="7">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb51-8" data-line-number="8">            cursor.execute(</a>
+<a class="sourceLine" id="cb51-9" data-line-number="9">                <span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb51-10" data-line-number="10">                    <span class="st">&quot;insert into customers(&quot;</span>,</a>
+<a class="sourceLine" id="cb51-11" data-line-number="11">                        <span class="st">&quot;Id,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-12" data-line-number="12">                        <span class="st">&quot;FirstName,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-13" data-line-number="13">                        <span class="st">&quot;LastName&quot;</span>,</a>
+<a class="sourceLine" id="cb51-14" data-line-number="14">                    <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb51-15" data-line-number="15">                    <span class="st">&quot;values(?, ?, ?)&quot;</span>]),</a>
+<a class="sourceLine" id="cb51-16" data-line-number="16">                line[<span class="dv">0</span>],</a>
+<a class="sourceLine" id="cb51-17" data-line-number="17">                line[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb51-18" data-line-number="18">                line[<span class="dv">2</span>].strip()</a>
+<a class="sourceLine" id="cb51-19" data-line-number="19">            )</a>
+<a class="sourceLine" id="cb51-20" data-line-number="20"></a>
+<a class="sourceLine" id="cb51-21" data-line-number="21"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/receipts.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-22" data-line-number="22">    header <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb51-23" data-line-number="23">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-24" data-line-number="24">        line <span class="op">=</span> line.split(<span class="st">&#39;, &#39;</span>)</a>
+<a class="sourceLine" id="cb51-25" data-line-number="25">        <span class="cf">if</span> header:</a>
+<a class="sourceLine" id="cb51-26" data-line-number="26">            header <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb51-27" data-line-number="27">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb51-28" data-line-number="28">            <span class="co"># reformatting year: YYYYMMDD from DD-Mon-YYYY</span></a>
+<a class="sourceLine" id="cb51-29" data-line-number="29">            <span class="co"># sql likes the YYYYMMDD format</span></a>
+<a class="sourceLine" id="cb51-30" data-line-number="30">            date <span class="op">=</span> line[<span class="dv">1</span>].strip().replace(<span class="st">&quot;&#39;&quot;</span>,<span class="st">&#39;&#39;</span>)</a>
+<a class="sourceLine" id="cb51-31" data-line-number="31">            year <span class="op">=</span> date.split(<span class="st">&#39;-&#39;</span>)[<span class="dv">2</span>]</a>
+<a class="sourceLine" id="cb51-32" data-line-number="32">            day <span class="op">=</span> date.split(<span class="st">&#39;-&#39;</span>)[<span class="dv">0</span>]</a>
+<a class="sourceLine" id="cb51-33" data-line-number="33">            <span class="cf">if</span> <span class="bu">len</span>(day) <span class="op">==</span> <span class="dv">1</span>:</a>
+<a class="sourceLine" id="cb51-34" data-line-number="34">                day <span class="op">=</span> <span class="st">&#39;0&#39;</span><span class="op">+</span>day</a>
+<a class="sourceLine" id="cb51-35" data-line-number="35">            month <span class="op">=</span> <span class="bu">str</span>(month_abbr_dict[date.split(<span class="st">&#39;-&#39;</span>)[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb51-36" data-line-number="36">            date2 <span class="op">=</span> year<span class="op">+</span>month<span class="op">+</span>day</a>
+<a class="sourceLine" id="cb51-37" data-line-number="37">            cursor.execute(</a>
+<a class="sourceLine" id="cb51-38" data-line-number="38">                <span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb51-39" data-line-number="39">                    <span class="st">&quot;insert into receipts(&quot;</span>,</a>
+<a class="sourceLine" id="cb51-40" data-line-number="40">                        <span class="st">&quot;ReceiptNumber,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-41" data-line-number="41">                        <span class="st">&quot;Date,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-42" data-line-number="42">                        <span class="st">&quot;CustomerId&quot;</span>,</a>
+<a class="sourceLine" id="cb51-43" data-line-number="43">                    <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb51-44" data-line-number="44">                    <span class="st">&quot;values(?, ?, ?)&quot;</span>]),</a>
+<a class="sourceLine" id="cb51-45" data-line-number="45">                line[<span class="dv">0</span>],</a>
+<a class="sourceLine" id="cb51-46" data-line-number="46">                date2,</a>
+<a class="sourceLine" id="cb51-47" data-line-number="47">                line[<span class="dv">2</span>].strip()</a>
+<a class="sourceLine" id="cb51-48" data-line-number="48">            )</a>
+<a class="sourceLine" id="cb51-49" data-line-number="49"></a>
+<a class="sourceLine" id="cb51-50" data-line-number="50"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/goods.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-51" data-line-number="51">    header <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb51-52" data-line-number="52">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-53" data-line-number="53">        line <span class="op">=</span> line.strip().split(<span class="st">&#39;,&#39;</span>)</a>
+<a class="sourceLine" id="cb51-54" data-line-number="54">        <span class="cf">if</span> header:</a>
+<a class="sourceLine" id="cb51-55" data-line-number="55">            header <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb51-56" data-line-number="56">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb51-57" data-line-number="57">            cursor.execute(</a>
+<a class="sourceLine" id="cb51-58" data-line-number="58">                <span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb51-59" data-line-number="59">                    <span class="st">&quot;insert into goods(&quot;</span>,</a>
+<a class="sourceLine" id="cb51-60" data-line-number="60">                        <span class="st">&quot;Id,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-61" data-line-number="61">                        <span class="st">&quot;Flavor,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-62" data-line-number="62">                        <span class="st">&quot;Food,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-63" data-line-number="63">                        <span class="st">&quot;Price&quot;</span></a>
+<a class="sourceLine" id="cb51-64" data-line-number="64">                    <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb51-65" data-line-number="65">                    <span class="st">&quot;values(?, ?, ?, ?)&quot;</span>]),</a>
+<a class="sourceLine" id="cb51-66" data-line-number="66">                line[<span class="dv">0</span>],</a>
+<a class="sourceLine" id="cb51-67" data-line-number="67">                line[<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb51-68" data-line-number="68">                line[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb51-69" data-line-number="69">                <span class="bu">float</span>(line[<span class="dv">3</span>])</a>
+<a class="sourceLine" id="cb51-70" data-line-number="70">            )</a>
+<a class="sourceLine" id="cb51-71" data-line-number="71"></a>
+<a class="sourceLine" id="cb51-72" data-line-number="72"><span class="cf">with</span> <span class="bu">open</span>(<span class="st">&#39;BAKERY/items.csv&#39;</span>) <span class="im">as</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-73" data-line-number="73">    header <span class="op">=</span> <span class="va">True</span></a>
+<a class="sourceLine" id="cb51-74" data-line-number="74">    <span class="cf">for</span> line <span class="kw">in</span> <span class="bu">file</span>:</a>
+<a class="sourceLine" id="cb51-75" data-line-number="75">        line <span class="op">=</span> line.split(<span class="st">&#39;, &#39;</span>)</a>
+<a class="sourceLine" id="cb51-76" data-line-number="76">        <span class="cf">if</span> header:</a>
+<a class="sourceLine" id="cb51-77" data-line-number="77">            header <span class="op">=</span> <span class="va">False</span></a>
+<a class="sourceLine" id="cb51-78" data-line-number="78">        <span class="cf">else</span>:</a>
+<a class="sourceLine" id="cb51-79" data-line-number="79">            cursor.execute(</a>
+<a class="sourceLine" id="cb51-80" data-line-number="80">                <span class="st">&quot; &quot;</span>.join([</a>
+<a class="sourceLine" id="cb51-81" data-line-number="81">                    <span class="st">&quot;insert into items(&quot;</span>,</a>
+<a class="sourceLine" id="cb51-82" data-line-number="82">                        <span class="st">&quot;Receipt,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-83" data-line-number="83">                        <span class="st">&quot;Ordinal,&quot;</span>,</a>
+<a class="sourceLine" id="cb51-84" data-line-number="84">                        <span class="st">&quot;Item&quot;</span>,</a>
+<a class="sourceLine" id="cb51-85" data-line-number="85">                    <span class="st">&quot;)&quot;</span></a>
+<a class="sourceLine" id="cb51-86" data-line-number="86">                    <span class="st">&quot;values(?, ?, ?)&quot;</span>]),</a>
+<a class="sourceLine" id="cb51-87" data-line-number="87">                <span class="bu">int</span>(line[<span class="dv">0</span>]),</a>
+<a class="sourceLine" id="cb51-88" data-line-number="88">                <span class="bu">int</span>(line[<span class="dv">1</span>]),</a>
+<a class="sourceLine" id="cb51-89" data-line-number="89">                line[<span class="dv">2</span>].strip()</a>
+<a class="sourceLine" id="cb51-90" data-line-number="90">            )</a></code></pre></div>
 
 </div>
 </div>
