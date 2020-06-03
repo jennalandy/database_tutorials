@@ -11,14 +11,18 @@
 ## Motivation
 With the advent of large and remote data sources comes a need to for proper training in accessing and utilizing databases. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in their courses, and possibly leaves students to learn these essential skills outside of the classroom.
 
-The technical purpose of this book is to demostrate how to [connect to](03-connections.Rmd), [upload data to](04-writing.Rmd), and [read data from](05-querying.Rmd) a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessens can likely be extended to any database, with a few google-able differences. 
+The technical purpose of this book is to demonstrate how to [connect to](03-connections.Rmd), [upload data to](04-writing.Rmd), and [read data from](05-querying.Rmd) a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessons can likely be extended to any database, with a few google-able differences. 
 
 ## About Databases
 A database stores data, and is usually controlled by a database management system. Data in most databases is typically modeled in a way similar to what we usually see as statisticians--rows and columns in a series of tables. Most databases utilize structured query language (SQL) to build tables, write data, and query data. Most databases are also stored on a remote server. 
+If you still feel lost, for our purposes a database acts as a single location where all of our datasets are stored, waiting for analysis. Imagine having a folder on your computer 
+where you could only save csv files and you have to specify the contents of those files before you save them. Additionally, imagine that this folder exits in something like a Google Drive,
+so if you have the right password, you can access the data from anywhere. A database acts like this in some regards, along
+with extra security so that no one can just open the folder and mess with your data. 
 
 ### Relational Database Model
 #### Relation and Relationships
-Many databases follow the relational model. In a relational model, each table is a *relation*. These relations consist of *attriutes*, or columns, and *tuples*, or rows. A relationship is a connection between relations (tables).
+Many databases follow the relational model. In a relational model, each table is a *relation*. These relations consist of *attributes*, or columns, and *tuples*, or rows. A relationship is a connection between relations (tables).
 
 An example database we'll use in this book is about a bakery. The *relations* are customers, items, receipts, and goods. In the receipts relation, the *attributes* are receipt ID, customer ID, and date of purchase. Each *tuple* represents one receipt. One *relation* is that customer ID references the ID attribute of the customers relation.
 
@@ -28,10 +32,10 @@ A *primary key* is an attribute or set of attributes that uniquely identifies a 
 ### Basic Introduction to SQL
 Structured query language, more commonly known as SQL, is used to build tables, write data, and query data. SQL includes data definition language (DDL), data manipulation language (DML), data control language (DCL), and query language (QL).
 
-- DDL: Data definition language is used to define and manipulate relational schemas. This means defining the table's attributes and keys. DDL includes statements like `create table` and `alter table` that you'll see later in this book, espcially in [the section on writing to a database](04-writing.Rmd).
+- DDL: Data definition language is used to define and manipulate relational schemas. This means defining the table's attributes and keys. DDL includes statements like `create table` and `alter table` that you'll see later in this book, especially in [the section on writing to a database](04-writing.Rmd).
 - DML: Data manipulation language is used to add, update, and delete data from tables. This includes statements like `insert`, which you will see later in this book, as well as `update` and `delete`, espcially in [the section on writing to a database](04-writing.Rmd).
 - DCL: Data control language is used to implement security and access rules. This is something a professor who created the database can use to decide which students can see what data. We wont discuss any DCL in this book.
-- QL: Query language is used to request information from the database. The most used command in QL is `select`. You will see a lot of this in this book, espically in [the section on querying a database](05-querying.Rmd).
+- QL: Query language is used to request information from the database. The most used command in QL is `select`. You will see a lot of this in this book, especially in [the section on querying a database](05-querying.Rmd).
 
 ** More details on query language **
 To explore some common SQL queries, we'll look at the iris dataset. Recall that its attributes are sepal length, sepal width, petal length, petal width, and species.
@@ -55,7 +59,7 @@ select top 5 SepalLength, Species from iris
 ```
 
 #### Where
-The returned table can be subsetted to the desired data with a `where` clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:
+The returned table can be subset to the desired data with a `where` clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:
 
 ```
 select * from iris
@@ -141,7 +145,7 @@ select Species, avg(PetalLength) as average_petal_length from iris
 
 #### Case
 
-Case can be used to create new attributes based on some condition. The statement below creates a new attribute, long_sepal, is set to true when the sepa is over 6 centimeters long, and false otherwise.
+Case can be used to create new attributes based on some condition. It can be used much like an if or switch statement found in other languages. The statement below creates a new attribute, long_sepal, is set to true when the sepa is over 6 centimeters long, and false otherwise.
 
 ```
 select SepalLength, (
@@ -151,3 +155,46 @@ select SepalLength, (
 ```
 
 
+
+## Converting Code to SQL 
+There's a number of classes on campus that teach the syntax and advanced uses of the sql language, such as the Statistic's department's STAT 441. If you haven't already seen SQL I would highly suggest taking stat 441
+or the computer science database course to get into some of the interesting features of SQL. If you find yourself in the position where you need to port over some R or SAS to SQL, don't fret. Many data manipulation frameworks 
+are inspired by sql and easily translate to sql queries. The below code is a simple "Rosetta Stone" that you can use to translate code from R or SAS into SQL. Given the iris dataset, all the following code blocks will output the same data. 
+
+**R - Tidyverse**
+```{r}
+ iris_subset = iris %>% 
+                group_by(Species) %>% 
+                arrange(Petal.Width) %>%
+                filter(Petal.Length > 2) %>%
+                select(Sepal.Length, Sepal.Width)
+```
+
+**SAS - Data Step**
+```{sas}
+proc sort data = iris;
+by species, petal width;
+run; 
+
+data iris_subset;
+set iris;
+if Petal.Length > 2;
+keep Sepal.Length Sepal.Width;
+run;
+
+```
+
+**SQL**
+```{sas}
+
+SELECT Sepal.Length, Sepal.Width 
+FROM iris
+WHERE Petal.Length > 2
+ORDER BY Petal.Width
+GROUP BY Species
+;
+
+```
+
+If you'd like more practice with SQL consider trying the sqldf R package to use SQL language to manipulate DataFrames. If you prefer SAS, try swapping your data step 
+with Proc Sql. 

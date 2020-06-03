@@ -27,7 +27,7 @@ data printed. There's generally two ways to specify query string parameters. You
 directly into the url string, which will always work. If the package or programming language allows it,
 there might be a more user friendly way to enter these parameters in, where the software appends
 the query string to the url itself. Like API's in general, query strings are specific to the website,
-but many of them are desinged to be familiar.
+but many of them are designed to be familiar.
 
 In this section, we'll be using the COVID tracking API. More information on this API can be found [here](https://covidtracking.com/api).
 
@@ -35,59 +35,79 @@ In this section, we'll be using the COVID tracking API. More information on this
 
 In Julia, we access APIs using the `HTTP` and `JSON` packages.
 
+**imports**
+
+The HTTP request will be made using the aptly named HTTP package, then the JSON data will be parsed using the JSON package. 
+If you're reading in data that's not as tabular as a spreadsheet, consider using the the [DataKnots](https://github.com/rbt-lang/DataKnots.jl) package. DataKnots
+also integrates nicely  with the [JSONTables](https://github.com/JuliaData/JSONTables.jl) package, which could also be used to parse any JSON data where you're more 
+interested in the dataset as a whole. Check out using these in the last Julia example. 
+
 ```julia
 using HTTP, JSON, DataFrames, Query
 ```
-
-The first step is to make a request with the `HTTP.get` function.
-
+**Enter the Correct URL and make the request**
 ```julia
 urlcacurrent = "https://covidtracking.com/api/v1/states/CA/current.json"
 rawdata = HTTP.get(urlcurrent)
 ```
+The "get" function requests data from the api, and returns the data in JSON format. 
 
-Next, we need to turn this raw output into a string, and parse the JSON into a dataframe with `JSON.parse`.
+**Parse the JSON data**
+```julia
+JSONdata = rawdata.body |> String
+```
+Now, we convert the data, stored in the body of the API object, into a string.
+
 
 ```julia
-#select the body of the API call, convert it into a string
-JSONdata = rawdata.body |> String
-
-#parse JSON data, convert it into a DataFrame
-
 CACOVID = JSONdata |> JSON.parse |> DataFrame
 ```
+Finally, we parse through the JSON String and convert the data into a usable DataFrame.
 
-### TODO: Nick finish this and describe what it is
+**With A Query String using the LA City Data API**
 ```julia
-using DataKnots, JSON, HTPP 
+using DataKnots, HTTP, JSONTables, DataFrames
 
-url = "https://data.seattle.gov/resource/65db-xm6k.json"
+url = "https://data.lacity.org/resource/63jg-8b9z.json"
+parms = Dict("\$query" => "SELECT * WHERE mocodes IS NOT NULL")
 
-parameters = Dict("$select" => "Time, Age")
+crimedata = HTTP.get(url,query=parms).body |> String |> jsontable
+```
+Similar to above, but the jsontable function returns a Tables.jl object with structure, rather than just the values. 
+
+```julia
+base = DataKnot(:crime => crimedata )
+base[It.crime]
+```
+Finally, put the data into a useable DataKnot. 
+## SAS{#api_julia} 
+
+The SAS option requires 3 steps to work properly. First, you must define a where you will store the data from the API. Then, use proc http to make the api call  
+
+**define a temporary file to read the JSON data into**
+
+```{SAS}
+filename raw_json temp;
 ```
 
-## SAS{#api_sas}
-
-To access APIs in SAS, we use `proc http`. 
-
-This api uses the path segement of the url to specify parameters, but if you are using an an api that utilizes a query string use the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in `"parm" = "val"` form. The resulting JSON data will be stored in `raw_json`, or whatever is specified as the `out` parameter. 
+**use proc http to make the API call**
+Use get to 
 
 ```sas
-filename raw_json temp;
-
-/*use proc http to make the API call*/
-
 proc http
-  url = "https://covidtracking.com/api/v1/us/current.json"
-  method = "GET"
-  out = raw_json
+url = "https://covidtracking.com/api/v1/us/current.json"
+method = "GET"
+out = raw_json
 
-  QUERY=("parm1" = "val1" "parm2" = "val2");
+QUERY=("parm1" = "val1" "parm2" = "val2");
 
 quit;
 ```
 
-To convert the JSON file to a sas table, we use the libname statement.
+This api uses the path segment of the url to specify parameters, but if you are using an an api that utilizes a query string use
+the query option as listed below, or append it directly to the url. If doing the latter, check the api documentation to see what delimiter is used between parameters. Parameters are typically specified in `"parm" = "val"` form.
+
+**use the libname statement to convert the json file to a sas table**
 
 ```sas
 libname Calif JSON fileref = raw_json;
@@ -95,8 +115,9 @@ libname Calif JSON fileref = raw_json;
 proc print data = Calif.alldata;
 run;
 ```
+You'll note that because there was an internal object, the `category` column is still in JSON format.
 
-## R{#api_r}
+## R{#api_julia}
 
 To connect to APIs in R, we utilize the `httr` and `jsonlite` packages.
 
@@ -213,4 +234,6 @@ data
 1  59389  ...  {'id': 7597, 'title': 'veggie-pourri'...
 ```
 
-You'll note that because there was an internal object, the `category` column is still in JSON format.
+
+
+

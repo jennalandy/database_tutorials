@@ -17,7 +17,18 @@ In this chapter, we discuss the *logistics* of passing a query onto the database
 - [SQL Tutorial by w3schools](https://www.w3schools.com/sql/)
 - [SQL Server Basics by sqlservertutorial](https://www.sqlservertutorial.net/sql-server-basics/)
 
+<<<<<<< HEAD
+## Julia
+
+**Connect to Database**
+
+```julia
+dsn = ODBC.DSN("Driver={ODBC Driver 17 for SQL Server};Address=&address;Database=$database;UID=$user;PWD=$pass;")
+```
+**Query and filter using server-side sql commands**
+=======
 ## Julia{#query_julia}
+>>>>>>> de2e9d04b8120505a6fcbddb379b196e981db63d
 
 To query a database in Julia, we use the `ODBC.query` function. This takes in the connection `dsn` and a raw string for the query. This can be a one-line string, but we recommend using tripple quotes to pass in a multi-line string so you can use pretty SQL syntax.
 
@@ -38,9 +49,15 @@ res=@from i in ODBC.Query(dsn,"select * from mtcars") begin
     @collect table 
 end 
 ```
+<<<<<<< HEAD
+The Query package allows users to manipulate data using either LINQ style queries as above, or tidyverse styled queries below.
+
+**dyplr/tidyverse style** 
+=======
 
 To get the same result, you could also query the entire table and filter and select in Julia.
 
+>>>>>>> de2e9d04b8120505a6fcbddb379b196e981db63d
 ```julia
 res = ODBC.query(dsn,"select * from mtcars") |> 
 @filter( _.disp > 200) |>
@@ -118,3 +135,44 @@ import pandas as pd
 
 iris_df_out = pd.read_sql("select * from iris", conn)
 ```
+<<<<<<< HEAD
+
+## SAS
+
+**Query Using Libname**
+
+Make the database connection.
+```sas
+libname conn2 odbc
+required ="Driver={ODBC Driver 17 for SQL Server};Address=&address;Database=&database;UID=&id;PWD=&pass";
+```
+
+
+```sas
+proc sql;
+create table event as
+select * from conn2.events ;
+quit;
+libname conn2 clear;
+```
+Here we pull the rows that you need and disconnect from the database.
+
+**Query without libname**
+
+While this option means a libname is unnecessary, the syntax is much more convoluted than the above example.
+We'd recommend using the libname engine, since it provides a more direct interface to the database driver. 
+```sas
+proc sql;
+connect to odbc as conn
+required="Driver={ODBC Driver 17 for SQL Server};Address=&address;Database=&address;UID=&id;PWD=&pass";
+
+create table event as
+select * from connection to conn
+(select * from events) ;
+
+disconnect from conn;
+quit;
+
+```
+=======
+>>>>>>> de2e9d04b8120505a6fcbddb379b196e981db63d
