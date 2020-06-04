@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Using Databases</title>
   <meta name="description" content="Using Databases" />
-  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Using Databases" />
   <meta property="og:type" content="book" />
@@ -33,6 +33,7 @@
   
 
 <link rel="next" href="background.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,25 +54,26 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -128,55 +130,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>2</b> Background</a><ul>
+<li class="chapter" data-level="2" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>2</b> Background</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="background.html"><a href="background.html#motivation"><i class="fa fa-check"></i><b>2.1</b> Motivation</a></li>
-<li class="chapter" data-level="2.2" data-path="background.html"><a href="background.html#about-databases"><i class="fa fa-check"></i><b>2.2</b> About Databases</a><ul>
+<li class="chapter" data-level="2.2" data-path="background.html"><a href="background.html#about-databases"><i class="fa fa-check"></i><b>2.2</b> About Databases</a>
+<ul>
 <li class="chapter" data-level="2.2.1" data-path="background.html"><a href="background.html#relational-database-model"><i class="fa fa-check"></i><b>2.2.1</b> Relational Database Model</a></li>
 <li class="chapter" data-level="2.2.2" data-path="background.html"><a href="background.html#basic-introduction-to-sql"><i class="fa fa-check"></i><b>2.2.2</b> Basic Introduction to SQL</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="background.html"><a href="background.html#converting-code-to-sql"><i class="fa fa-check"></i><b>2.3</b> Converting Code to SQL</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a><ul>
+<li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="machine-setup.html"><a href="machine-setup.html#linux---ubuntu"><i class="fa fa-check"></i><b>3.1</b> Linux - Ubuntu</a></li>
 <li class="chapter" data-level="3.2" data-path="machine-setup.html"><a href="machine-setup.html#mac-os"><i class="fa fa-check"></i><b>3.2</b> Mac OS</a></li>
 <li class="chapter" data-level="3.3" data-path="machine-setup.html"><a href="machine-setup.html#windows"><i class="fa fa-check"></i><b>3.3</b> Windows</a></li>
 <li class="chapter" data-level="3.4" data-path="machine-setup.html"><a href="machine-setup.html#other-connection-options"><i class="fa fa-check"></i><b>3.4</b> Other Connection Options</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html"><i class="fa fa-check"></i><b>4</b> Connecting to a Database</a><ul>
+<li class="chapter" data-level="4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html"><i class="fa fa-check"></i><b>4</b> Connecting to a Database</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_julia"><i class="fa fa-check"></i><b>4.1</b> Julia</a></li>
 <li class="chapter" data-level="4.2" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_sas"><i class="fa fa-check"></i><b>4.2</b> SAS</a></li>
 <li class="chapter" data-level="4.3" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_r"><i class="fa fa-check"></i><b>4.3</b> R</a></li>
 <li class="chapter" data-level="4.4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_python"><i class="fa fa-check"></i><b>4.4</b> Python</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a><ul>
-<li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_julia"><i class="fa fa-check"></i><b>5.1</b> Julia</a><ul>
+<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_julia"><i class="fa fa-check"></i><b>5.1</b> Julia</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#alternative-method-for-big-data"><i class="fa fa-check"></i><b>5.1.1</b> Alternative method for big data</a></li>
 <li class="chapter" data-level="5.1.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#bulk-insert"><i class="fa fa-check"></i><b>5.1.2</b> Bulk Insert</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_sas"><i class="fa fa-check"></i><b>5.2</b> SAS</a></li>
-<li class="chapter" data-level="5.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_r"><i class="fa fa-check"></i><b>5.3</b> R</a><ul>
+<li class="chapter" data-level="5.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_r"><i class="fa fa-check"></i><b>5.3</b> R</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris"><i class="fa fa-check"></i><b>5.3.1</b> Simple Table: Iris</a></li>
 <li class="chapter" data-level="5.3.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files"><i class="fa fa-check"></i><b>5.3.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
 <li class="chapter" data-level="5.3.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#alternative-method-for-big-data-1"><i class="fa fa-check"></i><b>5.3.3</b> Alternative method for big data</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_python"><i class="fa fa-check"></i><b>5.4</b> Python</a><ul>
+<li class="chapter" data-level="5.4" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_python"><i class="fa fa-check"></i><b>5.4</b> Python</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris-1"><i class="fa fa-check"></i><b>5.4.1</b> Simple Table: Iris</a></li>
 <li class="chapter" data-level="5.4.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files-1"><i class="fa fa-check"></i><b>5.4.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
+<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query_julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
 <li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#query_sas"><i class="fa fa-check"></i><b>6.2</b> SAS</a></li>
 <li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#query_r"><i class="fa fa-check"></i><b>6.3</b> R</a></li>
-<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a><ul>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.4.1</b> Standard Python</a></li>
 <li class="chapter" data-level="6.4.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.4.2</b> Pandas</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
+<li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
+<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="integrating-into-a-statistics-course.html"><a href="integrating-into-a-statistics-course.html"><i class="fa fa-check"></i><b>8</b> Integrating into a Statistics Course</a></li>
 </ul>
@@ -201,7 +215,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p class="author"><em>Nick Padilla and Jenna Landy in collaboration with Hunter Glanz and Rebecca Ottesen</em></p>
 <p class="date"><em>2020-06-03</em></p>
 </div>
-<div id="introduction" class="section level1">
+<div id="introduction" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> Introduction</h1>
 <p>This book was written over the course of a STAT 400 class at California Polytechnic State University, San Luis Obispo. For each section, we walk through the processes using SAS, Julia, R, and Python. These programming languages are common in statistics and among Cal Poly statistics students.</p>
 <p>This book demostrates how to <a href="connecting-to-a-database.html#connecting-to-a-database">connect to</a>, <a href="writing-to-a-database.html#writing-to-a-database">upload data to</a>, and <a href="querying-a-database.html#querying-a-database">read data from</a> a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessens can likely be extended to any database, with a few google-able differences.</p>

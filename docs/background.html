@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>2 Background | Using Databases</title>
   <meta name="description" content="2 Background | Using Databases" />
-  <meta name="generator" content="bookdown 0.18 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.19 and GitBook 2.6.7" />
 
   <meta property="og:title" content="2 Background | Using Databases" />
   <meta property="og:type" content="book" />
@@ -33,6 +33,7 @@
   
 <link rel="prev" href="index.html"/>
 <link rel="next" href="machine-setup.html"/>
+<script src="libs/header-attrs-2.1/header-attrs.js"></script>
 <script src="libs/jquery-2.2.3/jquery.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
 <link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
@@ -53,25 +54,26 @@
 
 
 <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -80,9 +82,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -128,55 +130,67 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <ul class="summary">
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a></li>
-<li class="chapter" data-level="2" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>2</b> Background</a><ul>
+<li class="chapter" data-level="2" data-path="background.html"><a href="background.html"><i class="fa fa-check"></i><b>2</b> Background</a>
+<ul>
 <li class="chapter" data-level="2.1" data-path="background.html"><a href="background.html#motivation"><i class="fa fa-check"></i><b>2.1</b> Motivation</a></li>
-<li class="chapter" data-level="2.2" data-path="background.html"><a href="background.html#about-databases"><i class="fa fa-check"></i><b>2.2</b> About Databases</a><ul>
+<li class="chapter" data-level="2.2" data-path="background.html"><a href="background.html#about-databases"><i class="fa fa-check"></i><b>2.2</b> About Databases</a>
+<ul>
 <li class="chapter" data-level="2.2.1" data-path="background.html"><a href="background.html#relational-database-model"><i class="fa fa-check"></i><b>2.2.1</b> Relational Database Model</a></li>
 <li class="chapter" data-level="2.2.2" data-path="background.html"><a href="background.html#basic-introduction-to-sql"><i class="fa fa-check"></i><b>2.2.2</b> Basic Introduction to SQL</a></li>
 </ul></li>
 <li class="chapter" data-level="2.3" data-path="background.html"><a href="background.html#converting-code-to-sql"><i class="fa fa-check"></i><b>2.3</b> Converting Code to SQL</a></li>
 </ul></li>
-<li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a><ul>
+<li class="chapter" data-level="3" data-path="machine-setup.html"><a href="machine-setup.html"><i class="fa fa-check"></i><b>3</b> Machine Setup</a>
+<ul>
 <li class="chapter" data-level="3.1" data-path="machine-setup.html"><a href="machine-setup.html#linux---ubuntu"><i class="fa fa-check"></i><b>3.1</b> Linux - Ubuntu</a></li>
 <li class="chapter" data-level="3.2" data-path="machine-setup.html"><a href="machine-setup.html#mac-os"><i class="fa fa-check"></i><b>3.2</b> Mac OS</a></li>
 <li class="chapter" data-level="3.3" data-path="machine-setup.html"><a href="machine-setup.html#windows"><i class="fa fa-check"></i><b>3.3</b> Windows</a></li>
 <li class="chapter" data-level="3.4" data-path="machine-setup.html"><a href="machine-setup.html#other-connection-options"><i class="fa fa-check"></i><b>3.4</b> Other Connection Options</a></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html"><i class="fa fa-check"></i><b>4</b> Connecting to a Database</a><ul>
+<li class="chapter" data-level="4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html"><i class="fa fa-check"></i><b>4</b> Connecting to a Database</a>
+<ul>
 <li class="chapter" data-level="4.1" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_julia"><i class="fa fa-check"></i><b>4.1</b> Julia</a></li>
 <li class="chapter" data-level="4.2" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_sas"><i class="fa fa-check"></i><b>4.2</b> SAS</a></li>
 <li class="chapter" data-level="4.3" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_r"><i class="fa fa-check"></i><b>4.3</b> R</a></li>
 <li class="chapter" data-level="4.4" data-path="connecting-to-a-database.html"><a href="connecting-to-a-database.html#connect_python"><i class="fa fa-check"></i><b>4.4</b> Python</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a><ul>
-<li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_julia"><i class="fa fa-check"></i><b>5.1</b> Julia</a><ul>
+<li class="chapter" data-level="5" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html"><i class="fa fa-check"></i><b>5</b> Writing to a Database</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_julia"><i class="fa fa-check"></i><b>5.1</b> Julia</a>
+<ul>
 <li class="chapter" data-level="5.1.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#alternative-method-for-big-data"><i class="fa fa-check"></i><b>5.1.1</b> Alternative method for big data</a></li>
 <li class="chapter" data-level="5.1.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#bulk-insert"><i class="fa fa-check"></i><b>5.1.2</b> Bulk Insert</a></li>
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_sas"><i class="fa fa-check"></i><b>5.2</b> SAS</a></li>
-<li class="chapter" data-level="5.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_r"><i class="fa fa-check"></i><b>5.3</b> R</a><ul>
+<li class="chapter" data-level="5.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_r"><i class="fa fa-check"></i><b>5.3</b> R</a>
+<ul>
 <li class="chapter" data-level="5.3.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris"><i class="fa fa-check"></i><b>5.3.1</b> Simple Table: Iris</a></li>
 <li class="chapter" data-level="5.3.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files"><i class="fa fa-check"></i><b>5.3.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
 <li class="chapter" data-level="5.3.3" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#alternative-method-for-big-data-1"><i class="fa fa-check"></i><b>5.3.3</b> Alternative method for big data</a></li>
 </ul></li>
-<li class="chapter" data-level="5.4" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_python"><i class="fa fa-check"></i><b>5.4</b> Python</a><ul>
+<li class="chapter" data-level="5.4" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#writing_python"><i class="fa fa-check"></i><b>5.4</b> Python</a>
+<ul>
 <li class="chapter" data-level="5.4.1" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#simple-table-iris-1"><i class="fa fa-check"></i><b>5.4.1</b> Simple Table: Iris</a></li>
 <li class="chapter" data-level="5.4.2" data-path="writing-to-a-database.html"><a href="writing-to-a-database.html#related-tables-connected-by-keys-bakery-files-1"><i class="fa fa-check"></i><b>5.4.2</b> Related Tables Connected by Keys: Bakery Files</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a><ul>
+<li class="chapter" data-level="6" data-path="querying-a-database.html"><a href="querying-a-database.html"><i class="fa fa-check"></i><b>6</b> Querying a Database</a>
+<ul>
 <li class="chapter" data-level="6.1" data-path="querying-a-database.html"><a href="querying-a-database.html#query_julia"><i class="fa fa-check"></i><b>6.1</b> Julia</a></li>
 <li class="chapter" data-level="6.2" data-path="querying-a-database.html"><a href="querying-a-database.html#query_sas"><i class="fa fa-check"></i><b>6.2</b> SAS</a></li>
 <li class="chapter" data-level="6.3" data-path="querying-a-database.html"><a href="querying-a-database.html#query_r"><i class="fa fa-check"></i><b>6.3</b> R</a></li>
-<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a><ul>
+<li class="chapter" data-level="6.4" data-path="querying-a-database.html"><a href="querying-a-database.html#query_python"><i class="fa fa-check"></i><b>6.4</b> Python</a>
+<ul>
 <li class="chapter" data-level="6.4.1" data-path="querying-a-database.html"><a href="querying-a-database.html#standard-python"><i class="fa fa-check"></i><b>6.4.1</b> Standard Python</a></li>
 <li class="chapter" data-level="6.4.2" data-path="querying-a-database.html"><a href="querying-a-database.html#pandas"><i class="fa fa-check"></i><b>6.4.2</b> Pandas</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a><ul>
+<li class="chapter" data-level="7" data-path="web-api.html"><a href="web-api.html"><i class="fa fa-check"></i><b>7</b> Web API</a>
+<ul>
 <li class="chapter" data-level="7.1" data-path="web-api.html"><a href="web-api.html#api_julia"><i class="fa fa-check"></i><b>7.1</b> Julia</a></li>
-<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.2</b> R</a></li>
-<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.3</b> Python</a></li>
+<li class="chapter" data-level="7.2" data-path="web-api.html"><a href="web-api.html#api_sas"><i class="fa fa-check"></i><b>7.2</b> SAS</a></li>
+<li class="chapter" data-level="7.3" data-path="web-api.html"><a href="web-api.html#api_r"><i class="fa fa-check"></i><b>7.3</b> R</a></li>
+<li class="chapter" data-level="7.4" data-path="web-api.html"><a href="web-api.html#api_python"><i class="fa fa-check"></i><b>7.4</b> Python</a></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="integrating-into-a-statistics-course.html"><a href="integrating-into-a-statistics-course.html"><i class="fa fa-check"></i><b>8</b> Integrating into a Statistics Course</a></li>
 </ul>
@@ -196,7 +210,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="background" class="section level1">
+<div id="background" class="section level1" number="2">
 <h1><span class="header-section-number">2</span> Background</h1>
 <p><strong>Contents</strong></p>
 <ol style="list-style-type: decimal">
@@ -205,31 +219,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><a href="background.html#relational-database-model">Relational Database Model</a></li>
 <li><a href="background.html#basic-introduction-to-sql">Basic Introduction to SQL</a></li>
 </ol>
-<div id="motivation" class="section level2">
+<div id="motivation" class="section level2" number="2.1">
 <h2><span class="header-section-number">2.1</span> Motivation</h2>
 <p>With the advent of large and remote data sources comes a need to for proper training in accessing and utilizing databases. The Cal Poly statistics department, at the current time, lacks a formal remote data course. This leaves it up to the discresion of professor to include such material in their courses, and possibly leaves students to learn these essential skills outside of the classroom.</p>
 <p>The technical purpose of this book is to demonstrate how to <a href="03-connections.Rmd">connect to</a>, <a href="04-writing.Rmd">upload data to</a>, and <a href="05-querying.Rmd">read data from</a> a Microsoft Server database. While the code provided in this book is specific to Microsoft SQL, the lessons can likely be extended to any database, with a few google-able differences.</p>
 </div>
-<div id="about-databases" class="section level2">
+<div id="about-databases" class="section level2" number="2.2">
 <h2><span class="header-section-number">2.2</span> About Databases</h2>
 <p>A database stores data, and is usually controlled by a database management system. Data in most databases is typically modeled in a way similar to what we usually see as statisticians–rows and columns in a series of tables. Most databases utilize structured query language (SQL) to build tables, write data, and query data. Most databases are also stored on a remote server.
 If you still feel lost, for our purposes a database acts as a single location where all of our datasets are stored, waiting for analysis. Imagine having a folder on your computer
 where you could only save csv files and you have to specify the contents of those files before you save them. Additionally, imagine that this folder exits in something like a Google Drive,
 so if you have the right password, you can access the data from anywhere. A database acts like this in some regards, along
 with extra security so that no one can just open the folder and mess with your data.</p>
-<div id="relational-database-model" class="section level3">
+<div id="relational-database-model" class="section level3" number="2.2.1">
 <h3><span class="header-section-number">2.2.1</span> Relational Database Model</h3>
-<div id="relation-and-relationships" class="section level4">
+<div id="relation-and-relationships" class="section level4" number="2.2.1.1">
 <h4><span class="header-section-number">2.2.1.1</span> Relation and Relationships</h4>
 <p>Many databases follow the relational model. In a relational model, each table is a <em>relation</em>. These relations consist of <em>attributes</em>, or columns, and <em>tuples</em>, or rows. A relationship is a connection between relations (tables).</p>
 <p>An example database we’ll use in this book is about a bakery. The <em>relations</em> are customers, items, receipts, and goods. In the receipts relation, the <em>attributes</em> are receipt ID, customer ID, and date of purchase. Each <em>tuple</em> represents one receipt. One <em>relation</em> is that customer ID references the ID attribute of the customers relation.</p>
 </div>
-<div id="keys" class="section level4">
+<div id="keys" class="section level4" number="2.2.1.2">
 <h4><span class="header-section-number">2.2.1.2</span> Keys</h4>
 <p>A <em>primary key</em> is an attribute or set of attributes that uniquely identifies a tuple. For example, the primary key in the receipts relation is the receipt ID, unique to each row. A <em>foreign key</em> is an attribute or set of attributes that references the primary key of another relation. For instance, within the receipts relation, the customer ID attribute references the primary key of the customers relation.</p>
 </div>
 </div>
-<div id="basic-introduction-to-sql" class="section level3">
+<div id="basic-introduction-to-sql" class="section level3" number="2.2.2">
 <h3><span class="header-section-number">2.2.2</span> Basic Introduction to SQL</h3>
 <p>Structured query language, more commonly known as SQL, is used to build tables, write data, and query data. SQL includes data definition language (DDL), data manipulation language (DML), data control language (DCL), and query language (QL).</p>
 <ul>
@@ -241,7 +255,7 @@ with extra security so that no one can just open the folder and mess with your d
 <p>** More details on query language **
 To explore some common SQL queries, we’ll look at the iris dataset. Recall that its attributes are sepal length, sepal width, petal length, petal width, and species.</p>
 <p>The most basic SQL query is <code>select * from iris</code>. This will return the full table.</p>
-<div id="order-by-and-top" class="section level4">
+<div id="order-by-and-top" class="section level4" number="2.2.2.1">
 <h4><span class="header-section-number">2.2.2.1</span> Order by and Top</h4>
 <p>Order by is used to sort a relation by an attribute. Limit can be used to take the first <code>n</code> tuples from a relation. For example, the statement below returns data for the five flowers with the highest sepal length.</p>
 <pre><code>select top 5 SepalLength, Species from iris 
@@ -253,7 +267,7 @@ To explore some common SQL queries, we’ll look at the iris dataset. Recall tha
 4         4.4  setosa
 5         4.5  setosa</code></pre>
 </div>
-<div id="where" class="section level4">
+<div id="where" class="section level4" number="2.2.2.2">
 <h4><span class="header-section-number">2.2.2.2</span> Where</h4>
 <p>The returned table can be subset to the desired data with a <code>where</code> clause. For instance, if we only wanted to look at the subset of iris where the species is sesota and the petals are over 1 centimeter long, we could use the following select statement:</p>
 <pre><code>select * from iris
@@ -273,14 +287,14 @@ To explore some common SQL queries, we’ll look at the iris dataset. Recall tha
 ...</code></pre>
 <p>Note that SQL uses a single equal sign for a statement of equality and strings have single quotes.</p>
 </div>
-<div id="summary-statistics" class="section level4">
+<div id="summary-statistics" class="section level4" number="2.2.2.3">
 <h4><span class="header-section-number">2.2.2.3</span> Summary Statistics</h4>
 <p>Summary statistics can be obtained by using summary functions in when defining what variables to return. For example, if we want to view the average and maximum petal length, we can use the <code>avg</code> and <code>max</code> summary functions. We can also give these attributes new names with an <code>as</code> clause.</p>
 <pre><code>select avg(PetalLength) as average_petal_length, max(PetalLength) as max_petal_length from iris;</code></pre>
 <pre><code>  average_petal_length max_petal_length
 1                3.758              6.9</code></pre>
 </div>
-<div id="group-by-having" class="section level4">
+<div id="group-by-having" class="section level4" number="2.2.2.4">
 <h4><span class="header-section-number">2.2.2.4</span> Group By / Having</h4>
 <p><code>group by</code> allows us to split, apply, and combine in SQL. For instance, if we wanted the average petal length of flowers, separated by species, we could 1) split: group by species, 2) apply: take the average of petal length, and 3) combine: return a single table with this information.</p>
 <pre><code>select Species, avg(PetalLength) as average_petal_length from iris
@@ -306,7 +320,7 @@ To explore some common SQL queries, we’ll look at the iris dataset. Recall tha
 1 versicolor             4.585000
 2  virginica             5.682927</code></pre>
 </div>
-<div id="case" class="section level4">
+<div id="case" class="section level4" number="2.2.2.5">
 <h4><span class="header-section-number">2.2.2.5</span> Case</h4>
 <p>Case can be used to create new attributes based on some condition. It can be used much like an if or switch statement found in other languages. The statement below creates a new attribute, long_sepal, is set to true when the sepa is over 6 centimeters long, and false otherwise.</p>
 <pre><code>select SepalLength, (
@@ -316,17 +330,17 @@ To explore some common SQL queries, we’ll look at the iris dataset. Recall tha
 </div>
 </div>
 </div>
-<div id="converting-code-to-sql" class="section level2">
+<div id="converting-code-to-sql" class="section level2" number="2.3">
 <h2><span class="header-section-number">2.3</span> Converting Code to SQL</h2>
 <p>There’s a number of classes on campus that teach the syntax and advanced uses of the sql language, such as the Statistic’s department’s STAT 441. If you haven’t already seen SQL I would highly suggest taking stat 441
 or the computer science database course to get into some of the interesting features of SQL. If you find yourself in the position where you need to port over some R or SAS to SQL, don’t fret. Many data manipulation frameworks
 are inspired by sql and easily translate to sql queries. The below code is a simple “Rosetta Stone” that you can use to translate code from R or SAS into SQL. Given the iris dataset, all the following code blocks will output the same data.</p>
 <p><strong>R - Tidyverse</strong></p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"> iris_subset =<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="st">                </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="st">                </span><span class="kw">arrange</span>(Petal.Width) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="st">                </span><span class="kw">filter</span>(Petal.Length <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></a>
-<a class="sourceLine" id="cb16-5" data-line-number="5"><span class="st">                </span><span class="kw">select</span>(Sepal.Length, Sepal.Width)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="background.html#cb16-1" aria-hidden="true"></a> iris_subset =<span class="st"> </span>iris <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb16-2"><a href="background.html#cb16-2" aria-hidden="true"></a><span class="st">                </span><span class="kw">group_by</span>(Species) <span class="op">%&gt;%</span><span class="st"> </span></span>
+<span id="cb16-3"><a href="background.html#cb16-3" aria-hidden="true"></a><span class="st">                </span><span class="kw">arrange</span>(Petal.Width) <span class="op">%&gt;%</span></span>
+<span id="cb16-4"><a href="background.html#cb16-4" aria-hidden="true"></a><span class="st">                </span><span class="kw">filter</span>(Petal.Length <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span>) <span class="op">%&gt;%</span></span>
+<span id="cb16-5"><a href="background.html#cb16-5" aria-hidden="true"></a><span class="st">                </span><span class="kw">select</span>(Sepal.Length, Sepal.Width)</span></code></pre></div>
 <pre><code>## Adding missing grouping variables: `Species`</code></pre>
 <p><strong>SAS - Data Step</strong></p>
 <pre class="sas"><code>proc sort data = iris;
