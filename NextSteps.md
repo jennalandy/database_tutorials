@@ -1,5 +1,7 @@
 # Next Steps / Suggestions for Moving Forward
 
+- Check if SAS code works in university edition. If not, add new content to the book.
+
 - Continue a discussion about how much to incorporate SQL into this apartment. Options include full lectures, DataCamp practice, short readings, or as little as reading the databases section of Chapter 1.
 
 - Investigate using RedHat.
