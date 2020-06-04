@@ -4,6 +4,8 @@
 
 - Investigate using RedHat.
 
+- Add section on NoSQL databases and non-tabular data
+
 - Add small case study problems, either as examples or for students to complete on their own. For example:
   - Build a small relational database.
   - Build the bakery relational database and connect to it through the Shiny application associated with this book.
