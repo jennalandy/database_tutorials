@@ -78,6 +78,7 @@ base = DataKnot(:crime => crimedata )
 base[It.crime]
 ```
 Finally, put the data into a useable DataKnot. 
+
 ## SAS{#api_sas} 
 
 The SAS option requires 3 steps to work properly. First, you must define a where you will store the data from the API. Then, use proc http to make the api call  
