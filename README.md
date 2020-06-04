@@ -10,5 +10,5 @@ A shiny application was also created to demonstrate the interaction of RShiny an
 
 ## Links
 
-- See our Bookdown [here](https://jennalandy.github.io/stat400_database_tutorials)
+- See our Bookdown [here](https://jennalandy.github.io/database_tutorials/index.html)
 - See our Shiny app [here](https://rstudio.csm.calpoly.edu/connect/#/apps/119/info)
