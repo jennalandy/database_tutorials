@@ -12,3 +12,4 @@ A shiny application was also created to demonstrate the interaction of RShiny an
 
 - See our Bookdown [here](https://jennalandy.github.io/database_tutorials/index.html)
 - See our Shiny app [here](https://rstudio.csm.calpoly.edu/connect/#/apps/119/info)
+  - **Note**: For the Shiny app you'll need access to the Cal Poly Statistics server
